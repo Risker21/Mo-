@@ -1,6 +1,14 @@
 (function () {
     const endpoint = '/api/chat';
 
+    // ---- Lottie 脚本加载 ----
+    if (!document.querySelector('script[src*="dotlottie-wc"]')) {
+        const lottieScript = document.createElement('script');
+        lottieScript.type = 'module';
+        lottieScript.src = 'https://unpkg.com/@lottiefiles/dotlottie-wc@latest/dist/dotlottie-wc.js';
+        document.head.appendChild(lottieScript);
+    }
+
     // ---- 样式注入 ----
     const style = document.createElement('style');
     style.textContent = `
@@ -321,6 +329,14 @@
     const closeBtn = document.getElementById('chatCloseBtn');
     let chatSending = false;
 
+    console.log('[AI] 面板已创建', { msgs: !!msgs, input: !!input, sendBtn: !!sendBtn, closeBtn: !!closeBtn });
+
+    // 检查关键元素是否存在
+    if (!msgs || !input || !sendBtn || !closeBtn) {
+        console.error('[AI] 关键元素缺失!');
+        return;
+    }
+
     // 简单的 Markdown 转 HTML
     function renderMarkdown(text) {
         return text
@@ -335,7 +351,10 @@
 
     // 切换面板
     function toggleChat() {
+        console.log('[AI] toggleChat called, panel:', panel);
+        console.log('[AI] panel.classList:', panel.classList);
         panel.classList.toggle('open');
+        console.log('[AI] panel.classList after toggle:', panel.classList);
         if (panel.classList.contains('open')) {
             input.focus();
         }
@@ -552,6 +571,7 @@
 
     // 点击事件 - 区分拖拽和点击
     btn.addEventListener('click', function (e) {
+        console.log('[AI] 点击事件, hasDragged:', hasDragged);
         if (hasDragged) {
             hasDragged = false;
             return;
