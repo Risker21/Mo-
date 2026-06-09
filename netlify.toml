@@ -3,7 +3,7 @@
   functions = "netlify/functions"
 
 [build.environment]
-  SECRETS_SCAN_OMIT_PATHS = ".env.example,DEPLOY.md,README.md"
+  SECRETS_SCAN_OMIT_KEYS = "MAIL_FROM_NAME"
 
 [functions]
   node_bundler = "esbuild"
