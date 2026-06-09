@@ -1,4 +1,6 @@
 (function () {
+    try {
+    console.log('[AI] 脚本开始执行');
     const endpoint = '/api/chat';
 
     // ---- Lottie 脚本加载 ----
@@ -578,4 +580,9 @@
         }
         toggleChat();
     });
+
+    console.log('[AI] 脚本执行完成');
+    } catch (error) {
+        console.error('[AI] 脚本执行出错:', error);
+    }
 })();
