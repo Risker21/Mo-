@@ -279,7 +279,7 @@
     const btn = document.createElement('button');
     btn.className = 'chat-btn';
     btn.setAttribute('aria-label', '打开AI聊天');
-    btn.innerHTML = '<dotlottie-wc src="./ai/chatbot.lottie" autoplay loop></dotlottie-wc>';
+    btn.innerHTML = '<dotlottie-wc src="/login_in/ai/chatbot.lottie" autoplay loop></dotlottie-wc>';
 
     const panel = document.createElement('div');
     panel.className = 'chat-panel';
