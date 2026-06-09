@@ -56,13 +56,5 @@ pids/
 # Local development
 *.local
 
-# 大文件 - 音乐和视频
-*.mp3
-*.mp4
-*.m4a
-*.wav
-*.avi
-*.mov
-
-# 大图片文件
-*.xcf
+# 大图片文件（可选忽略）
+# *.xcf
