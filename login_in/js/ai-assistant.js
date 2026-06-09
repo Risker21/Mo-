@@ -524,45 +524,68 @@
     });
     console.log('[AI] 点击事件已绑定');
 
-    // ---- 拖拽功能 ----
+    // ---- 拖拽功能（支持鼠标和触摸）----
     let isDragging = false;
     let startX, startY, startLeft, startTop;
 
-    btn.addEventListener('mousedown', function(e) {
+    function onStart(clientX, clientY) {
         isDragging = false;
-        startX = e.clientX;
-        startY = e.clientY;
+        startX = clientX;
+        startY = clientY;
         const rect = btn.getBoundingClientRect();
         startLeft = rect.left;
         startTop = rect.top;
+    }
+
+    function onMove(clientX, clientY) {
+        const dx = clientX - startX;
+        const dy = clientY - startY;
+        if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+            isDragging = true;
+            let newX = startLeft + dx;
+            let newY = startTop + dy;
+            newX = Math.max(0, Math.min(window.innerWidth - 130, newX));
+            newY = Math.max(0, Math.min(window.innerHeight - 130, newY));
+            btn.style.left = newX + 'px';
+            btn.style.top = newY + 'px';
+            btn.style.right = 'auto';
+            btn.style.bottom = 'auto';
+        }
+    }
+
+    // 鼠标事件
+    btn.addEventListener('mousedown', function(e) {
+        onStart(e.clientX, e.clientY);
 
         function onMouseMove(e) {
-            const dx = e.clientX - startX;
-            const dy = e.clientY - startY;
-            if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
-                isDragging = true;
-                let newX = startLeft + dx;
-                let newY = startTop + dy;
-                newX = Math.max(0, Math.min(window.innerWidth - 130, newX));
-                newY = Math.max(0, Math.min(window.innerHeight - 130, newY));
-                btn.style.left = newX + 'px';
-                btn.style.top = newY + 'px';
-                btn.style.right = 'auto';
-                btn.style.bottom = 'auto';
-            }
+            onMove(e.clientX, e.clientY);
         }
 
         function onMouseUp() {
             document.removeEventListener('mousemove', onMouseMove);
             document.removeEventListener('mouseup', onMouseUp);
-            if (isDragging) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
         }
 
         document.addEventListener('mousemove', onMouseMove);
         document.addEventListener('mouseup', onMouseUp);
+    });
+
+    // 触摸事件
+    btn.addEventListener('touchstart', function(e) {
+        const touch = e.touches[0];
+        onStart(touch.clientX, touch.clientY);
+    }, { passive: true });
+
+    btn.addEventListener('touchmove', function(e) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        onMove(touch.clientX, touch.clientY);
+    }, { passive: false });
+
+    btn.addEventListener('touchend', function(e) {
+        if (isDragging) {
+            e.preventDefault();
+        }
     });
 
     console.log('[AI] 脚本执行完成');

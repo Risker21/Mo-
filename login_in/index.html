@@ -401,7 +401,7 @@
 
             <div class="blog-content">
                 <div class="blogs">
-                    <a href="./game/Christmas/index.html" target="_blank" class="password-protected-demo" data-demo-name="手势圣诞">
+                    <a href="./game/Christmas/index.html" target="_blank" class="login-required" data-demo-name="手势圣诞">
                         <div class="img">
                             <img src="images/圣诞.webp" alt="blog-six">
                             <div class="blog-date">浪漫</div>
@@ -541,7 +541,7 @@
 
 
                 <div class="blogs">
-                    <a href="../login_in/game/Caring Tutorials/index.html" target="_blank">
+                    <a href="../login_in/game/Caring Tutorials/index.html" target="_blank" class="login-required" data-demo-name="代码里的温暖心意">
                         <div class="img">
                             <img loading="lazy" src="https://q0.itc.cn/q_70/images01/20260201/be13940f395545229bd15cbec6a48476.png" alt="blog-six">
                             <div class="blog-date">浪漫</div>
@@ -1187,42 +1187,60 @@
         });
     </script>
     <script>
-        // 指定 Demo 需输入密码才能访问
         document.addEventListener('DOMContentLoaded', function () {
-            const protectedDemoLinks = document.querySelectorAll('.password-protected-demo');
-            
-            // 简单的哈希函数
-            function simpleHash(str) {
-                let hash = 0;
-                for (let i = 0; i < str.length; i++) {
-                    const char = str.charCodeAt(i);
-                    hash = ((hash << 5) - hash) + char;
-                    hash = hash & hash; // 转换为32位整数
-                }
-                return hash;
+            // 检查是否已登录
+            function isLoggedIn() {
+                return !!localStorage.getItem('auth_token');
             }
-            
-            // 存储密码的哈希值（5211314mo 的哈希）
-            const DEMO_PASSWORD_HASH = simpleHash('5211314mo');
 
-            protectedDemoLinks.forEach(function (link) {
+            // 仅需登录的项目
+            document.querySelectorAll('.login-required').forEach(function (link) {
                 link.addEventListener('click', function (event) {
-                    const demoName = this.dataset.demoName || '该 Demo';
-                    const userInput = window.prompt('进入《' + demoName + '》前请输入密码：');
-
-                    if (userInput === null) {
+                    if (!isLoggedIn()) {
                         event.preventDefault();
-                        return;
-                    }
-
-                    if (simpleHash(userInput.trim()) !== DEMO_PASSWORD_HASH) {
-                        event.preventDefault();
-                        window.alert('密码错误，无法进入该 Demo。');
+                        const demoName = this.dataset.demoName || '该 Demo';
+                        alert('请先登录后再访问《' + demoName + '》');
+                        window.location.href = './login.html';
                     }
                 });
             });
 
+            // 需要登录 + 二级密码的项目
+            document.querySelectorAll('.password-protected-demo').forEach(function (link) {
+                link.addEventListener('click', async function (event) {
+                    if (!isLoggedIn()) {
+                        event.preventDefault();
+                        const demoName = this.dataset.demoName || '该 Demo';
+                        alert('请先登录后再访问《' + demoName + '》');
+                        window.location.href = './login.html';
+                        return;
+                    }
 
+                    event.preventDefault();
+                    const demoName = this.dataset.demoName || '该 Demo';
+                    const href = this.getAttribute('href');
+                    const userInput = window.prompt('进入《'+demoName+'》前需要输入密码哦๑乛◡乛๑\n  很高兴你对这个 Demo 感兴趣！\n\n请输入密码吧：');
+
+                    if (userInput === null) return;
+
+                    try {
+                        const res = await fetch('/api/demo/verify-password', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ password: userInput.trim() })
+                        });
+                        const data = await res.json();
+
+                        if (data.code === 200) {
+                            window.open(href, '_blank');
+                        } else {
+                            window.alert('密码输错了，😭😭😭，无法进入该 Demo');
+                        }
+                    } catch (e) {
+                        window.alert('验证失败，请稍后重试😮‍💨');
+                    }
+                });
+            });
         });
     </script>
 </body>

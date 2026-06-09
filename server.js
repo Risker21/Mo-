@@ -29,6 +29,18 @@ app.get('/', (req, res) => {
 // ---- 认证路由 ----
 app.use('/api/auth', authRouter);
 
+// ---- Demo 密码验证 API ----
+const DEMO_PASSWORD = process.env.DEMO_PASSWORD || '5211314mo';
+
+app.post('/api/demo/verify-password', (req, res) => {
+  const { password } = req.body;
+  if (password === DEMO_PASSWORD) {
+    res.json({ code: 200, msg: '验证成功' });
+  } else {
+    res.json({ code: 401, msg: '密码错误' });
+  }
+});
+
 // ---- 验证码 API ----
 const CAPTCHA_ID = process.env.API_ID;
 const CAPTCHA_KEY = process.env.API_KEY;

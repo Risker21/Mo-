@@ -582,13 +582,12 @@ body{
     padding-top: 40px;
 }
 .cv a{
-    background: transparent;
-    border:none;
+    background: #c70039 !important;
+    border: none;
     padding: 15px 30px;
-    color: rgb(245, 245, 245);
-    background: #c70039;
+    color: #fff !important;
     outline: none;
-    font-size:20px;
+    font-size: 20px;
     font-family: aileron;
     border-radius: 4px;
     font-weight: 400;
