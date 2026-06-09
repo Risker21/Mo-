@@ -290,6 +290,7 @@
     btn.className = 'chat-btn';
     btn.setAttribute('aria-label', '打开AI聊天');
     btn.innerHTML = '<dotlottie-wc src="/login_in/ai/chatbot.lottie" autoplay loop></dotlottie-wc>';
+    console.log('[AI] 按钮已创建:', btn);
 
     const panel = document.createElement('div');
     panel.className = 'chat-panel';
@@ -323,6 +324,7 @@
 
     document.body.appendChild(btn);
     document.body.appendChild(panel);
+    console.log('[AI] 按钮已添加到DOM:', document.body.contains(btn));
 
     // ---- 功能逻辑 ----
     const msgs = document.getElementById('chatMsgs');
@@ -517,9 +519,10 @@
 
     // ---- 点击事件 ----
     btn.addEventListener('click', function (e) {
-        console.log('[AI] 点击事件');
+        console.log('[AI] 点击事件触发', e);
         toggleChat();
     });
+    console.log('[AI] 点击事件已绑定');
 
     // ---- 拖拽功能 ----
     let isDragging = false;
