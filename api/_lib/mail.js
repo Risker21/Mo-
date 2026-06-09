@@ -24,30 +24,30 @@ async function sendMailCode(email, code) {
   }
 
   const transporter = createTransport();
-  const fromName = process.env.MAIL_FROM_NAME || 'Mo小窝';
+  const fromName = process.env.MAIL_FROM_NAME || 'Verification';
   const fromAddr = process.env.MAIL_USER;
 
   const info = await transporter.sendMail({
     from: `"${fromName}" <${fromAddr}>`,
     to: email,
-    subject: 'Mo小窝验证码',
-    text: `您的验证码是：${code}，5分钟内有效。如非本人操作，请忽略此邮件。`,
+    subject: `${fromName} - Verification Code`,
+    text: `Your verification code is: ${code}. Valid for 5 minutes.`,
     html: `
       <div style="max-width:600px;margin:0 auto;padding:20px;font-family:'Microsoft YaHei',sans-serif;background:#f9f9f9;border-radius:8px;">
         <div style="background:linear-gradient(135deg,#6c5ce7,#a29bfe);padding:30px;border-radius:8px 8px 0 0;text-align:center;">
-          <h1 style="color:#fff;margin:0;font-size:24px;">Mo小窝</h1>
+          <h1 style="color:#fff;margin:0;font-size:24px;">${fromName}</h1>
         </div>
         <div style="background:#fff;padding:30px;border-radius:0 0 8px 8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-          <p style="font-size:16px;color:#333;">您好！</p>
-          <p style="font-size:16px;color:#333;">欢迎来到Mo小窝，您的验证码如下：</p>
+          <p style="font-size:16px;color:#333;">Hello!</p>
+          <p style="font-size:16px;color:#333;">Your verification code is:</p>
           <div style="text-align:center;margin:30px 0;">
             <div style="display:inline-block;background:linear-gradient(135deg,#6c5ce7,#a29bfe);color:#fff;font-size:36px;font-weight:bold;letter-spacing:8px;padding:15px 30px;border-radius:8px;">
               ${code}
             </div>
           </div>
-          <p style="font-size:14px;color:#999;">验证码5分钟内有效，如非本人操作，请忽略此邮件。</p>
+          <p style="font-size:14px;color:#999;">This code is valid for 5 minutes. If you did not request this, please ignore this email.</p>
           <hr style="border:none;border-top:1px solid #eee;margin:20px 0;">
-          <p style="font-size:12px;color:#bbb;text-align:center;">本邮件由系统自动发送，请勿回复</p>
+          <p style="font-size:12px;color:#bbb;text-align:center;">This is an automated message, please do not reply.</p>
         </div>
       </div>
     `,
