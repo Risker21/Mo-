@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>俄罗斯方块</title>
+    <link rel="icon" href="../images/favicon.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="../../images/favicon.jpg" type="image/x-icon">
+
+    <!-- 引入Font Awesome图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="tetris-game" role="application" aria-label="俄罗斯方块">
+        <header class="game-header">
+            <div class="game-title">
+                <h1>俄罗斯方块</h1>
+                <div class="game-subtitle">手感优先 · 触控可玩 · 桌面键盘可用</div>
+            </div>
+            <div class="header-actions">
+                <button id="toggle-sound" class="icon-button" aria-label="切换音效">
+                    <i class="fas fa-volume-up" aria-hidden="true"></i>
+                </button>
+            </div>
+        </header>
+
+        <main class="game-content">
+            <section class="game-left-panel" aria-label="状态面板">
+                <div class="game-panel next-panel">
+                    <div class="panel-title">下一个</div>
+                    <canvas id="next-piece-canvas" class="next-piece-canvas" aria-label="下一个方块"></canvas>
+                </div>
+
+                <div class="game-panel info-panel" aria-label="游戏信息">
+                    <div class="info-item">
+                        <div class="info-label">分数</div>
+                        <div class="info-value" id="score">0</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">等级</div>
+                        <div class="info-value" id="level">1</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">行数</div>
+                        <div class="info-value" id="lines">0</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="game-center-panel" aria-label="游戏区域">
+                <div class="game-board-container" aria-label="游戏棋盘">
+                    <canvas id="tetris-board" class="tetris-board"></canvas>
+                    <div class="gesture-hint" aria-label="移动端手势提示">
+                        <span>左右滑：移动</span>
+                        <span>下滑：加速</span>
+                        <span>点按：旋转</span>
+                        <span>长按：硬降</span>
+                        <span>双指点按：暂停</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="game-right-panel" aria-label="操作面板">
+                <div class="game-controls" aria-label="游戏控制">
+                    <button id="start-button" class="control-button start-button">
+                        <i class="fas fa-play" aria-hidden="true"></i> 开始
+                    </button>
+                    <button id="pause-button" class="control-button pause-button" disabled>
+                        <i class="fas fa-pause" aria-hidden="true"></i> 暂停
+                    </button>
+                    <button id="reset-button" class="control-button reset-button">
+                        <i class="fas fa-redo" aria-hidden="true"></i> 重置
+                    </button>
+
+                    <div class="keyboard-controls-info" aria-label="桌面键盘提示">
+                        <div class="kbd-row">
+                            <span class="kbd">←</span><span class="kbd">→</span><span class="kbd">↓</span>
+                            <span class="kbd-desc">移动 / 下落</span>
+                        </div>
+                        <div class="kbd-row">
+                            <span class="kbd">↑</span>
+                            <span class="kbd-desc">旋转</span>
+                        </div>
+                        <div class="kbd-row">
+                            <span class="kbd">Space</span>
+                            <span class="kbd-desc">硬降</span>
+                        </div>
+                        <div class="kbd-row">
+                            <span class="kbd">P</span>
+                            <span class="kbd-desc">暂停</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mobile-controls" aria-label="移动端按钮控制（辅助）">
+                <div class="control-pad" aria-label="方向与功能">
+                    <div class="pad-row">
+                        <button id="rotate-button" class="pad-button rotate-button" aria-label="旋转">
+                            <i class="fas fa-sync-alt" aria-hidden="true"></i>
+                        </button>
+                        <button id="pause-touch" class="pad-button pause-touch" aria-label="暂停/继续">
+                            <i class="fas fa-pause" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="pad-row">
+                        <button id="left-button" class="pad-button left-button" aria-label="左移">
+                            <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                        </button>
+                        <button id="down-button" class="pad-button down-button" aria-label="下移">
+                            <i class="fas fa-arrow-down" aria-hidden="true"></i>
+                        </button>
+                        <button id="right-button" class="pad-button right-button" aria-label="右移">
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button id="drop-button" class="action-button drop-button" aria-label="硬降">
+                    <i class="fas fa-bolt" aria-hidden="true"></i>
+                    <span>硬降</span>
+                </button>
+            </section>
+        </main>
+
+        <!-- 游戏结束弹窗 -->
+        <div id="game-over-modal" class="game-modal hidden">
+            <div class="modal-content">
+                <div class="modal-title">游戏结束</div>
+                <div class="final-score">
+                    <div class="final-score-label">最终得分</div>
+                    <div class="final-score-value" id="final-score">0</div>
+                </div>
+                <div class="modal-controls">
+                    <button id="play-again-button" class="modal-button">再玩一次</button>
+                </div>
+            </div>
+        </div>
+
+        <script src="script.js"></script>
+</body>
+
+</html>
+

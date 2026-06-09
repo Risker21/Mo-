@@ -1,0 +1,23 @@
+{
+  "name": "mo-xiaowo",
+  "version": "1.0.0",
+  "description": "Mo小窝 - 个人创意前端展示网站（部署 Netlify）",
+  "private": true,
+  "engines": {
+    "node": "18.x"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build": "echo 'Netlify esbuild handles bundling'"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.106.1",
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "nodemailer": "^8.0.8",
+    "serverless-http": "^4.0.0"
+  }
+}

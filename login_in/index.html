@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="莫莫的个人创意网站，展示HTML5/CSS3/JavaScript创意作品，包含3D展示、粒子动画、交互网页设计等前端技术实践。分享编程技巧、设计灵感和个人项目。" />
+    <meta name="keywords" content="前端开发,HTML5,CSS3,JavaScript,网页设计,创意作品,3D展示,粒子动画,交互设计,个人网站,编程技巧,莫莫,momo同学" />
+    <meta name="author" content="莫莫" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="莫莫的创意前端小站" />
+    <meta property="og:description" content="展示HTML5/CSS3/JavaScript创意作品的前端技术实践" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://risker21.github.io/mo" />
+    <meta property="og:image" content="images/图56.webp" />
+    <link rel="canonical" href="https://momo21.online" />
+    <title>Mo小窝</title>
+    <!--网站图标-->
+    <link rel="icon" type="image/png" href="images/favicon.jpg">
+    <!--网站图标-->
+    <!--主CSS文件(请勿删除) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!--外部图片源 DNS 预解析-->
+    <link rel="dns-prefetch" href="//q0.itc.cn">
+    <link rel="dns-prefetch" href="//q1.itc.cn">
+    <link rel="dns-prefetch" href="//q2.itc.cn">
+    <link rel="dns-prefetch" href="//q3.itc.cn">
+    <link rel="dns-prefetch" href="//q4.itc.cn">
+    <link rel="dns-prefetch" href="//q5.itc.cn">
+    <link rel="dns-prefetch" href="//q6.itc.cn">
+    <link rel="dns-prefetch" href="//q7.itc.cn">
+    <link rel="dns-prefetch" href="//q8.itc.cn">
+    <link rel="dns-prefetch" href="//q9.itc.cn">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Monoton&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
+    <!--主CSS文件-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/gsap.min.js" crossorigin="anonymous"></script>
+    <!--认证检查-->
+    <script src="js/auth.js"></script>
+    <script>
+        // 认证检查：如果未登录且不是游客模式，重定向到登录页
+        (async function checkAuthentication() {
+            const authStatus = sessionStorage.getItem('isAuthenticated');
+            if (authStatus === 'guest') {
+                // 游客模式，允许访问
+                return;
+            }
+
+            // 检查 token 是否有效
+            const isLoggedIn = await checkAuth();
+            if (!isLoggedIn) {
+                // 未登录，保存当前页面路径用于登录后重定向
+                sessionStorage.setItem('redirectAfterLogin', window.location.href);
+                window.location.href = './login.html';
+            }
+        })();
+    </script>
+</head>
+
+<body>
+    <!--包含所有div的容器-->
+        <div id="all">
+        <!--鼠标跟随效果-->
+        <div class="cursor"></div>
+        <!--鼠标跟随效果-->
+        <!--加载动画-->
+        <div id="loader">
+            <span class="color">嘻嘻嘻</span> <br>你来了
+        </div>
+        <!--加载动画结束-->
+        <!--链接过渡效果-->
+        <div id="breaker">
+        </div>
+        <div id="breaker-two">
+        </div>
+        <!--链接过渡效果-->
+        <!--主内容区-->
+        <!--全屏导航菜单-->
+        <nav id="navigation-content">
+            <div class="navigation-close">
+                <span class="close-first"></span>
+                <span class="close-second"></span>
+            </div>
+            <div class="navigation-links">
+                <a href="#" data-text="HOME" id="home-link">首页</a>
+                <a href="#" data-text="ABOUT" id="about-link">关于</a>
+                <a href="#" data-text="PORTFOLIO" id="blog-link">Demo</a>
+                <a href="#" data-text="BLOG" id="portfolio-link">博客</a>
+                <a href="#" data-text="CONTACT" id="contact-link">联系</a>
+            </div>
+        </nav>
+        <!--全屏导航菜单结束-->
+        <!--首页内容-->
+        <!--菜单栏-->
+        <nav id="navigation-bar">
+            <div class="menubar">
+                <span class="first-span"></span>
+                <span class="second-span"></span>
+                <span class="third-span"></span>
+            </div>
+        </nav>
+        <!--菜单栏结束-->
+        <!--页眉区-->
+        <div id="header">
+            <div id="particles"></div>
+            <!--社交媒体链接-->
+            <div class="social-media-links">
+                <a href="https://www.douyin.com/user/MS4wLjABAAAA0XSGvjUy5BlndvX32Q6wvQIakUDCcIov3_VxU9OOV54?from_tab_name=main"
+                    target="_blank"><img src="./images/抖音.png" class="social-media" alt="douyin-logo"></a>
+                <a href="https://www.youtube.com/@Riskermo" target="_blank"><img src="images/youtube.png"
+                        class="social-media" alt="youtube-logo"></a>
+                <a href="https://x.com/bobbob1571370" target="_blank"><img src="images/推特.svg" class="social-media"
+                        alt="twitter-logo"></a>
+            </div>
+            <!--社交媒体链接结束-->
+            <div class="header-content">
+                <div class="header-content-box">
+                    <div class="firstline"><span class="color">Momo</span> <span style="color: aqua;">祝你今天愉快！</span>
+                    </div>
+                    <div class="secondline"
+                        style="height: 30px; display: flex; align-items: center; justify-content: center;">
+                        <span class="txt-rotate color" data-period="1200" style="color: rgb(225, 74, 157);"
+                            data-rotate='["前世五百次的回眸，终于换得这次相遇❤️❤️❤️","发个“哈哈哈”不代表真的笑了，可能只是懒得回","追赶日出算我献给的浪漫","荒唐的梦总是要有的，万一实现了呢","我们都在阴沟里，但仍有人仰望星空","我想成为别人的阳光，无需凭借谁的光","是赶路的人，也是努力生活的人","没人能看出我是在演，因为我演得真的很像我","只有经历了绝望，才会懂得不甘","成长就是与不完美的自己和解","自我提升的本质，就是对自己PUA的同时又给自己画饼","我不要用别人的尺子，来丈量自己的人生","小时候觉得大人说话不算数，长大之后，哈哈，我也经常对自己食言","我们总在纠结‘该选哪条路’，却忘了每条路都会让你遇见不同的风景","保持热情，奔赴下一场山海","把挫折当基石，将迷茫化星光，在逐梦途中，留存热爱与纯粹","如果注定要走夜路，那就带上星光","风会告诉你，什么叫做顺其自然","有时候，慢一点也没关系，花也要时间开放","生活没给糖，那就自己做点甜","做自己喜欢的事，哪怕慢一点也值得","简单的生活，是最奢侈的奢华","喜欢一个人，大概就是，看到一棵奇怪的树，都想拍下来分享给你"]'></span>
+
+                        <!-- 
+                            "前世999次的回眸，终于换得这次相遇❤️❤️❤️","每一次点击都是一份缘分🩷💕💓💗💞","春风若有怜花意，可否许我再少年","不要因为走得太远，而忘记为什么出发","相遇的意义，在于彼此照亮彼此","你的时间有限，不要为别人而活","我们都在阴沟里，但仍有人仰望星空","我说怎么不见了，原来是起风了啊","改变能改变的，接受不能改变的，并用智慧区分二者","人性的卑劣之处就在于，明明自己揣着私心，却总苛求着别人大度","自我提升的本质，就是对自己PUA的同时又给自己画饼","趋势瞬息万变，你的初衷也可能会随之动摇","世界以痛吻我，我要报之以歌","科技让生活更便捷，但也让我们更容易焦虑——比如已读不回","欲买桂花同载酒，终不似少年游","情绪到了喉咙，我却选择咽下去","有人说我总是笑，其实我早就笑累了","不是所有的坚持都有结果，但总有一些值得一试","生活嘛，除了热爱和自由，还有没完没了的验证码","如果你觉得自己一整天累得跟狗一样，你真是误会大了，狗都没你这么累","本想咸鱼翻身，结果一不小心，把自己腌成了咸鱼干","发个“哈哈哈”不代表真的笑了，可能只是懒得回","没人能看出我是在演，因为我演得真的很像我","人生最大的遗憾，不是做错了什么，而是没去做什么","愿我成为别人的阳光，无需凭借谁的光","仇恨是自己喝下毒药，却希望别人痛苦","真正的智慧在于知道自己一无所知","真理并不总是复杂的，有时它简单得让人难以相信","不要害怕慢，只要别停下","健康是最大的财富，满足是最大的利润","读书是在别人的世界里，寻找自己的路","宇宙中最强大的力，是复利——无论是金钱还是习惯","你的态度，决定了你的高度","一棵树最好的种植时间是十年前，其次是现在","勇气不是没有恐惧，而是战胜恐惧","简单的生活，是最奢侈的奢华","怀疑是智慧的源泉","给予比接受更能带来快乐","你如何看待自己，远比别人如何看待你重要得多","真正的发现之旅不在于寻找新风景，而在于拥有新的眼睛","沉默有时是最有力的呐喊","幸福就像蝴蝶，你越是追逐，它越是飞远；当你静静坐下，它却会落在你肩头","行动是治愈恐惧的良药","真正的朋友是在你黑暗中为你点灯的人","梦想不会逃跑，会逃跑的永远是自己","昨天是历史，明天是谜团，今天是礼物。（所以英文里“现在”叫Present）","最简单的真理，往往需要最漫长的旅程来理解","时间是最好的老师，但不幸的是，它会杀死所有学生","成长就是与不完美的自己和解","最黑暗的夜晚，也会孕育最明亮的星辰","微笑是两人之间最短的距离","不要用别人的尺子，来丈量自己的人生","善良是一种选择，即使世界并不总是对你善良","我既想纠缠你，又想放弃你，既想和你做到不再联系但又害怕和你没有关系，既想退出你的生活，但又害怕真的失去你","最大的勇气，是在绝望中依然选择希望","间歇性凌云壮志，持续性混吃等死。——当代大部分人的状态写真","所谓成熟，就是终于习惯了“得不到”和“已失去”","生活就像扫码支付，太快了，以至于忘了钱是怎么花没的","我们都在朋友圈里，过着别人点过赞的人生","焦虑是大脑在滚动播放的“您可能在以下方面不如别人”","自由不是想做什么就做什么，而是想不做什么就能不做什么","最好的休息，是换一种方式累","现代人的孤独：通讯录里有5000个好友，想说话时却找不到一个","所谓“说话直”，多半是懒得为你的感受费心","承诺这东西，听的当时是真心，过后就是鬼故事","疏远的秘诀是：一句“在吗？”之后，再无下文","人脉不是能帮到你的人，而是你真的能帮到的人"," 吵架时最大的输家，是那个更在乎关系的人","合群，往往意味着你放弃了部分思考的主权","每一个不起舞的日子，都是对生命的辜负","半山腰总是最挤的，你得去山顶看看","成功的速度一定要超过父母老去的速度","把“不可能”从你的字典里删去","如果运气不行，那就试试勇气","我期待风起而你好像更希望风停，奈何思念无声，幸好思念无声","万念俱灰，花也尘埃，无趣最是无所谓，没了忧争少了虑猜","点赞是新的“我在乎你”，但也可能只是手滑","总觉得自己还年轻，直到看到比自己小的人都开始养生，才惊觉岁月不饶人","心如空海，弃了痴爱，再无替代，人不开怀，不如没想开","小时候觉得大人说话不算数，长大后才知道，我们也经常对自己食言","人是在某一天突然就失去了重要的人的时候才恍觉时间不够的","回忆是一条没有尽头的路","在不愿回首的年代里，有些人从未回头","我想两个人的相遇已是上上签了吧","你害怕的事情，往往没那么可怕","我们都在假装很坚强，其实都想被懂","人生无常，早点睡觉","谁不是一边自愈，一边崩溃","有时候，不是世界太复杂，而是我们想得太简单","以前的人写信要等一个月，现在的人发微信等一分钟就急","一路走，一路离开，生活不就是这个样子吗？","我已经不期待天降惊喜了，只希望别再天降铁锅","成年人的崩溃是静音的——毕竟手机开了静音，哭也要挑时间","对于意气风发的少年，我想我将无法释怀那段岁月","不想内耗，不想内耗，不想内耗，所以过不去的也让它过去吧","只要路是对的，就不怕路远","再难，也要咬牙撑过去","心怀希望的人，永远不会迷路","命运从不眷顾胆小鬼","我们总在纠结‘该选哪条路’，却忘了每条路都会让你遇见不同的风景","我笑得很大声，没人看见我眼底的疲惫","一天的开始，就是以为‘明天会更好’，而真正面临的是让‘今天别太糟’","即使我们不是情侣关系，我也害怕你喜欢上别人，没有身份的占有欲最可笑，没有资格吃的醋最酸，我有一万种想见你的理由，却唯独少了一个见你的身份","世界那么大，我怎么能轻易认输","遇事不决先emo，emo完了继续躺平","成长的过程，就是与自己和解的过程","君啊君，莫等华发踏月行","说没事的人，心里都有点事","不想卷，也不想躺，只是动不了","敢倒下，怕没人扶；不敢崩溃，怕没人懂","那些没说出口的话，最后都变成了沉默", "信息爆炸，烦恼也升级。以前怕没信号，现在怕没回应","世界荒谬，生活疲惫，需要偶尔发发疯","生活就像一盒巧克力，你永远不知道下一块是什么味道","既然选择了远方，就要学会顺便晒晒太阳","有些路很远，走下去会很累，但不走会后悔","世界太大，但总有一处是我的归宿","失望攒够了，自然会离开","生活有点难，但你也不差","爱情就像数学题，不会就是不会，装懂也没用","青春不是年少，而是再也不会回来的勇敢","有些人见一面少一面，所以每次都格外珍惜","真正难过的时刻，是你说“没事”的时候","人生就像骑自行车，想保持平衡就得往前走，但别忘了欣赏路边的风景","现代人的孤独，不是没人陪，而是陪的人都在玩手机","喜欢一个人，大概就是，看到一棵奇怪的树，都想拍下来分享给你","“你怎么了？”是我最羡慕听到的一句话","世界不会因为你焦虑，就提前给你答案","能让你痛苦的，往往不是别人，而是执念","我们总说‘等有时间再做’，却忘了时间不会等我们","每次说“我睡了”之后，才是我情绪最乱的时候","是赶路的人，也是努力生活的人","受过的歧视和委屈时刻都在提醒我要争气","没有耐心和耐力，就别怪现实太现实","加油(ง•̀_•́)ง🏂🏋️‍♀️🤸‍♂️🤺⛹️‍♂️🤾‍♂️🏌️‍♂️🏇" -->
+
+                        <!-- "前世五百次的回眸，终于换得这次相遇❤️❤️❤️","每一次点击都是一份缘分(o^з^o)💞","相遇的意义，在于彼此照亮彼此","春风若有怜花意，可否许我再少年","我们都在阴沟里，但仍有人仰望星空","小时候以为‘长大就能自由’，长大后发现‘自由需要钱’","小时候以为‘钱不是万能的’，长大后发现‘没有钱是万万不能的’","上班的意义不是实现梦想，而是赚钱养活那个还在做梦的自己","心系佳人，思之念之"
+,"人是在某一天突然就失去了重要的人的时候才恍觉时间不够的","回忆是一条没有尽头的路","在不愿回首的年代里，有些人从未回头","人生无常，早点睡觉","谁不是一边自愈，一边崩溃","有时候，不是世界太复杂，而是我们想得太简单","以前的人写信要等一个月，现在的人发微信等一分钟就急","本想咸鱼翻身，结果一不小心，把自己腌成了咸鱼干","说没事的人，心里都有点事","不想卷，也不想躺，只是动不了","敢倒下，怕没人扶；不敢崩溃，怕没人懂","那些没说出口的话，最后都变成了沉默", "君啊君，莫等华发踏月行","没有耐心和耐力，就别怪现实太现实","我们总在纠结‘该选哪条路’，却忘了每条路都会让你遇见不同的风景", "趋势瞬息万变，你的初衷也可能会随之动摇","我没再打扰你，也没能忘了你","一天的开始，就是以为‘明天会更好’，而真正面临的是让‘今天别太糟’","爱到无声才是最难熬的阶段","科技让生活更便捷，但也让我们更容易焦虑——比如已读不回","后来我才明白，原来“喜欢”真的不值一提","我笑得很大声，没人看见我眼底的疲惫","人生就像打电话，不是你先挂，就是我先挂","我们总在羡慕别人的生活，却忘了别人也在羡慕我们的平凡","人生没有‘如果’，只有‘结果’和‘后果’","情绪到了喉咙，我却选择咽下去","有人说我总是笑，其实我早就笑累了","情绪是静音的崩溃，眼神是无声的呐喊","每次说“我睡了”之后，才是我情绪最乱的时候","或许坚持的意义不是成功，而是为了不留遗憾","智能推荐懂我所有喜好，却推荐不了一段真感情","拙匠总怪工具差","总觉得自己还年轻，直到看到比自己小的人都开始养生，才惊觉岁月不饶人","爱情就像数学题，不会就是不会，装懂也没用","人生就像骑自行车，想保持平衡就得往前走，但别忘了欣赏路边的风景","现代人的孤独，不是没人陪，而是陪的人都在玩手机","我的情商和手机信号一样，时有时无","爱情不是1+1=2，而是0.5+0.5=1——两个不完美的人，拼成一个完整的家","生活不止眼前的苟且，还有永远改不完的Bug","成年人的崩溃是静音的——毕竟手机开了静音，哭也要挑时间","爱情不是你想买，想买就能买，除非你是拼多多","年年岁岁花相似，岁岁年年人不同","计划永远赶不上变化，就像我永远猜不到下一顿“吃”什么","人生就像选择题，有时候‘C’（随便）才是正确答案","经历了时间的酝酿和打磨，等待的结果才会显得更加珍贵","我不是傻，只是偶尔大脑欠费暂停服务","我已经不期待天降惊喜了，只希望别再天降铁锅","生活嘛，除了热爱和自由，还有没完没了的验证码","遇事不决先emo，emo完了继续躺平","单身不可怕，可怕的是你妈觉得你该谈恋爱了","以自信自强，致敬山川湖海","小时候觉得大人说话不算数，长大后才知道，我们也经常对自己食言","人没有什么是固有的，除了自以为是","别人是‘海王’，我是‘旱鸭子’——连水都没下过","蓝牙能连上音箱，连不上一个人心","信息秒送达，理解却要靠猜","发个“哈哈哈”不代表真的笑了，可能只是懒得回","点赞是新的“我在乎你”，但也可能只是手滑","信息爆炸，烦恼也升级。以前怕没信号，现在怕没回应","世界荒谬，生活疲惫，需要偶尔发发疯","生活就像一盒巧克力，你永远不知道下一块是什么味道","我们总说‘等有时间再做’，却忘了时间不会等我们","是赶路的人，也是努力生活的人","短暂的相遇，你不贪心，便是礼物，你若还期待，便是惩罚","我想两个人的相遇已是上上签了吧","对于意气风发的少年，我想我将无法释怀那段岁月","回忆是一条没有尽头的路","喜欢一个人，大概就是，看到一棵奇怪的树，都想拍下来分享给你","“你怎么了？”是我最羡慕听到的一句话","没人能看出我是在演，因为我演得真的很像我","一路走，一路离开，生活不就是这个样子吗？","你未必出众，但一定独一无二","心动不一定是爱情，但爱情一定有心动","世界太大，但总有一处是我的归宿","失望攒够了，自然会离开","生活有点难，但你也不差","有些人只是路过，却成了你心里常驻的名字","有些告别从未说出口，却比任何再见都真切","你害怕的事情，往往没那么可怕","我们都在假装很坚强，其实都想被懂","未来很远，但总要有人走在路上","青春不是年少，而是再也不会回来的勇敢","有些人见一面少一面，所以每次都格外珍惜","真正难过的时刻，是你说“没事”的时候","心动是一瞬间的事，遗憾却是一辈子的事","后来才发现，沉默比争吵更让人心凉","有些人走了，就真的不会再回来了","你是我写过最短的诗，也是我藏得最深的心事","我的温柔只对你有用，可惜你不需要","最怕的不是无话可说，而是心里有话不能说","我一直在假装释怀，其实我一点都没放下","很多话，我只是没说，不是没想","我假装没心没肺，其实早就一身伤痕","温柔不必多言，眼神就能传递","有些答案，不问也懂","不是所有的坚持都有结果，但总有一些值得一试","人性的卑劣之处就在于，明明自己揣着私心，却总苛求着别人大度","欲买桂花同载酒，终不似少年游","就写这么点吧ヾ(￣▽￣)Bye~，❣️💕💞💓","哈哈，可笑可笑🔚" -->
+                        <span class="slash">|</span>
+                    </div>
+                </div>
+            </div>
+            <!--页眉图片轮播-->
+            <div class="header-slider">
+                <div class="slider-images">
+                    <div class="single-image">
+                        <img loading="eager" decoding="async" src="https://q4.itc.cn/q_70,c_zoom,h_1200/images01/20260127/b34b73ed66e94f23b730d37417f0de0f.png" class="active" alt="Mo小窝轮播图1">
+                        <img loading="lazy" src="https://q8.itc.cn/q_70,c_zoom,h_1200/images01/20260127/44c8cecf84314de0b68a62456e7a8ac2.png" alt="Mo小窝轮播图2">
+                        <img loading="lazy" src="https://q3.itc.cn/q_70,c_zoom,h_1200/images01/20260127/02f6d1a83c544ace824d389829af8585.png" alt="Mo小窝轮播图3">
+                        <img loading="lazy" src="https://q5.itc.cn/q_70,c_zoom,h_1200/images01/20260127/5b8ef0b464ac4bb1bb185c44cac0aa80.png" alt="Mo小窝轮播图4">
+                        <img loading="lazy" src="https://q5.itc.cn/q_70,c_zoom,h_1200/images01/20260127/2ef3d996ae6344958b4bf73fbd7ccfaf.jpeg" alt="Mo小窝轮播图5">
+                        <img loading="lazy" src="https://q4.itc.cn/q_70,c_zoom,h_1200/images01/20260127/6b2c291db476402d8203d307a04df37f.jpeg" alt="Mo小窝轮播图6">
+                        <img loading="lazy" src="https://q4.itc.cn/q_70,c_zoom,h_1200/images01/20260127/044d2058f33a4851abeb41cbdb659856.jpeg" alt="Mo小窝轮播图7">
+                        <img loading="lazy" src="https://q0.itc.cn/q_70,c_zoom,h_1200/images01/20260127/7c7c12f62db74e4990e2ada190a1ab84.jpeg" alt="Mo小窝轮播图8">
+                        <img loading="lazy" src="https://q2.itc.cn/q_70,c_zoom,h_1200/images01/20260127/4834771cbcba4a14bf92b4d960862c16.jpeg" alt="Mo小窝轮播图9">
+                        <img loading="lazy" src="https://q1.itc.cn/q_70,c_zoom,h_1200/images01/20260127/79a9bb87f79b4ab586b5034a2243ef19.jpeg" alt="Mo小窝轮播图10">
+                        <img loading="lazy" src="https://q9.itc.cn/q_70,c_zoom,h_1200/images01/20260127/693e5715949549b8a55bb10f9a680499.jpeg" alt="Mo小窝轮播图11">
+                        <img loading="lazy" src="https://q2.itc.cn/q_70,c_zoom,h_1200/images01/20260127/3b64b06f71644dafb01f26386385e3b4.jpeg" alt="Mo小窝轮播图12">
+                        <img loading="lazy" src="https://q1.itc.cn/q_70,c_zoom,h_1200/images01/20260127/424f9849cbe54215bdd4627675e581a8.jpeg" alt="Mo小窝轮播图13">
+                        <img loading="lazy" src="https://q4.itc.cn/q_70,c_zoom,h_1200/images01/20260127/c48b0c53d269437b90e116587604cae6.jpeg" alt="Mo小窝轮播图14">
+                        <img loading="lazy" src="https://q5.itc.cn/q_70,c_zoom,h_1200/images01/20260127/b4193cdb626d4761b44931c3184b435f.jpeg" alt="Mo小窝轮播图15">
+                        <img loading="lazy" src="https://q1.itc.cn/q_70,c_zoom,h_1200/images01/20260127/9c307b38a53f49a8bbaca1e9cd8b6b05.jpeg" alt="Mo小窝轮播图16">
+                        <img loading="lazy" src="https://q5.itc.cn/q_70,c_zoom,h_1200/images01/20260127/bde4ce975b7d4e258d919db31fc4e699.jpeg" alt="Mo小窝轮播图17">
+                        <img loading="lazy" src="https://q3.itc.cn/q_70,c_zoom,h_1200/images01/20260127/b0224d91d15845409a0f5d075796fdf4.jpeg" alt="Mo小窝轮播图18">
+                        <img loading="lazy" src="https://q2.itc.cn/q_70,c_zoom,h_1200/images01/20260127/22f11bdc2b814e03a044a356964e6d75.jpeg" alt="Mo小窝轮播图19">
+                        <img loading="lazy" src="https://q8.itc.cn/q_70,c_zoom,h_1200/images01/20260127/f544186f83354fb4a5d77279869002d6.jpeg" alt="Mo小窝轮播图20">
+                        <img loading="lazy" src="https://q3.itc.cn/q_70,c_zoom,h_1200/images01/20260127/e65e5d4b6e274428b20ef51e03b123e5.jpeg" alt="Mo小窝轮播图21">
+                        <img loading="lazy" src="https://q1.itc.cn/q_70,c_zoom,h_1200/images01/20260127/041fb92fbcaa47f085049eed12aee646.jpeg" alt="Mo小窝轮播图22">
+                        <img loading="lazy" src="https://q9.itc.cn/q_70,c_zoom,h_1200/images01/20260127/7b60c42ad9bc45c1909d8ac3e8c531f9.jpeg" alt="Mo小窝轮播图23">
+                        <img loading="lazy" src="https://q5.itc.cn/q_70,c_zoom,h_1200/images01/20260127/31404eb0eec344ad8acee45d1e16548c.jpeg" alt="Mo小窝轮播图24">
+                        <img loading="lazy" src="https://q6.itc.cn/q_70,c_zoom,h_1200/images01/20260127/c425ffe6875f42a3810798613f010d74.jpeg" alt="Mo小窝轮播图25">
+                        <img loading="lazy" src="https://q2.itc.cn/q_70,c_zoom,h_1200/images01/20260127/d786e590df1e42008205f0485ec4eb70.jpeg" alt="Mo小窝轮播图26">
+                        <img loading="lazy" src="https://q8.itc.cn/q_70,c_zoom,h_1200/images01/20260127/85004ce2511a441f859d81098c0c1bee.jpeg" alt="Mo小窝轮播图27">
+                        <img loading="lazy" src="https://q1.itc.cn/q_70,c_zoom,h_1200/images01/20260127/d35db3a593be492ba591fa16c3dda338.jpeg" alt="Mo小窝轮播图28">
+                        <img loading="lazy" src="https://q3.itc.cn/q_70,c_zoom,h_1200/images01/20260127/66260407943546bea8b2118d8bc403d0.jpeg" alt="Mo小窝轮播图29">
+                        <img loading="lazy" src="https://q4.itc.cn/q_70,c_zoom,h_1200/images01/20260127/72ec67925a6546fabba502ffdfa863d5.jpeg" alt="Mo小窝轮播图30">
+                        <img loading="lazy" src="https://q5.itc.cn/q_70,c_zoom,h_1200/images01/20260127/d8456b3e3e234b38a567360ebae06159.jpeg" alt="Mo小窝轮播图31">
+                        <img loading="lazy" src="https://q8.itc.cn/q_70,c_zoom,h_1200/images01/20260127/604d840bc0504ed9afa62393fbe3ab0a.jpeg" alt="Mo小窝轮播图32">
+                        <img loading="lazy" src="https://q8.itc.cn/q_70,c_zoom,h_1200/images01/20260127/611a03a1c45344f38e8a2ed7f6895437.jpeg" alt="Mo小窝轮播图33">
+                        <img loading="lazy" src="https://q5.itc.cn/q_70,c_zoom,h_1200/images01/20260127/884e6dfd8e6a49d297050015b4847b93.jpeg" alt="Mo小窝轮播图34">
+                        <img loading="lazy" src="https://q7.itc.cn/q_70,c_zoom,h_1200/images01/20260127/d7e3fb2f498549bea5d9c90084ff0946.jpeg" alt="Mo小窝轮播图35">
+                        <img loading="lazy" src="https://q4.itc.cn/q_70,c_zoom,h_1200/images01/20260127/9510d330d43c46089dcf72836ded5eca.jpeg" alt="Mo小窝轮播图36">
+                        <img loading="lazy" src="https://q7.itc.cn/q_70,c_zoom,h_1200/images01/20260127/1d95455a76d941f7a17c6e7366fb942a.jpeg" alt="Mo小窝轮播图37">
+                        <img loading="lazy" src="https://q0.itc.cn/q_70,c_zoom,h_1200/images01/20260127/a13707faeb894c7aafa60f674df43517.jpeg" alt="Mo小窝轮播图38">
+                        <img loading="lazy" src="https://q6.itc.cn/q_70,c_zoom,h_1200/images01/20260127/3eb274cbcfd34a93a7c98fa815006c15.jpeg" alt="Mo小窝轮播图39">
+                        <img loading="lazy" src="https://q1.itc.cn/q_70,c_zoom,h_1200/images01/20260127/5a3aba47ddbf42e39f2a10c4728b8805.jpeg" alt="Mo小窝轮播图40">
+                        <img loading="lazy" src="https://q4.itc.cn/q_70,c_zoom,h_1200/images01/20260127/23230a7b6372406d8944ebfc4dcde7f7.jpeg" alt="Mo小窝轮播图41">
+                        <img loading="lazy" src="https://q7.itc.cn/q_70,c_zoom,h_1200/images01/20260127/92798c404a0b49b7851e7c610073be85.jpeg" alt="Mo小窝轮播图42">
+                        <img loading="lazy" src="https://q3.itc.cn/q_70,c_zoom,h_1200/images01/20260127/cfad5761bb6145759f99af1dc7cd18de.jpeg" alt="Mo小窝轮播图43">
+                        <img loading="lazy" src="https://q3.itc.cn/q_70,c_zoom,h_1200/images01/20260127/edf8e3adaafc464ea26f5fc703a15362.jpeg" alt="Mo小窝轮播图44">
+                        <img loading="lazy" src="https://q1.itc.cn/q_70,c_zoom,h_1200/images01/20260127/a712481915ed419e86f638e21d22bacd.jpeg" alt="Mo小窝轮播图45">
+                        <img loading="lazy" src="https://q0.itc.cn/q_70,c_zoom,h_1200/images01/20260127/0d548c054b6740caaa29f4b286b0178c.jpeg" alt="Mo小窝轮播图46">
+                        <img loading="lazy" src="https://q1.itc.cn/q_70,c_zoom,h_1200/images01/20260127/bb580e535b2c48078ca8bb497729ba7e.jpeg" alt="Mo小窝轮播图47">
+                        <img loading="lazy" src="https://q2.itc.cn/q_70,c_zoom,h_1200/images01/20260127/4f7f9545c62c450a9cdd5f0f2f2a0692.jpeg" alt="Mo小窝轮播图48">
+                        <img loading="lazy" src="https://q4.itc.cn/q_70,c_zoom,h_1200/images01/20260127/8a2468f77cd24ed6a608650f17be02e4.jpeg" alt="Mo小窝轮播图49">
+                        <img loading="lazy" src="https://q6.itc.cn/q_70,c_zoom,h_1200/images01/20260127/ed7712977da842aba805475a4b91426d.jpeg" alt="Mo小窝轮播图50">
+                        <img loading="lazy" src="https://q1.itc.cn/q_70,c_zoom,h_1200/images01/20260127/fd49cca229d247c8a4f8a817ba2733f9.jpeg" alt="Mo小窝轮播图51">
+                        <img loading="lazy" src="https://q5.itc.cn/q_70,c_zoom,h_1200/images01/20260127/5fc1c1e2de824560ba87bb6e498158fa.jpeg" alt="Mo小窝轮播图52">
+                        <img loading="lazy" src="https://q2.itc.cn/q_70,c_zoom,h_1200/images01/20260127/e5597f24003b4dd3a2533cfb236aaa62.jpeg" alt="Mo小窝轮播图53">
+                    </div>
+                </div>
+            </div>
+            <!--页眉图片轮播结束-->
+        </div>
+        <!--Header End-->
+        <!--HomePage End-->
+        <!--Main-Section End-->
+        <!--关于我-->
+        <section id="about">
+            <!--关于我内容-->
+            <div id="about-content">
+                <div class="about-header">
+                    了解<span class="color">我</span>
+                    <span class="header-caption"> 都在这 <span class="color">Information</span></span>
+                </div>
+                <div class="about-main">
+                    <div class="about-first-paragraph wow">
+                        <!--关于我描述-->
+                        <span class="about-first-line">
+                            我是一个
+                            <span class="color">对代码没有任何想法</span>
+                            的追光者 </span>
+                        <br>
+                        <span class="about-second-line">希望自己尽快能有做全栈的能力</span>
+                        <div class="cv">
+                            <a href="./link/self_introduction.html" target="_blank" class="button">点击<span
+                                        class="colors"></span>了解更多</a>
+                        </div>
+                    </div>
+                    <!--关于我图片-->
+                    <div class="about-img">
+                        <img src="images/about.webp" alt="Your Image">
+                    </div>
+                </div>
+            </div>
+            <!--服务内容开始-->
+            <div id="services">
+                <!--服务标题-->
+                <div class="services-heading wow">
+                    <span class="color">网站</span>是干什么的？
+                </div>
+                <!--服务标题结束-->
+                <!--服务内容-->
+                <div class="services-content">
+                    <div class="service-one service wow">
+                        <div class="service-img">
+                            <img src="images/coding.png" alt="service-one">
+                        </div>
+                        <div class="service-description">
+                            <h2>有趣项目分享</h2>
+                            <p>通过搭建一个分享平台，展示各种有趣、好玩的编程项目。网站汇集了丰富的代码实例与实战技巧，适合编程爱好者学习、参考与交流，提升编程能力，激发创意灵感。（九月上线）</p>
+                        </div>
+                    </div>
+                    <div class="service-two service wow">
+                        <div class="service-img">
+                            <img src="images/instagram.png" alt="service-two">
+                        </div>
+                        <div class="service-description">
+                            <h2>各类模版分享</h2>
+                            <p>涵盖简历、PPT等多种常用模版，适用于求职、汇报、展示等场景。网站致力于分享高质量、实用性强的模版资源，帮助用户高效制作专业文档与演示内容，提升表达效果与个人竞争力。（九月上线）</p>
+                        </div>
+                    </div>
+                    <div class="service-three service wow">
+                        <div class="service-img">
+                            <img src="images/bulb.png" alt="service-three">
+                        </div>
+                        <div class="service-description">
+                            <h2>个人博客网站</h2>
+                            <p>本质为我本人的博客网站，旨在记录学习过程、分享编程经验与生活点滴。（九月上线）</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--服务内容结束-->
+            <!--服务内容结束-->
+            <div id="skills">
+                <div class="skills-header">
+                    我的<span class="color">技能</span>
+                </div>
+                <div class="skills-content " style="text-align: center;">
+                    <div class="skill-html skill">
+                        <div class="skill-text">
+                            <div class="html">
+                                HTML/CSS/Javascript/Vue/React
+                            </div>
+                        </div>
+                        <div class="html-prog wow prog">
+                            <div class="html-progress wow">95%</div>
+                        </div>
+                    </div>
+                    <div class="skill-html skill">
+                        <div class="skill-text">
+                            <div class="html">
+                                AE PS 剪映
+                            </div>
+                        </div>
+                        <div class="html-prog wow prog">
+                            <div class="js-progress wow">92%</div>
+                        </div>
+                    </div>
+                    <div class="skill-html skill">
+                        <div class="skill-text">
+                            <div class="html">
+                                Python Java
+                            </div>
+                        </div>
+                        <div class="html-prog wow prog">
+                            <div class="adobe-progress wow">86%</div>
+                        </div>
+                    </div>
+                    <div class="skill-html skill">
+                        <div class="skill-text">
+                            <div class="html">
+                                MySQL Hbase MongoDB Neo4j Redis
+                            </div>
+                        </div>
+                        <div class="html-prog wow prog">
+                            <div class="php-progress wow">87%</div>
+                        </div>
+                    </div>
+                    <div class="skill-html skill">
+                        <div class="skill-text">
+                            <div class="html">
+                                MS Office
+                            </div>
+                        </div>
+                        <div class="html-prog wow prog">
+                            <div class="jquery-progress wow">94%</div>
+                        </div>
+                    </div>
+                    <div class="skill-html skill">
+                        <div class="skill-text">
+                            <div class="html">
+                                Linux Flink Hive Springboot
+                            </div>
+                        </div>
+                        <div class="html-prog wow prog">
+                            <div class="seo-progress wow">84%</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <!--about end-->
+        <!--博客-->
+        <section id="portfolio">
+            <div class="portfolio-header"> <span class="color">我的博客</span>
+                <span class="header-caption"> 生活的点滴都值得被记录 <span class="color">Blogs</span></span>
+            </div>
+            <div id="portfolio-content">
+                <div class="portfolio portfolio-first">
+                    <div class="portfolio-image">
+                        <img loading="lazy" src="https://q5.itc.cn/q_70,c_zoom,h_1200/images01/20260127/ddffca6ebbf04f469f0721c670eb58b2.jpeg" alt="portfolio-first">
+                    </div>
+                    <div class="portfolio-text">
+                        <h2>科技日常</h2>
+                        <p>分享数码产品的实用技巧，拆解前沿技术的生活化应用，记录智能工具带来的小改变，让硬核科技融入日常，感受科技温度。</p>
+                        <div class="button"><button onclick="window.open('./link/test.html','_blank')"><span
+                                        class="index">进入专区<i class="gg-arrow-right"></i></span></button></div>
+                    </div>
+                </div>
+                <div class="portfolio portfolio-second">
+                    <div class="portfolio-image">
+                        <img loading="lazy" src="https://q3.itc.cn/q_70,c_zoom,h_1200/images01/20260127/39addef6211d435aa5e2dc470c80f166.jpeg" alt="portfolio-second">
+                    </div>
+                    <div class="portfolio-text">
+                        <h2>思绪日常</h2>
+                        <p>记录那些一闪而过的念头：或许是清晨窗台的光影联想，深夜独处的情绪碎片，又或是对一件小事的深度琢磨，让零散思考有处安放</p>
+                        <div class="button"><button onclick="window.open('./link/test.html','_blank')"><span
+                                        class="index">进入专区<i class="gg-arrow-right"></i></span></button></div>
+                    </div>
+                </div>
+
+                <div class="portfolio portfolio-third">
+                    <div class="portfolio-image">
+                        <img loading="lazy" src="https://q8.itc.cn/q_70,c_zoom,h_1200/images01/20260127/11a722795c464e03aa288ae94ebdbeb3.jpeg" alt="portfolio-third">
+                    </div>
+                    <div class="portfolio-text">
+                        <h2>行走日常</h2>
+                        <p>捕捉路上的细碎美好：街角咖啡馆的午后阳光，陌生城市的小巷烟火，公园长椅上的观察笔记，让脚步与风景碰撞出故事。</p>
+                        <div class="button"><button onclick="window.open('./link/test.html')"><span class="index">进入专区<i
+                                            class="gg-arrow-right"></i></span></button></div>
+                    </div>
+                </div>
+                <div class="portfolio portfolio-fourth">
+                    <div class=" portfolio-image">
+                        <img loading="lazy" src="https://q4.itc.cn/q_70,c_zoom,h_1200/images01/20260127/37d51e1d6c664ad5ac0514501896f900.jpeg" alt="portfolio-fourth">
+                    </div>
+                    <div class="portfolio-text">
+                        <h2>阅读日常</h2>
+                        <p>拆解文字里的万千世界：一本书的某句共鸣，不同观点的碰撞思考，甚至是读错段落的乌龙感悟，让阅读成为与自己对话的方式。</p>
+                        <div class="button"><button onclick="window.open('./link/test.html','_blank')"><span
+                                        class="index">进入专区<i class="gg-arrow-right"></i></span></button></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--作品集结束-->
+        <!--博客-->
+        <section id="blog">
+            <div class="blog-header color"> 我的Demo</span>
+                <span class="header-caption">百炼成钢 <span class="color"> Project</span></span>
+            </div>
+
+            <div class="blog-content">
+                <div class="blogs">
+                    <a href="./game/Christmas/index.html" target="_blank" class="password-protected-demo" data-demo-name="手势圣诞">
+                        <div class="img">
+                            <img src="images/圣诞.webp" alt="blog-six">
+                            <div class="blog-date">浪漫</div>
+                        </div>
+                        <div class="blog-text">
+                            <h3>手势圣诞🌳</h3>
+                            <p>
+                                <strong style="color: #28bb68; font-size: 23px;">总会有些惊喜吧</strong>
+                                <br>
+                                通过简单的手势操作
+                                <br>自由解锁圣诞惊喜<br>
+                                你可以自定义树的颜色、形状、大小
+                                <br>还可以添加文字、图片等
+                            </p>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="blogs">
+                    <a href="./image_fancy/index.html" target="_blank" class="password-protected-demo" data-demo-name="花式图片册">
+                        <div class="img">
+                            <img loading="lazy" src="https://q6.itc.cn/q_70,c_zoom,h_1200/images01/20260127/d095fff979a24bf48e803c2b08ff8358.png" alt="blog-one">
+                            <div class="blog-date">浪漫</div>
+                        </div>
+                        <div class="blog-text">
+                            <h3>花式图片册</h3>
+                            <p> <strong style="color: #28bb68; font-size: 23px;">程序员浪漫起来有多可怕？</strong>
+                                <br>
+                                图片册有五种花式可以选择：<br>
+                                方形、球体、螺旋、立方体、爱心<br>
+                                支持自定义上传图片
+                            </p>
+                        </div>
+                    </a>
+                </div>
+                <div class="blogs">
+                    <a href="./lovestory/index.html" target="_blank" class="password-protected-demo" data-demo-name="爱心纪念册">
+                        <div class="img">
+                            <img loading="lazy" src="https://q5.itc.cn/q_70,c_zoom,h_1200/images01/20260127/ba002b648e304ec99b0128c1947f75b7.png" alt="blog-two">
+                            <div class="blog-date">浪漫</div>
+                        </div>
+                        <div class="blog-text">
+                            <h3>爱心纪念册</h3>
+                            <p><strong style="color: #28bb68; font-size: 23px;"> 故事结束了吗？</strong>
+                                <br>
+                                原来人生最大的错觉，是以为初见只是开场 <br>殊不知那已是巅峰！
+
+                            </p>
+                        </div>
+                    </a>
+                </div>
+                <div class="blogs">
+                    <a href="./travel_plane/index.html" target="_blank" class="password-protected-demo" data-demo-name="穿越时空的旅行">
+                        <div class="img">
+                            <img loading="lazy" src="https://q5.itc.cn/q_70,c_zoom,h_1200/images01/20260127/7ed4cab2b4db4feb808bea51bc3ff6cc.png" alt="blog-three">
+                            <div class="blog-date">浪漫</div>
+                        </div>
+                        <div class="blog-text">
+                            <h3>穿越时空的旅行</h3>
+                            <p>
+                                <strong style="color: #28bb68; font-size: 23px;">世界这么大你不去看看？</strong><br>
+                                3 <br>
+                                2 <br>
+                                1 <br>
+                                go go go <br>
+                                出发了
+                            </p>
+                        </div>
+                    </a>
+                </div>
+                <div class="blogs">
+                    <a href="./video_and_audio/video.html" target="_blank">
+                        <div class="img">
+                            <img loading="lazy" src="https://q3.itc.cn/q_70,c_zoom,h_1200/images01/20260127/e14b78b8dbab4d639ffa2b2e5f30bd46.png" alt="blog-four">
+                            <div class="blog-date">实用</div>
+                        </div>
+                        <div class="blog-text">
+                            <h3>视频解析播放器</h3>
+                            <p><strong style="color: #28bb68; font-size: 23px;">喜欢追剧的你还在充VIP吗？</strong>
+                                <br>
+                                这里是追剧者的天堂，专为喜欢追剧的你打造！
+                                <br>无需充值VIP，即可解析各大平台视频地址，畅享高清无广告观看体验。
+                            </p>
+                        </div>
+                    </a>
+                </div>
+                <div class="blogs">
+                    <a href="./game/Tetris/index.html" target="_blank">
+                        <div class="img">
+                            <img src="./images/game.webp" alt="blog-five">
+                            <div class="blog-date">娱乐</div>
+                        </div>
+                        <div class="blog-text">
+                            <h3>经典俄罗斯方块</h3>
+                            <p>
+                                <strong style="color: #28bb68; font-size: 23px;">童年，总有一些挥之不去的回忆</strong><br>
+                                通过控制不同形状的方块不断下落，填满水平行以消除。目标是避免方块堆积到屏幕顶端，游戏考验反应力和空间思维能力。
+                            </p>
+                        </div>
+                    </a>
+                </div>
+                <div class="blogs">
+                    <a href="./game/Gomoku/index.html" target="_blank">
+                        <div class="img">
+                            <img loading="lazy" src="https://q2.itc.cn/q_70/images01/20260201/60d93dec27c64df78b0df4b60cdf315d.png" alt="blog-six">
+                            <div class="blog-date">娱乐</div>
+                        </div>
+                        <div class="blog-text">
+                            <h3>经典五子棋</h3>
+                            <p>
+                                <strong style="color: #28bb68; font-size: 23px;">对弈之间，尽显智慧与策略</strong>
+                                <br>
+                                黑白交错中，双方轮流落子，率先连成五颗同色棋子者胜。规则简单，却蕴含无尽变化与思考乐趣。
+
+                            </p>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="blogs">
+                    <a href="./pop_up_generator/index.html" target="_blank">
+                        <div class="img">
+                            <img loading="lazy" src="https://q1.itc.cn/q_70/images01/20260201/4bda73f8be7349848f6a7e4a6237b3fa.png" alt="blog-six">
+                            <div class="blog-date">娱乐</div>
+                        </div>
+                        <div class="blog-text">
+                            <h3>弹窗生成器</h3>
+                            <p>
+                                <strong style="color: #28bb68; font-size: 23px;">把你想说的话都写下来吧</strong>
+                                <br>
+                                自定义弹窗内容，一键生成趣味弹窗雨
+
+                            </p>
+                        </div>
+                    </a>
+                </div>
+
+
+                <div class="blogs">
+                    <a href="../login_in/game/Caring Tutorials/index.html" target="_blank">
+                        <div class="img">
+                            <img loading="lazy" src="https://q0.itc.cn/q_70/images01/20260201/be13940f395545229bd15cbec6a48476.png" alt="blog-six">
+                            <div class="blog-date">浪漫</div>
+                        </div>
+                        <div class="blog-text">
+                            <h3>代码里的温暖心意</h3>
+                            <p>
+                                <strong style="color: #28bb68; font-size: 23px;">用代码绘制跳动爱心</strong>
+                                <br>
+                                不会写代码，不会画爱心
+                                <br>今天就让我手把手教你写代码吧
+
+                            </p>
+                        </div>
+                    </a>
+                </div>
+
+
+                 <div class="blogs">
+                    <a href="./game/Browse Baidu/index.html" target="_blank" class="password-protected-demo" data-demo-name="逛逛百度">
+                        <div class="img">
+                            <img loading="lazy" src="https://q7.itc.cn/q_70/images01/20260201/9e390c8554e143b89f4431162544b2e6.png" alt="blog-six">
+                            <div class="blog-date">浪漫</div>
+                        </div>
+                        <div class="blog-text">
+                            <h3>逛逛百度</h3>
+                            <p>
+                                <strong style="color: #28bb68; font-size: 23px;">众里寻她千百度，那人却在灯火阑珊处</strong>
+                                <br>
+                                基于百度首页改造的浪漫爱心纪念册项目，专为情侣打造，记录美好时光与情感瞬间  
+
+                            </p>
+                        </div>
+                    </a>
+                </div>
+
+
+                 <div class="blogs">
+                    <a href="./game/funny/index.html" target="_blank">
+                        <div class="img">
+                            <img src="./game/funny/images/image.png" alt="blog-six">
+                            <div class="blog-date">娱乐</div>
+                        </div>
+                        <div class="blog-text">
+                            <h3>搞笑漫画</h3>
+                            <p>
+                                <strong style="color: #28bb68; font-size: 23px;">一觉醒来，我竟有些缓不过来了</strong>
+                                <br>
+                                咋了么，朋友，我这个漫画你不笑？
+
+                            </p>
+                        </div>
+                    </a>
+                </div>
+
+
+
+                 <div class="blogs">
+                    <a href="./link/test1.html" target="_blank">
+                        <div class="img">
+                            <img loading="lazy" src="https://q6.itc.cn/q_70,c_zoom,h_1200/images01/20260127/4aef08e923554be79ac9096eb078cb7f.jpeg" alt="blog-six">
+                            <div class="blog-date">专属</div>
+                        </div>
+                        <div class="blog-text">
+                            <h3>密语档案</h3>
+                            <p>
+                                <strong style="color: #28bb68; font-size: 23px;">不是所有人都能读到这页心事</strong>
+                                <br>
+                                其实啥也没有
+                               
+                                <!-- 世界那么大，偏偏是你穿过人海停在我面前，像一本翻到最合适章节的书，像迷路时偶然撞见的灯塔。 -->
+
+                            </p>
+                        </div>
+                    </a>
+                </div>
+
+
+
+
+
+            </div>
+        </section>
+        <!--博客结束-->
+        <!--联系我-->
+        <section id="contact">
+            <div class="contact-header">联系<span class="color">我</span>
+                <div class="contact-header-caption"> <span class="color"> Get</span> In Touch</div>
+            </div>
+            <div class="contact-content">
+                <!--联系表单-->
+                <div class="contact-form">
+                    <div class="form-header">
+                        建议
+                    </div>
+                    <form id="myForm" action="https://formsubmit.co/ajax/cvkvkckkfkf@gmail.com" method="POST">
+                        <input type="hidden" name="_subject" value="网站联系表单提交">
+                        <input type="hidden" name="_template" value="table">
+                        <div class="input-line">
+                            <input id="name" name="name" type="text" placeholder="姓名" class="input-name" required>
+                            <input id="email" name="email" type="hidden" value="用户未填写邮箱">
+                        </div>
+                        <input type="text" id="subject" name="subject" placeholder="主题" class="input-subject" required>
+                        <textarea id="body" name="body" class="input-textarea" placeholder="详细内容" required
+                            style="resize: none;"></textarea>
+                        <button type="submit" id="submit">提交</button>
+                    </form>
+                    <div id="success-message" style="display:none; margin-top:20px; color:green;">
+                        提交成功！感谢您的反馈。
+                    </div>
+
+                </div>
+                <!--联系表单-->
+                <!--联系信息-->
+                <div class="contact-info">
+                    <div class="contact-info-header">
+                        我的信息
+                    </div>
+                    <div class="contact-info-content">
+                        <div class="contect-info-content-line">
+                            <img src="./images/icon-name.png" class="icon" alt="name-icon">
+                            <div class="contact-info-icon-text">
+                                <h6>姓名</h6>
+                                <p>Momo</p>
+                            </div>
+                        </div>
+                        <div class="contect-info-content-line">
+                            <img src="./images/icon-location.png" class="icon" alt="location-icon">
+                            <div class="contact-info-icon-text">
+                                <h6>位置</h6>
+                                <p>中国·重庆</p>
+                            </div>
+                        </div>
+                        <div class="contect-info-content-line">
+                            <img src="./images/icon-phone.png" class="icon" alt="phone-icon">
+                            <div class="contact-info-icon-text">
+                                <h6>电话</h6>
+                                <p>未知</p>
+                            </div>
+                        </div>
+
+                        <div class="contect-info-content-line">
+                            <img src="./images/icon-email.png" class="icon" alt="email-icon">
+                            <div class="contact-info-icon-text">
+                                <h6>邮箱</h6>
+                                <p>mo@momo21.online</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--联系信息结束-->
+                </div>
+            </div>
+            <!--页脚-->
+            <footer class="footer">
+                <div class="footer-text">
+                    <img src="./images/copyright.png" alt="copyright-img" class="images" height="14px"> 2026 Mo小窝
+                </div>
+            </footer>
+            <!--页脚结束-->
+        </section>
+        <!--联系我结束-->
+    </div>
+    <!--所有分区结束-->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/particles.min.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/ai-assistant.js"></script>
+    <!--网络资源加载容错-->
+    <script>
+    (function() {
+        // ========== 1. 图片加载重试机制 ==========
+        // 最大重试次数
+        var MAX_RETRIES = 3;
+        // 重试间隔（毫秒），指数退避
+        var RETRY_DELAYS = [1000, 3000, 6000];
+        // 已重试计数
+        var retryMap = {};
+
+        function getRetryKey(img) {
+            return img.src + (img.dataset.originalSrc || '');
+        }
+
+        function retryImage(img) {
+            var key = getRetryKey(img);
+            if (!retryMap[key]) retryMap[key] = 0;
+            if (retryMap[key] >= MAX_RETRIES) {
+                // 超过最大重试次数，显示占位
+                img.style.background = 'linear-gradient(135deg, #2a2a2a 25%, #333 50%, #2a2a2a 75%)';
+                img.style.backgroundSize = '200% 200%';
+                img.alt = img.alt || '图片加载失败';
+                return;
+            }
+            var attempt = retryMap[key];
+            retryMap[key]++;
+            var delay = RETRY_DELAYS[attempt] || 3000;
+            setTimeout(function() {
+                // 加时间戳绕过缓存
+                var src = img.dataset.originalSrc || img.src;
+                var separator = src.indexOf('?') > -1 ? '&' : '?';
+                img.src = src.split('?')[0] + separator + '_retry=' + Date.now();
+            }, delay);
+        }
+
+        // 监听所有图片的 error 事件
+        document.addEventListener('error', function(e) {
+            if (e.target.tagName === 'IMG') {
+                // 记住原始 src
+                if (!e.target.dataset.originalSrc) {
+                    e.target.dataset.originalSrc = e.target.src.split('?')[0];
+                }
+                retryImage(e.target);
+            }
+        }, true);
+
+        // ========== 2. 外部 CDN 脚本回退 ==========
+        // GSAP 回退
+        window.addEventListener('load', function() {
+            if (typeof gsap === 'undefined') {
+                console.warn('GSAP CDN 加载失败，尝试备用源...');
+                var script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/gsap@3.2.6/dist/gsap.min.js';
+                script.onerror = function() {
+                    console.error('GSAP 所有 CDN 源均加载失败');
+                };
+                document.head.appendChild(script);
+            }
+        });
+
+        // ========== 3. Google Fonts 回退 ==========
+        // 检测字体是否加载成功，失败则使用系统字体
+        if ('fonts' in document) {
+            var fontCheckTimer = setTimeout(function() {
+                // 5秒后如果字体还没加载完，用系统字体兜底
+                document.documentElement.classList.add('fonts-fallback');
+            }, 5000);
+
+            Promise.all([
+                document.fonts.load('300 16px Raleway'),
+                document.fonts.load('400 16px Monoton'),
+                document.fonts.load('500 16px Poppins')
+            ]).then(function() {
+                clearTimeout(fontCheckTimer);
+            }).catch(function() {
+                clearTimeout(fontCheckTimer);
+                document.documentElement.classList.add('fonts-fallback');
+            });
+        }
+
+        // ========== 4. 样式注入：字体回退 + 图片加载态 ==========
+        var style = document.createElement('style');
+        style.textContent =
+            /* 字体回退 */
+            'html.fonts-fallback body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif !important; }' +
+            'html.fonts-fallback .header-content .firstline { font-family: "PingFang SC", "Microsoft YaHei", sans-serif !important; }' +
+            /* 图片加载中占位 */
+            'img[src*="itc.cn"] { background: #1a1a1a; min-height: 60px; transition: opacity 0.3s ease; }' +
+            'img:not([src]) { background: #1a1a1a; }';
+        document.head.appendChild(style);
+    })();
+    </script>
+    <!--网络资源加载容错结束-->
+    <!--粒子效果脚本-->
+    <script>
+        particlesJS("particles", { "particles": { "number": { "value": 40, "density": { "enable": true, "value_area": 800 } }, "color": { "value": "#ffffff" }, "shape": { "type": "circle", "stroke": { "width": 0, "color": "#000000" }, "polygon": { "nb_sides": 5 }, "image": { "src": "img/github.svg", "width": 100, "height": 100 } }, "opacity": { "value": 0.5, "random": false, "anim": { "enable": false, "speed": 1, "opacity_min": 0.1, "sync": false } }, "size": { "value": 3, "random": true, "anim": { "enable": false, "speed": 40, "size_min": 0.1, "sync": false } }, "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.4, "width": 1 }, "move": { "enable": true, "speed": 6, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false, "attract": { "enable": false, "rotateX": 600, "rotateY": 1200 } } }, "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" }, "resize": true }, "modes": { "grab": { "distance": 400, "line_linked": { "opacity": 1 } }, "bubble": { "distance": 400, "size": 40, "duration": 2, "opacity": 8, "speed": 3 }, "repulse": { "distance": 200, "duration": 0.4 }, "push": { "particles_nb": 4 }, "remove": { "particles_nb": 2 } } }, "retina_detect": true });
+    </script>
+
+    <!--图片轮播脚本-->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 单图模式变量
+            const singleImages = document.querySelectorAll('.single-image img');
+            let singleIndex = 0;
+            let singleInterval;
+
+            // 单图轮播函数
+            function startSingleSlider() {
+                // 显示第一张图片
+                singleImages.forEach(img => img.classList.remove('active'));
+                singleImages[singleIndex].classList.add('active');
+
+                singleInterval = setInterval(() => {
+                    // 隐藏当前图片
+                    singleImages[singleIndex].classList.remove('active');
+
+                    // 计算下一张图片索引
+                    singleIndex = (singleIndex + 1) % singleImages.length;
+
+                    // 显示下一张图片
+                    singleImages[singleIndex].classList.add('active');
+                }, 3000);
+            }
+
+            // 启动单图轮播
+            startSingleSlider();
+        });
+    </script>
+    <script type="text/javascript">
+        document.getElementById('myForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var form = this;
+            var submitBtn = document.getElementById('submit');
+            submitBtn.disabled = true;
+            submitBtn.textContent = '发送中...';
+
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json'
+                },
+                body: new FormData(form)
+            })
+                .then(async response => {
+                    if (!response.ok) {
+                        throw new Error('提交失败');
+                    }
+                    await response.json().catch(() => ({}));
+                    form.reset();
+                    document.getElementById('success-message').style.display = 'block';
+                    submitBtn.textContent = '提交成功';
+                    setTimeout(function () {
+                        submitBtn.textContent = '提交';
+                        submitBtn.disabled = false;
+                    }, 3000);
+                })
+                .catch(() => {
+                    submitBtn.textContent = '提交失败，请重试';
+                    submitBtn.disabled = false;
+                });
+        });
+    </script>
+    <audio id="bg-music" preload="none"></audio>
+    <img id="audio-toggle" src="link/img/music_off.png"
+        style="position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; cursor: pointer; z-index: 1000; transition: all 0.3s ease; border-radius: 50%; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                // const musicFiles = [
+                //  '西楼别序.mp3'
+                // ];
+
+
+                 const musicFiles = [
+                '我记得.m4a',
+                '一直很安静.mp3',
+                '洋葱.mp3',
+                '少一点天分.mp3',
+                '落空.mp3',
+                '我太笨.mp3',
+                '你要的全拿走.mp3',
+                'love me like you do.mp3',
+                '侧脸.mp3',
+                '最美的瞬间.mp3',
+                '我好想你.mp3',
+                '你不是真正的快乐.mp3',
+                '一个人想着一个人.mp3',
+                '最.mp3',
+                '风度.mp3',
+                '泡沫.mp3',
+                '坠落.mp3',
+                'free loop.m4a',
+                'A Thousand Years.mp3',
+                'Memories.mp3',
+                'One Day.mp3',
+                'Young and Beautiful.mp3',
+                '白兰鸽巡游记.mp3',
+                '天后.mp3',
+                '谢谢.mp3',
+                '心做し.mp3',
+                'counterattack.mp3',
+                '说谎.mp3',
+                '云烟成雨.mp3',
+                '知我.mp3',
+                '茫.mp3',
+                '西楼别序正篇.mp3',
+                '如果当时.mp3',
+                '夜空中最亮的星.mp3',
+                '送你一朵小红花.mp3',
+                '在你的身边.mp3',
+                '谁.mp3',
+                '那女孩对我说.mp3',
+                '体面.mp3',
+                '蒲公英的约定.mp3',
+                '最好的安排.mp3',
+                '可不可以.mp3',
+                '我们俩.mp3',
+                '爱你.mp3',
+                '出现又离开.mp3',
+                '少年.mp3',
+                '最初的记忆.mp3',
+                '盲选.mp3',
+                '最好的我.mp3',
+                '去年夏天.mp3',
+                '鱼仔.mp3',
+                '飞鸟和蝉.mp3',
+                '错位时空.mp3',
+                '这世界那么多人.mp3',
+                '身骑白马.mp3',
+                '路过人间.mp3',
+                '起风了.mp3',
+                '西楼别序.mp3',
+                '若月亮还没来.mp3',
+                '船帆.mp3',
+                '终生老友.mp3',
+                '红色高跟鞋.mp3',
+                '空白格.mp3',
+                '程艾影.mp3',
+                '秋风.mp3',
+                '离开我的依赖.mp3',
+                '碎碎念.mp3',
+                '真爱的力量.mp3',
+                '生活的主义.mp3',
+                '演员.mp3',
+                '水星记.mp3',
+                '此类生物.mp3',
+                '梦返.mp3',
+                '梦中的天空.mp3',
+                '栀子花开.mp3',
+                '柳叶笺.mp3',
+                '晚安.mp3',
+                '是什么让我遇见这样的你.mp3',
+                '明天，你好.mp3',
+                '无额.mp3',
+                '无名的人.mp3',
+                '文爱.mp3',
+                '散场.mp3',
+                '搁浅.mp3',
+                '推开世界的门.mp3',
+                '所念皆星河.mp3',
+                '房间.mp3',
+                '戒不掉.mp3',
+                '我记得.mp3',
+                '我的美丽.mp3',
+                '想自由.mp3',
+                '总有一天你会出现我身边.mp3',
+                '归途有风.mp3',
+                '小半.mp3',
+                '寂寞烟火.mp3',
+                '家后.mp3',
+                '安和桥.mp3',
+                '四季予你.mp3',
+                '唯一.mp3',
+                '哪里都是你.mp3',
+                '去有风的地方.mp3',
+                '去北极忘记你.mp3',
+                '冬眠.mp3',
+                '再一次爱你.mp3',
+                '光亮.mp3',
+                '予你.mp3',
+                '不是因为寂寞才想你.mp3',
+                '不哭.mp3',
+                '一路生花.mp3',
+                '一生有你.mp3',
+                'white ferrari.mp3',
+                'what was that.mp3',
+                'summer day.mp3',
+                'sacred play secret place.mp3',
+                'reach.mp3',
+                'looking forward.mp3',
+            'let her go.mp3',
+            'every time we touch.mp3',
+            'everglow.mp3',
+            'blue dragon.mp3',
+            'WE PRAY.mp3',
+            'Trouble I’m in.mp3',
+            'The Best Is Yet to Come.mp3',
+            'Lonely Day.mp3',
+            'Kamin.mp3',
+            'III.mp3',
+            'I Really Want To Stay At Your House.mp3',
+            'Born To Live.mp3',
+            'Anyone.mp3'
+        ];
+
+        let nextMusicPath = '';
+        let nextMusicTitle = '';
+
+        function getRandomMusicPath() {
+            const randomIndex = Math.floor(Math.random() * musicFiles.length);
+            return './link/music/' + musicFiles[randomIndex];
+        }
+
+        function getMusicTitleFromPath(path) {
+            try {
+                return decodeURIComponent(path.split('/').pop()).replace('.mp3', '').replace('.m4a', '');
+            } catch (e) {
+                return path.split('/').pop().replace('.mp3', '').replace('.m4a', '');
+            }
+        }
+
+        function prepareNextMusic() {
+            nextMusicPath = getRandomMusicPath();
+            nextMusicTitle = getMusicTitleFromPath(nextMusicPath);
+        }
+
+        const audio = document.getElementById('bg-music');
+        const audioToggle = document.getElementById('audio-toggle');
+        audio.src = getRandomMusicPath();
+        audio.loop = false;
+
+        // 初始化时准备第一首下一首歌曲
+        prepareNextMusic();
+
+        let userInteracted = false;
+
+        // 暴露音乐信息给全局，让AI可以实时获取
+        window.currentMusic = {
+            getInfo: function() {
+                return {
+                    title: getMusicTitleFromPath(audio.src),
+                    src: audio.src,
+                    isPlaying: !audio.paused,
+                    currentTime: audio.currentTime,
+                    duration: audio.duration,
+                    volume: audio.volume,
+                    nextTitle: nextMusicTitle,
+                    nextSrc: nextMusicPath,
+                    isLooping: audio.loop
+                };
+            },
+            nextSong: function() {
+                audio.src = nextMusicPath;
+                prepareNextMusic();
+                if (!audio.paused || userInteracted) {
+                    audio.play().catch(function(err) {
+                        // 静默处理播放错误
+                    });
+                }
+                return getMusicTitleFromPath(audio.src);
+            },
+            toggleLoop: function() {
+                audio.loop = !audio.loop;
+                return audio.loop;
+            },
+            setLoop: function(shouldLoop) {
+                audio.loop = shouldLoop;
+                return audio.loop;
+            }
+        };
+
+        const tryPlay = function() {
+            if (!audio.paused) return;
+            audio.play().catch(function(err) {
+                // 静默处理自动播放失败
+            });
+        };
+
+        const updateAudioToggleIcon = function() {
+            audioToggle.src = audio.paused ? 'link/img/music_off.png' : 'link/img/music_on.png';
+        };
+
+        const handleInteraction = function() {
+            userInteracted = true;
+            tryPlay();
+            updateAudioToggleIcon();
+        };
+
+        const stopMusic = function(resetTime) {
+            if (!audio.paused) {
+                audio.pause();
+            }
+
+            if (resetTime) {
+                audio.currentTime = 0;
+            }
+
+            updateAudioToggleIcon();
+        };
+
+        const handleEnded = function() {
+            if (!audio.loop) {
+                this.src = nextMusicPath;
+                prepareNextMusic();
+                if (userInteracted) {
+                    this.play().catch(function(err) {
+                        // 静默处理播放错误
+                    });
+                }
+            }
+        };
+
+        const handleVisibilityChange = function() {
+            if (document.visibilityState === 'hidden') {
+                stopMusic(false);
+                return;
+            }
+
+            if (document.visibilityState === 'visible' && userInteracted) {
+                tryPlay();
+                updateAudioToggleIcon();
+            }
+        };
+
+        const handleAudioToggleClick = function(event) {
+            event.stopPropagation();
+            userInteracted = true;
+
+            if (audio.paused) {
+                audio.play().catch(function(err) {
+                    // 静默处理播放失败
+                });
+            } else {
+                audio.pause();
+            }
+
+            updateAudioToggleIcon();
+        };
+
+        const cleanupMusic = function() {
+            stopMusic(true);
+            document.removeEventListener('click', handleInteraction);
+            document.removeEventListener('touchstart', handleInteraction);
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+            window.removeEventListener('pagehide', handlePageHide);
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            audio.removeEventListener('ended', handleEnded);
+            audioToggle.removeEventListener('click', handleAudioToggleClick);
+        };
+
+        const handlePageHide = function() {
+            cleanupMusic();
+        };
+
+        const handleBeforeUnload = function() {
+            cleanupMusic();
+        };
+
+        // 监听用户交互事件
+        document.addEventListener('click', handleInteraction);
+        document.addEventListener('touchstart', handleInteraction);
+
+        audio.addEventListener('ended', handleEnded);
+
+        // 页面隐藏时暂停，离开页面时彻底停止，避免和其他页面音乐叠加
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        window.addEventListener('pagehide', handlePageHide);
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+                // 保留原有的音乐开关功能
+                audioToggle.addEventListener('click', handleAudioToggleClick);
+                updateAudioToggleIcon();
+            }, 1000);
+        });
+    </script>
+    <script>
+        // 指定 Demo 需输入密码才能访问
+        document.addEventListener('DOMContentLoaded', function () {
+            const protectedDemoLinks = document.querySelectorAll('.password-protected-demo');
+            
+            // 简单的哈希函数
+            function simpleHash(str) {
+                let hash = 0;
+                for (let i = 0; i < str.length; i++) {
+                    const char = str.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + char;
+                    hash = hash & hash; // 转换为32位整数
+                }
+                return hash;
+            }
+            
+            // 存储密码的哈希值（5211314mo 的哈希）
+            const DEMO_PASSWORD_HASH = simpleHash('5211314mo');
+
+            protectedDemoLinks.forEach(function (link) {
+                link.addEventListener('click', function (event) {
+                    const demoName = this.dataset.demoName || '该 Demo';
+                    const userInput = window.prompt('进入《' + demoName + '》前请输入密码：');
+
+                    if (userInput === null) {
+                        event.preventDefault();
+                        return;
+                    }
+
+                    if (simpleHash(userInput.trim()) !== DEMO_PASSWORD_HASH) {
+                        event.preventDefault();
+                        window.alert('密码错误，无法进入该 Demo。');
+                    }
+                });
+            });
+
+
+        });
+    </script>
+</body>
+
+</html>

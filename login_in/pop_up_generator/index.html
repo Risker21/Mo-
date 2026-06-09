@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>弹窗生成器</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="../images/favicon.jpg" type="image/x-icon">
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="welcome-section">
+            <h1>可爱的同学呀</h1>
+            <p>今天按时吃饭了吗？</p>
+            <button id="startButton">✨ 开始生成弹窗雨</button>
+        </div>
+
+        <div class="custom-section">
+            <h2>自定义弹窗内容</h2>
+            <p class="hint">最多可添加20条自定义内容</p>
+            <div class="input-container">
+                <input type="text" id="customInput" placeholder="输入自定义文字...">
+                <button id="addButton">➕ 添加</button>
+            </div>
+            <div id="customList" class="custom-list">
+                <!-- 自定义内容列表将在这里显示 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 背景音乐 -->
+    <audio id="backgroundMusic" loop>
+        <source
+            src="../link/music/一路生花.mp3"
+            type="audio/mpeg">
+        您的浏览器不支持音频元素。
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

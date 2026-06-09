@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>视频解析播放器</title>
+    <link rel="icon" href="img/vedio图标.ico" type="image/ico" />
+    <style>
+      :root {
+        --primary: #4361ee;
+        --primary-dark: #3a56d4;
+        --secondary: #3f37c9;
+        --dark: #1a1a2e;
+        --light: #f8f9fa;
+        --danger: #ef233c;
+        --success: #4cc9f0;
+        --warning: #f8961e;
+        --gray: #6c757d;
+      }
+
+      #bgVideo {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        min-width: 100%;
+        min-height: 100%;
+        z-index: -1;
+        object-fit: cover;
+      }
+
+      body {
+        font-family: "楷体", "KaiTi", serif;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        color: var(--dark);
+        line-height: 1.6;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(auto, 1200px) minmax(
+            0,
+            1fr
+          );
+        gap: 20px;
+        align-items: start;
+        box-sizing: border-box;
+        position: relative;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      .sidebar {
+        padding: 20px;
+      }
+      .main-content {
+        padding: 20px;
+      }
+      .sidebar {
+        background: rgba(255, 255, 255, 0.6);
+        padding: 20px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        backdrop-filter: blur(5px);
+      }
+      .sidebar h2 {
+        color: var(--primary);
+        margin-top: 0;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+      }
+      .sidebar ul {
+        padding-left: 20px;
+      }
+      .sidebar li {
+        margin-bottom: 10px;
+      }
+      .main-content {
+        grid-column: 2;
+      }
+      .banner {
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .banner img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(250, 242, 242, 0.1);
+      }
+      .ad-warning {
+        background: linear-gradient(90deg, #fff3cd 0%, #ffe8a1 100%);
+        color: #856404;
+        padding: 12px 0;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border-left: 4px solid #ffc107;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        position: relative;
+      }
+      .ad-warning {
+        position: relative;
+        height: 30px;
+        overflow: hidden;
+      }
+      .ad-warning span {
+        position: absolute;
+        display: inline-block;
+        font-weight: 500;
+        font-size: 18px;
+        white-space: nowrap;
+        padding: 0 15px;
+        animation: scrollText 15s linear infinite;
+        left: 100%;
+      }
+      .ad-warning span:nth-child(2) {
+        animation-delay: 7.5s;
+      }
+
+      @keyframes scrollText {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-200%);
+        }
+      }
+      .ad-warning span strong {
+        color: #d63384;
+        font-weight: 700;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .ad-warning span {
+          animation: none;
+          padding-left: 0;
+          display: block;
+          text-align: center;
+          white-space: normal;
+        }
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        background: rgba(255, 255, 255, 0.7);
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        backdrop-filter: blur(5px);
+      }
+      h1 {
+        margin: 0 0 15px 0;
+        font-weight: 700;
+        font-size: 40px;
+        text-align: center;
+        font-family: "楷体", "KaiTi", serif;
+        background: linear-gradient(
+          90deg,
+          #ff0000,
+          #ff7f00,
+          #ffff00,
+          #00ff00,
+          #0000ff,
+          #4b0082,
+          #9400d3
+        );
+        background-size: 400% 400%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: rainbow 8s ease infinite;
+      }
+      @keyframes rainbow {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+      input,
+      select {
+        padding: 14px 16px;
+        font-size: 16px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        transition: all 0.3s;
+        background-color: var(--light);
+      }
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+      }
+      button {
+        padding: 14px 24px;
+        font-size: 16px;
+        font-weight: 600;
+        background: linear-gradient(
+          135deg,
+          var(--primary) 0%,
+          var(--secondary) 100%
+        );
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      button:hover {
+        background: linear-gradient(
+          135deg,
+          var(--primary-dark) 0%,
+          var(--secondary) 100%
+        );
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      }
+      button:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      #videoContainer {
+        position: relative;
+        width: 100%;
+        height: 450px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        background-color: rgba(255, 255, 255, 0.7);
+      }
+      #videoFrame {
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        border: none;
+        border-radius: 0;
+      }
+      .video-placeholder {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background-color: #fff;
+        z-index: 1;
+      }
+      #videoFrame[src] + .video-placeholder {
+        display: none;
+      }
+      @media (max-width: 800px) {
+        body {
+          grid-template-columns: 1fr;
+          padding: 0;
+        }
+        .main-content {
+          grid-column: 1;
+          padding: 0;
+          width: 100%;
+        }
+        .sidebar {
+          width: 100%;
+          max-width: 100%;
+          margin-bottom: 15px;
+          padding: 15px;
+        }
+        .container {
+          padding: 15px;
+          gap: 15px;
+          width: 100%;
+          margin: 0;
+        }
+        #videoContainer {
+          height: calc(100vw * 0.6); /* 60% of viewport width */
+          margin: 0;
+          width: 100%;
+          border-radius: 0;
+        }
+        h1 {
+          font-size: 1.5rem;
+          margin-bottom: 10px;
+        }
+        .ad-warning {
+          margin: 0 0 15px 0;
+          width: 100%;
+          border-radius: 0;
+        }
+      }
+
+      .video-sites {
+        margin-top: 30px;
+      }
+      .video-sites h3 {
+        color: var(--primary);
+        margin-bottom: 15px;
+      }
+      .video-sites h4 {
+        color: var(--secondary);
+        margin: 15px 0 10px 0;
+      }
+      .site-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+      }
+      .site-grid a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        background: white;
+        border-radius: 8px;
+        transition: all 0.2s;
+        border: 1px solid #eee;
+      }
+      .site-grid a:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-color: var(--primary);
+      }
+      .site-grid img {
+        width: 100%;
+        max-width: 120px;
+        height: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <video id="bgVideo" autoplay muted loop>
+      <source src="MP4/vediobg.mp4" type="video/mp4" />
+    </video>
+    <div class="sidebar">
+      <h2>使用教程</h2>
+      <ol>
+        <li>复制视频网站的视频链接</li>
+        <li>粘贴到上方输入框中</li>
+        <li>选择解析线路</li>
+        <li>点击"播放视频"按钮</li>
+        <li>等待解析完成即可观看</li>
+      </ol>
+      <h2>常见问题</h2>
+      <ul>
+        <li>如果播放失败，请尝试切换线路</li>
+        <li>部分视频可能需要等待解析</li>
+        <li>遇到广告请勿轻信</li>
+      </ul>
+
+      <h2 style="color: #d63384; margin-top: 20px">
+        <strong><i>特别提醒</i></strong
+        >(广告说明)
+      </h2>
+      <div
+        style="
+          background: #fff8e1;
+          border-left: 4px solid #ffc107;
+          padding: 12px;
+          border-radius: 4px;
+          margin: 10px 0;
+        "
+      >
+        <p style="color: #0670ea; font-weight: 400; margin: 0">
+         <b style="color: #f84e05;font-size: 18px;">视频中的广告非本人所加</b> <br />
+          <b style="color: #720b77;font-size: 15px;">请勿相信,请勿点击!!!</b>
+          <br />
+          <strong style="font-size: 20px;">手机用户:</strong> <br />请特别注意,只能使用
+          <b style="color: #da500a">线路1,2,11,12,13,14</b><br />
+          <strong style="font-size: 20px;">电脑用户:</strong><br />可使用全部线路
+          <br />
+          <strong style="font-size: 20px;">平板用户：<br></strong>暂未进行测试,请谨慎选择线路
+        </p>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="container">
+        <div class="ad-warning">
+          <span
+            >⚠️ 请注意：视频中可能包含第三方广告，请勿轻信任何广告内容 |
+            <strong>请勿输入个人信息</strong> |
+            <strong>请勿下载不明软件</strong> |
+            <strong>请勿转账汇款</strong> |
+            <strong>警惕虚假中奖信息</strong> |
+            <strong>小心假冒客服诈骗</strong> |
+            <strong>拒绝任何形式的付费解锁</strong> |
+            <strong>不要扫描不明二维码</strong></span
+          >
+          <span
+            >⚠️ 请注意：视频中可能包含第三方广告，请勿轻信任何广告内容 |
+            <strong>请勿输入个人信息</strong> |
+            <strong>请勿下载不明软件</strong> |
+            <strong>请勿转账汇款</strong> |
+            <strong>警惕虚假中奖信息</strong> |
+            <strong>小心假冒客服诈骗</strong> |
+            <strong>拒绝任何形式的付费解锁</strong> |
+            <strong>不要扫描不明二维码</strong></span
+          >
+        </div>
+        <h1>视频解析播放器</h1>
+        <div id="videoContainer">
+          <iframe id="videoFrame" allowfullscreen></iframe>
+          <img
+            src="img/title.gif?t=${new Date().getTime()}"
+            alt="视频解析播放器横幅"
+            id="bannerGif"
+            class="video-placeholder"
+          />
+        </div>
+        <script>
+          // Improved GIF animation with preloading and smooth transitions
+          const bannerGif = document.getElementById("bannerGif");
+          let nextGif = new Image();
+          
+          function refreshGif() {
+            // Preload next GIF
+            nextGif.src = "img/title.gif?t=" + new Date().getTime();
+            
+            // When next GIF is loaded, fade transition
+            nextGif.onload = function() {
+              bannerGif.style.opacity = 0;
+              setTimeout(() => {
+                bannerGif.src = nextGif.src;
+                bannerGif.style.opacity = 1;
+                
+                // Schedule next refresh after full animation duration (15s)
+                setTimeout(refreshGif, 10000);
+              }, 200); // Short fade duration
+            };
+          }
+          
+          // Initial load
+          refreshGif();
+        </script>
+        <style>
+          #bannerGif {
+            transition: opacity 0.2s ease;
+            background-color: rgba(255, 255, 255, 0.7);
+          }
+        </style>
+        <div style="position: relative; width: 100%">
+          <input
+            type="text"
+            id="videoUrl"
+            placeholder="请粘贴视频地址(如果线路一的地址解析错误请直接输入片名)"
+            required
+            style="padding-right: 40px; width: 100%; box-sizing: border-box"
+          />
+          <button
+            id="clearBtn"
+            style="
+              position: absolute;
+              right: 10px;
+              top: 50%;
+              transform: translateY(-50%);
+              background: rgba(0, 0, 0, 0.1);
+              border: none;
+              border-radius: 50%;
+              width: 24px;
+              height: 24px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+              color: var(--danger);
+              font-size: 16px;
+              font-weight: bold;
+              transition: all 0.2s;
+            "
+            onclick="document.getElementById('videoUrl').value = ''"
+            title="清空输入"
+          >
+            ×
+          </button>
+        </div>
+        <select id="parseLine">
+          <option value="1">线路1(输入片名或地址)</option>
+          <option value="2">线路2</option>
+          <option value="3" disabled>线路3(手机端不可用)</option>
+          <option value="4" disabled>线路4(手机端不可用)</option>
+          <option value="5" disabled>线路5(手机端不可用)</option>
+          <option value="6" disabled>线路6(手机端不可用)</option>
+          <option value="7" disabled>线路7(手机端不可用)</option>
+          <option value="8" disabled>线路8(手机端不可用)</option>
+          <option value="9" disabled>线路9(手机端不可用)</option>
+          <option value="10" disabled>线路10(手机端不可用)</option>
+          <option value="11">线路11</option>
+          <option value="12">线路12</option>
+          <option value="13">线路13</option>
+          <option value="14">线路14</option>
+        </select>
+        <script>
+          // 检测设备类型并设置线路选项
+          function setLineOptions() {
+            const userAgent = navigator.userAgent;
+            const isMobile =
+              /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+                userAgent
+              );
+            const parseLine = document.getElementById("parseLine");
+
+            if (isMobile) {
+              // 手机端可以使用线路1,2,11,12,13,14
+              Array.from(parseLine.options).forEach((option) => {
+                option.disabled = !["1", "2", "11", "12", "13", "14"].includes(option.value);
+              });
+            } else {
+              // 电脑端启用所有线路
+              Array.from(parseLine.options).forEach((option) => {
+                option.disabled = false;
+              });
+            }
+          }
+          // 页面加载时设置线路选项
+          window.addEventListener("load", setLineOptions);
+        </script>
+        <button id="playBtn" onclick="playVideo()">
+          <span id="btnText">解析播放</span>
+          <span id="loadingSpinner" style="display:none">
+            <svg width="20" height="20" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient x1="8.042%" y1="0%" x2="65.682%" y2="23.865%" id="a">
+                  <stop stop-color="#fff" stop-opacity="0" offset="0%"/>
+                  <stop stop-color="#fff" stop-opacity=".631" offset="63.146%"/>
+                  <stop stop-color="#fff" offset="100%"/>
+                </linearGradient>
+              </defs>
+              <g fill="none" fill-rule="evenodd">
+                <g transform="translate(1 1)">
+                  <path d="M36 18c0-9.94-8.06-18-18-18" id="Oval-2" stroke="url(#a)" stroke-width="2">
+                    <animateTransform
+                      attributeName="transform"
+                      type="rotate"
+                      from="0 18 18"
+                      to="360 18 18"
+                      dur="0.9s"
+                      repeatCount="indefinite" />
+                  </path>
+                  <circle fill="#fff" cx="36" cy="18" r="1">
+                    <animateTransform
+                      attributeName="transform"
+                      type="rotate"
+                      from="0 18 18"
+                      to="360 18 18"
+                      dur="0.9s"
+                      repeatCount="indefinite" />
+                  </circle>
+                </g>
+              </g>
+            </svg>
+          </span>
+        </button>
+        <button id="cancelBtn" style="display:none; margin-left:10px; background:var(--danger)" onclick="cancelPlay()">取消解析</button>
+        <script>
+          let loadingTimeout;
+          let isParsing = false;
+          
+          function cancelPlay() {
+            if(isParsing) {
+              clearTimeout(loadingTimeout);
+              resetButtonState();
+            }
+          }
+          
+          function resetButtonState() {
+            const playBtn = document.getElementById("playBtn");
+            const btnText = document.getElementById("btnText");
+            const loadingSpinner = document.getElementById("loadingSpinner");
+            const cancelBtn = document.getElementById("cancelBtn");
+            
+            playBtn.disabled = false;
+            btnText.textContent = "解析播放";
+            loadingSpinner.style.display = "none";
+            cancelBtn.style.display = "none";
+            isParsing = false;
+          }
+        </script>
+        <style>
+          #playBtn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+          }
+          #loadingSpinner svg {
+            animation: rotate 2s linear infinite;
+          }
+          @keyframes rotate {
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+        </style>
+            <svg width="20" height="20" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient x1="8.042%" y1="0%" x2="65.682%" y2="23.865%" id="a">
+                  <stop stop-color="#fff" stop-opacity="0" offset="0%"/>
+                  <stop stop-color="#fff" stop-opacity=".631" offset="63.146%"/>
+                  <stop stop-color="#fff" offset="100%"/>
+                </linearGradient>
+              </defs>
+              <g fill="none" fill-rule="evenodd">
+                <g transform="translate(1 1)">
+                  <path d="M36 18c0-9.94-8.06-18-18-18" id="Oval-2" stroke="url(#a)" stroke-width="2">
+                    <animateTransform
+                      attributeName="transform"
+                      type="rotate"
+                      from="0 18 18"
+                      to="360 18 18"
+                      dur="0.9s"
+                      repeatCount="indefinite" />
+                  </path>
+                  <circle fill="#fff" cx="36" cy="18" r="1">
+                    <animateTransform
+                      attributeName="transform"
+                      type="rotate"
+                      from="0 18 18"
+                      to="360 18 18"
+                      dur="0.9s"
+                      repeatCount="indefinite" />
+                  </circle>
+                </g>
+              </g>
+            </svg>
+          </span>
+        </button>
+        <style>
+          #playBtn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+          }
+          #loadingSpinner svg {
+            animation: rotate 2s linear infinite;
+          }
+          @keyframes rotate {
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+        </style>
+        <script>
+          function playVideo() {
+            const videoUrl = document.getElementById("videoUrl").value;
+            const parseLine = document.getElementById("parseLine").value;
+            const playBtn = document.getElementById("playBtn");
+            const btnText = document.getElementById("btnText");
+            const loadingSpinner = document.getElementById("loadingSpinner");
+
+            if (!videoUrl) {
+              alert("请输入视频地址");
+              return;
+            }
+
+            // 显示加载状态
+            playBtn.disabled = true;
+            btnText.textContent = "正在解析中"; 
+            loadingSpinner.style.display = "inline-block";
+            document.getElementById("cancelBtn").style.display = "inline-block";
+            isParsing = true;
+            
+            // 设置10秒超时
+            loadingTimeout = setTimeout(() => {
+              if(isParsing) {
+                resetButtonState();
+              }
+            }, 10000);
+
+            // 修改线路1为直接调用z1.m1907.top接口（整合中转页面逻辑）
+            const parseUrls = [
+              "https://z1.m1907.top/?jx=", // 线路1：直接拼接接口，无需中转页面
+              "https://yparse.ik9.cc/index.php?url=",
+              // "https://jx.xmflv.cc/?url=",
+              "https://g.123456789.qpon/aa/aaa.php?url=",
+              "https://jx.m3u8.tv/jiexi/?url=",
+              "https://jx.m3u8.tv/jx/jx.php?url=",
+              "https://www.playm3u8.cn/jiexi.php?url=",
+              "https://py.123456789.qpon/1/playm3u8.php?url=",
+              "https://www.ckplayer.vip/jiexi/?url=",
+              "https://cp.123456789.qpon/jiexi.php?url=",
+              "https://www.pouyun.com/?url=",
+              "https://jx.2s0.cn/player/analysis.php?v=", // 线路11
+              "https://jx.77flv.cc/?url=", // 线路12
+              "https://jx.nnxv.cn/tv.php?url=", // 线路13
+              "https://jx.2s0.cn/player/?url=", // 线路14
+            ];
+
+            // 直接调用对应线路的接口（线路1已整合中转逻辑）
+            const selectedParser = parseInt(parseLine) - 1;
+            
+            // 所有线路统一处理（不再有双路线逻辑）
+            document.getElementById("videoFrame").onload = function() {
+              // 解析成功，恢复按钮状态
+              playBtn.disabled = false;
+              btnText.textContent = "解析播放";
+              loadingSpinner.style.display = "none";
+            };
+            
+            document.getElementById("videoFrame").src =
+                parseUrls[selectedParser] +
+                encodeURIComponent(videoUrl) +
+                "&line=" +
+                parseLine;
+
+            // 解析失败的 fallback 逻辑（保持不变）
+            // 清除按钮悬停效果
+            document
+              .getElementById("clearBtn")
+              .addEventListener("mouseover", function () {
+                this.style.color = "var(--danger)";
+              });
+            document
+              .getElementById("clearBtn")
+              .addEventListener("mouseout", function () {
+                this.style.color = "var(--gray)";
+              });
+
+            document.getElementById("videoFrame").onerror = function () {
+              // 恢复按钮状态
+              resetButtonState();
+              clearTimeout(loadingTimeout);
+              
+              alert(`线路${parseLine}解析失败，正在尝试其他线路...`);
+              let currentParser = 0;
+              const tryNextParser = () => {
+                if (currentParser >= parseUrls.length) {
+                  alert("所有解析线路都失败了，请稍后再试");
+                  return;
+                }
+                if (currentParser !== selectedParser) {
+            document.getElementById("videoFrame").src =
+                parseUrls[selectedParser] +
+                encodeURIComponent(videoUrl) +
+                "&line=" +
+                parseLine;
+                }
+                currentParser++;
+              };
+              tryNextParser();
+            };
+          }
+        </script>
+
+        <div class="video-sites">
+          <h3>常用视频网站：</h3>
+          <div class="site-group">
+            <h4>视频平台</h4>
+            <div class="site-grid">
+              <a href="https://www.iqiyi.com" target="_blank">
+                <img src="https://jx.vcs6.com/imglogo/iqiyi.png" alt="爱奇艺" />
+              </a>
+              <a href="https://www.youku.com" target="_blank">
+                <img
+                  src="https://jx.vcs6.com/imglogo/youkulogo.png"
+                  alt="优酷"
+                />
+              </a>
+              <a href="https://v.qq.com" target="_blank">
+                <img
+                  src="https://jx.vcs6.com/imglogo/qqlogo.png"
+                  alt="腾讯视频"
+                />
+              </a>
+              <a href="https://www.mgtv.com" target="_blank">
+                <img
+                  src="https://jx.vcs6.com/imglogo/hunantvlogo.png"
+                  alt="芒果TV"
+                />
+              </a>
+              <a href="https://www.bilibili.com" target="_blank">
+                <img
+                  src="https://jx.vcs6.com/imglogo/bilibili.png"
+                  alt="哔哩哔哩"
+                />
+              </a>
+              <a href="https://tv.sohu.com" target="_blank">
+                <img
+                  src="https://jx.vcs6.com/imglogo/sohulogo.png"
+                  alt="搜狐视频"
+                />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <h2>注意事项</h2>
+      <ul>
+        <li>本工具仅供学习交流使用</li>
+        <li>请勿用于商业用途</li>
+        <li>请勿输入个人信息</li>
+        <li>请勿下载不明软件</li>
+        <li>请勿转账汇款</li>
+        <li>解析线路可能随时失效</li>
+        <li>遇到问题可尝试更换线路</li>
+      </ul>
+
+      <h2>支持网站</h2>
+      <ul>
+        <li>爱奇艺、腾讯视频</li>
+        <li>优酷、芒果TV</li>
+        <li>哔哩哔哩、搜狐视频</li>
+        <li>大部分主流视频网站</li>
+      </ul>
+    </div>
+  </body>
+</html>

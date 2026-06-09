@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>花式图片册</title>
+    <link rel="icon" href="../images/favicon.jpg" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family: Helvetica, sans-serif;
+        overflow: hidden;
+        position: relative;
+      }
+
+      #video-background {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        z-index: -1;
+        background-size: cover;
+        object-fit: cover;
+        opacity: 0.8;
+        background-color: #000;
+      }
+
+      a {
+        color: #ffffff;
+      }
+
+      #info {
+        position: absolute;
+        width: 100%;
+        color: #ffffff;
+        padding: 5px;
+        font-family: Monospace;
+        font-size: 13px;
+        font-weight: bold;
+        text-align: center;
+        z-index: 1;
+      }
+
+      #menu {
+        position: absolute;
+        bottom: 20px;
+        width: 100%;
+        text-align: center;
+      }
+
+      .element {
+        width: 100px;
+        /* 120 160 */
+        height: 100px;
+        box-shadow: 0px 0px 12px rgba(0, 255, 255, 0.5);
+        border: 1px solid rgba(127, 255, 255, 0.25);
+        text-align: center;
+        cursor: default;
+      }
+
+      .element:hover {
+        box-shadow: 0px 0px 12px rgba(0, 255, 255, 0.75);
+        border: 1px solid rgba(127, 255, 255, 0.75);
+      }
+
+      .element img {
+        width: 100px;
+        height: 100px;
+      }
+
+      .element .number {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 12px;
+        color: rgba(127, 255, 255, 0.75);
+      }
+
+      .element .symbol {
+        position: absolute;
+        top: 40px;
+        left: 0px;
+        right: 0px;
+        font-size: 60px;
+        font-weight: bold;
+        color: rgba(255, 255, 255, 0.75);
+        text-shadow: 0 0 10px rgba(0, 255, 255, 0.95);
+      }
+
+      .element .details {
+        position: absolute;
+        bottom: 15px;
+        left: 0px;
+        right: 0px;
+        font-size: 12px;
+        color: rgba(127, 255, 255, 0.75);
+      }
+
+      button {
+        color: #fff;
+        background: rgba(255, 105, 180, 0.7);
+        border: none;
+        border-radius: 25px;
+        padding: 10px 20px;
+        margin: 0 5px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      button:hover {
+        background: rgba(255, 105, 180, 0.9);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      button:active {
+        transform: translateY(1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      #musicToggle {
+        background: rgba(0, 191, 255, 0.7);
+      }
+
+      #musicToggle:hover {
+        background: rgba(0, 191, 255, 0.9);
+      }
+
+      #lyrics-container {
+        position: fixed;
+        bottom: 120px;
+        width: 100%;
+        text-align: center;
+        z-index: 10;
+        padding: 0 20px;
+      }
+
+      #lyrics {
+        display: inline-block;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 32px;
+        font-weight: 500;
+        font-family: 'Microsoft YaHei', sans-serif;
+        padding: 15px 30px;
+        border-radius: 35px;
+        background: rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+        backdrop-filter: blur(8px);
+        max-width: 65%;
+        margin: 0 auto;
+        line-height: 1.6;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      #lyrics.highlight {
+        color: rgba(255, 182, 193, 0.95);
+        transform: scale(1.1);
+        text-shadow: 0 0 15px rgba(255, 182, 193, 0.8);
+        background: rgba(0, 0, 0, 0.4);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      }
+    </style>
+    <link rel="stylesheet" href="css/animate.min.css" />
+  </head>
+
+  <body>
+    <video id="video-background" autoplay loop muted playsinline>
+      <source src="background.mp4" type="video/mp4" />
+      <img src="img/a.jpg" alt="背景图片" style="display: none" />
+    </video>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/three.js"></script>
+    <script src="js/tween.min.js"></script>
+    <script src="js/TrackballControls.js"></script>
+    <script src="js/CSS3DRenderer.js"></script>
+
+    <div id="container"></div>
+    <audio id="bgMusic" loop>
+      <source src="./one.mp3" type="audio/mpeg" />
+    </audio>
+    <div id="menu">
+      <button id="musicToggle">音乐开关</button>
+      <button id="table">方形</button>
+      <button id="sphere">球体</button>
+      <button id="helix">螺旋</button>
+      <button id="grid">立方体</button>
+      <button id="heart">爱心</button>
+      <input type="file" id="uploadImage" accept="image/*" multiple style="display:none"/>
+      <button id="uploadBtn">上传图片</button>
+    </div>
+
+    <div id="lyrics-container">
+      <div id="lyrics"></div>
+    </div>
+
+
+    <script>
+      var personArray = new Array();
+      var CurPersonNum = 0;
+      // animate
+      var _in = [
+        "fadeIn",
+        "fadeInDown",
+        "fadeInUp",
+        "zoomIn",
+        "slideInDown",
+        "slideInUp",
+      ];
+      var _out = [
+        "fadeOut",
+        "fadeOutDown",
+        "fadeOutUp",
+        "zoomOut",
+        "slideOutDown",
+        "slideOutUp",
+      ];
+
+      // 生成虚拟数据
+      var defaultImage = "img/a.jpg";
+      for (var i = 0; i < 180; i++) {
+        personArray.push({
+          image: defaultImage,
+        });
+      }
+
+      // 多图片上传处理
+      document.getElementById('uploadBtn').addEventListener('click', function() {
+        document.getElementById('uploadImage').click();
+      });
+
+      document.getElementById('uploadImage').addEventListener('change', function(e) {
+        var files = e.target.files;
+        if (!files || files.length === 0) return;
+
+        var uploadedImages = [];
+        var filesLoaded = 0;
+        
+        // 加载所有上传的图片
+        for (var i = 0; i < files.length; i++) {
+          (function(file) {
+            var reader = new FileReader();
+            reader.onload = function(event) {
+              uploadedImages.push(event.target.result);
+              filesLoaded++;
+              
+              // 当所有图片加载完成
+              if (filesLoaded === files.length) {
+                // 随机分配图片到各个元素
+                for (var j = 0; j < objects.length; j++) {
+                  var randomIndex = Math.floor(Math.random() * uploadedImages.length);
+                  var img = objects[j].element.getElementsByTagName('img')[0];
+                  img.src = uploadedImages[randomIndex];
+                  personArray[j].image = uploadedImages[randomIndex];
+                }
+                
+                // 重新渲染场景
+                render();
+              }
+            };
+            reader.readAsDataURL(file);
+          })(files[i]);
+        }
+      });
+
+      var table = new Array();
+      for (var i = 0; i < personArray.length; i++) {
+        table[i] = new Object();
+        if (i < personArray.length) {
+          table[i] = personArray[i];
+          table[i].src = personArray[i].thumb_image;
+        }
+        table[i].p_x = (i % 20) + 1;
+        table[i].p_y = Math.floor(i / 20) + 1;
+      }
+
+      var camera, scene, renderer;
+      var controls;
+
+      var objects = [];
+      var targets = { table: [], sphere: [], helix: [], grid: [], heart: [] };
+
+      init();
+      animate();
+
+      function init() {
+        camera = new THREE.PerspectiveCamera(
+          40,
+          window.innerWidth / window.innerHeight,
+          1,
+          10000
+        );
+        camera.position.z = 3000;
+
+        scene = new THREE.Scene();
+
+        // table
+
+        for (var i = 0; i < table.length; i++) {
+          var element = document.createElement("div");
+          element.className = "element";
+          element.style.backgroundColor =
+            "rgba(0,127,127," + (Math.random() * 0.5 + 0.25) + ")";
+
+          var img = document.createElement("img");
+          img.src = table[i].image;
+          element.appendChild(img);
+
+          var object = new THREE.CSS3DObject(element);
+          object.position.x = Math.random() * 4000 - 2000;
+          object.position.y = Math.random() * 4000 - 2000;
+          object.position.z = Math.random() * 4000 - 2000;
+          scene.add(object);
+
+          objects.push(object);
+
+          // 表格需要坐标进行排序的
+          var object = new THREE.Object3D();
+          // object.position.x = ( table[ i + 3 ] * 140 ) - 1330;
+          // object.position.y = - ( table[ i + 4 ] * 180 ) + 990;
+          object.position.x = table[i].p_x * 140 - 1330;
+          object.position.y = -(table[i].p_y * 180) + 990;
+
+          targets.table.push(object);
+        }
+
+        // sphere
+
+        var vector = new THREE.Vector3();
+        var spherical = new THREE.Spherical();
+
+        for (var i = 0, l = objects.length; i < l; i++) {
+          var phi = Math.acos(-1 + (2 * i) / l);
+          var theta = Math.sqrt(l * Math.PI) * phi;
+
+          var object = new THREE.Object3D();
+
+          spherical.set(800, phi, theta);
+
+          object.position.setFromSpherical(spherical);
+
+          vector.copy(object.position).multiplyScalar(2);
+
+          object.lookAt(vector);
+
+          targets.sphere.push(object);
+        }
+
+        // helix
+
+        var vector = new THREE.Vector3();
+        var cylindrical = new THREE.Cylindrical();
+
+        for (var i = 0, l = objects.length; i < l; i++) {
+          var theta = i * 0.175 + Math.PI;
+          var y = -(i * 5) + 450;
+
+          var object = new THREE.Object3D();
+
+          // 参数一 圈的大小 参数二 左右间距 参数三 上下间距
+          cylindrical.set(900, theta, y);
+
+          object.position.setFromCylindrical(cylindrical);
+
+          vector.x = object.position.x * 2;
+          vector.y = object.position.y;
+          vector.z = object.position.z * 2;
+
+          object.lookAt(vector);
+
+          targets.helix.push(object);
+        }
+
+        // grid
+
+        for (var i = 0; i < objects.length; i++) {
+          var object = new THREE.Object3D();
+
+          object.position.x = (i % 5) * 400 - 800; // 400 图片的左右间距  800 x轴中心店
+          object.position.y = -(Math.floor(i / 5) % 5) * 300 + 500; // 500 y轴中心店
+          object.position.z = Math.floor(i / 25) * 200 - 800; // 300调整 片间距 800z轴中心店
+
+          targets.grid.push(object);
+        }
+
+        // heart
+        for (var i = 0, l = objects.length; i < l; i++) {
+          var object = new THREE.Object3D();
+
+          // 更饱满的爱心参数方程
+          var t = (i / l) * Math.PI * 2;
+          var scale = 1000;
+          var x = 16 * Math.pow(Math.sin(t), 3);
+          var y =
+            13 * Math.cos(t) -
+            5 * Math.cos(2 * t) -
+            2 * Math.cos(3 * t) -
+            Math.cos(4 * t);
+
+          // 调整参数使爱心更饱满
+          object.position.x = (x * scale) / 16;
+          object.position.y = ((y * scale) / 16) * 0.8; // 调整高度比例
+          object.position.z = (i % 5) * 50 - 100; // 更均匀的深度分布
+
+          // 添加随机旋转使效果更立体
+          object.rotation.x = Math.random() * 0.2 - 0.1;
+          object.rotation.y = Math.random() * 0.2 - 0.1;
+
+          // 让元素朝向中心
+          object.lookAt(new THREE.Vector3(0, 0, 0));
+
+          targets.heart.push(object);
+        }
+
+        //渲染
+        renderer = new THREE.CSS3DRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.domElement.style.position = "absolute";
+        document.getElementById("container").appendChild(renderer.domElement);
+
+        // 鼠标控制
+        controls = new THREE.TrackballControls(camera, renderer.domElement);
+        controls.rotateSpeed = 0.5;
+        controls.minDistance = 500;
+        controls.maxDistance = 6000;
+        controls.addEventListener("change", render);
+
+        // 自动更换
+        var ini = 0;
+        setInterval(function () {
+          ini = ini >= 5 ? 0 : ini;
+          ++ini;
+          switch (ini) {
+            case 1:
+              transform(targets.table, 1000);
+              break;
+            case 2:
+              transform(targets.sphere, 1000);
+              break;
+            case 3:
+              transform(targets.helix, 1000);
+              break;
+            case 4:
+              transform(targets.grid, 1000);
+              break;
+            case 5:
+              transform(targets.heart, 1000);
+              break;
+          }
+        }, 8000);
+
+        var button = document.getElementById("table");
+        button.addEventListener(
+          "click",
+          function (event) {
+            transform(targets.table, 1000);
+          },
+          false
+        );
+
+        var button = document.getElementById("sphere");
+        button.addEventListener(
+          "click",
+          function (event) {
+            transform(targets.sphere, 2000);
+          },
+          false
+        );
+
+        var button = document.getElementById("helix");
+        button.addEventListener(
+          "click",
+          function (event) {
+            transform(targets.helix, 2000);
+          },
+          false
+        );
+
+        var button = document.getElementById("grid");
+        button.addEventListener(
+          "click",
+          function (event) {
+            transform(targets.grid, 2000);
+          },
+          false
+        );
+
+        var button = document.getElementById("heart");
+        button.addEventListener(
+          "click",
+          function (event) {
+            transform(targets.heart, 1000);
+          },
+          false
+        );
+
+        transform(targets.table, 2000);
+
+        window.addEventListener("resize", onWindowResize, false);
+      }
+
+      // 歌词数据
+      const lyricsData = [
+       
+        { time: 0, text: "♪ 你现在在哪里 ♪" },
+        { time: 1.24, text: "♪ 我们俩的回忆 ♪" },
+        { time: 2.12, text: "♪ 是不是已经不是唯一 ♪" },
+        { time: 5.10, text: "♪ 念旧是我的问题 ♪" },
+        { time: 11, text: "♪ 我好想你 ♪" },
+        { time: 14.10, text: "♪ 在每个夜里 ♪" },
+        { time: 16.02, text: "♪ 孤单自诩 ♪" },
+        { time: 19, text: "♪ 纷飞的回忆 ♪" },
+        { time: 21, text: "♪ 猜不透你 ♪" },
+       
+      ];
+
+      // 音乐控制
+      const musicToggle = document.getElementById("musicToggle");
+      const bgMusic = document.getElementById("bgMusic");
+      const lyricsElement = document.getElementById("lyrics");
+
+      // 更新歌词显示
+      function updateLyrics(currentTime) {
+        let currentLyric = "";
+        for (let i = 0; i < lyricsData.length; i++) {
+          if (currentTime >= lyricsData[i].time) {
+            currentLyric = lyricsData[i].text;
+          }
+        }
+        
+        // 确保歌词元素存在
+        if (lyricsElement) {
+          lyricsElement.textContent = currentLyric;
+          
+          // 根据音乐节奏添加高亮效果
+          if (currentTime % 2 < 0.2) {
+            lyricsElement.classList.add("highlight");
+          } else {
+            lyricsElement.classList.remove("highlight");
+          }
+        } else {
+          console.log("歌词元素未找到");
+        }
+      }
+
+      // 音乐播放状态切换
+      musicToggle.addEventListener("click", function () {
+        if (bgMusic.paused) {
+          bgMusic.play().catch((e) => console.log("Audio play failed:", e));
+          musicToggle.textContent = "关闭音乐";
+          console.log("开始播放音乐，当前时间:", bgMusic.currentTime);
+          
+          // 确保歌词容器存在
+          const lyricsContainer = document.getElementById("lyrics-container");
+          if (lyricsContainer) {
+            lyricsContainer.style.display = "block";
+            console.log("歌词容器已显示");
+          } else {
+            console.log("歌词容器未找到");
+          }
+          
+          // 立即更新一次歌词
+          updateLyrics(bgMusic.currentTime);
+          
+          // 启动定时器
+          lyricsInterval = setInterval(() => {
+            updateLyrics(bgMusic.currentTime);
+          }, 100);
+        } else {
+          bgMusic.pause();
+          musicToggle.textContent = "播放音乐";
+          clearInterval(lyricsInterval);
+          console.log("音乐已暂停");
+        }
+      });
+
+      let lyricsInterval;
+
+      // 初始化显示歌词容器但内容为空
+      document.getElementById("lyrics-container").style.display = "block";
+      document.getElementById("lyrics").textContent = "";
+
+      function transform(targets, duration) {
+        TWEEN.removeAll();
+
+        for (var i = 0; i < objects.length; i++) {
+          var object = objects[i];
+          var target = targets[i];
+
+          new TWEEN.Tween(object.position)
+            .to(
+              {
+                x: target.position.x,
+                y: target.position.y,
+                z: target.position.z,
+              },
+              Math.random() * duration + duration
+            )
+            .easing(TWEEN.Easing.Exponential.InOut)
+            .start();
+
+          new TWEEN.Tween(object.rotation)
+            .to(
+              {
+                x: target.rotation.x,
+                y: target.rotation.y,
+                z: target.rotation.z,
+              },
+              Math.random() * duration + duration
+            )
+            .easing(TWEEN.Easing.Exponential.InOut)
+            .start();
+        }
+
+        new TWEEN.Tween(this)
+          .to({}, duration * 2)
+          .onUpdate(render)
+          .start();
+      }
+
+      function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        render();
+      }
+
+      function animate() {
+        // 让场景通过x轴或者y轴旋转  & z
+        // scene.rotation.x += 0.011;
+        scene.rotation.y += 0.008;
+
+        requestAnimationFrame(animate);
+
+        TWEEN.update();
+
+        controls.update();
+
+        // 渲染循环
+        render();
+      }
+
+      function render() {
+        renderer.render(scene, camera);
+      }
+    </script>
+  </body>
+</html>

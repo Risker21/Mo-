@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Momo五子棋</title>
+    <link rel="stylesheet" href="style.css">
+        <link rel="icon" href="../../images/favicon.jpg" type="image/x-icon">
+</head>
+<body>
+    <div class="container">
+        <h1>Momo五子棋</h1>
+        
+        <!-- 游戏模式选择 -->
+        <div class="mode-selection">
+            <h2>选择游戏模式</h2>
+            <div class="mode-buttons">
+                <button id="singlePlayer" class="mode-btn">单人模式</button>
+                <button id="twoPlayer" class="mode-btn">双人模式</button>
+            </div>
+        </div>
+
+        <!-- 难度选择（仅单人模式显示） -->
+        <div id="difficultySelection" class="difficulty-selection hidden">
+            <h2>选择难度</h2>
+            <div class="difficulty-buttons">
+                <button id="easy" class="difficulty-btn">简单</button>
+                <button id="medium" class="difficulty-btn">中等</button>
+                <button id="hard" class="difficulty-btn">困难</button>
+            </div>
+        </div>
+
+        <!-- 游戏界面 -->
+        <div id="gameInterface" class="game-interface hidden">
+            <div class="game-info">
+                <div class="current-player">
+                    当前玩家: <span id="currentPlayer">黑棋</span>
+                </div>
+                <div class="game-mode">
+                    模式: <span id="gameModeDisplay">双人</span>
+                </div>
+                <div class="difficulty-display">
+                    难度: <span id="difficultyDisplay">-</span>
+                </div>
+                <div class="timer">
+                    时间: <span id="timerDisplay">00:00</span>
+                </div>
+                <div class="move-count">
+                    步数: <span id="moveCount">0</span>
+                </div>
+            </div>
+
+            <!-- 棋盘 -->
+            <div class="board-container">
+                <canvas id="board" width="600" height="600"></canvas>
+            </div>
+
+            <div class="game-controls">
+                <button id="undoBtn" class="control-btn">悔棋</button>
+                <button id="restartBtn" class="control-btn">重新开始</button>
+                <button id="bgmBtn" class="control-btn">音乐: 关</button>
+                <button id="backToMenu" class="control-btn">返回菜单</button>
+            </div>
+        </div>
+
+        <!-- 游戏结果弹窗 -->
+        <div id="gameResult" class="game-result hidden">
+            <div class="result-content">
+                <h2 id="resultTitle">游戏结束</h2>
+                <p id="resultMessage"></p>
+                <button id="playAgain" class="control-btn">再玩一次</button>
+                <button id="backToMenuFromResult" class="control-btn">返回菜单</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

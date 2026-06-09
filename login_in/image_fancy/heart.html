@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>3D爱心图片墙</title>
+    <meta charset="utf-8">
+    <style>
+        body { 
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+        }
+        canvas { 
+            display: block; 
+        }
+    </style>
+</head>
+<body>
+    <script src="js/three.js"></script>
+    <script src="js/TrackballControls.js"></script>
+    
+    <script>
+        // 初始化场景、相机和渲染器
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // 添加轨道控制
+        const controls = new THREE.TrackballControls(camera, renderer.domElement);
+        controls.rotateSpeed = 1.0;
+        controls.zoomSpeed = 1.2;
+        controls.panSpeed = 0.8;
+
+        // 设置相机位置
+        camera.position.z = 5;
+
+        // 创建爱心形状的点
+        const heartShape = new THREE.Shape();
+        const x = 0, y = 0;
+        heartShape.moveTo(x, y + 0.25);
+        heartShape.bezierCurveTo(x, y, x - 0.25, y, x - 0.25, y + 0.25);
+        heartShape.bezierCurveTo(x - 0.25, y + 0.5, x, y + 0.75, x, y + 1.0);
+        heartShape.bezierCurveTo(x, y + 0.75, x + 0.25, y + 0.5, x + 0.25, y + 0.25);
+        heartShape.bezierCurveTo(x + 0.25, y, x, y, x, y + 0.25);
+
+        // 创建3D爱心几何体
+        const extrudeSettings = {
+            steps: 2,
+            depth: 0.5,
+            bevelEnabled: true,
+            bevelThickness: 0.1,
+            bevelSize: 0.1,
+            bevelSegments: 1
+        };
+
+        const geometry = new THREE.ExtrudeGeometry(heartShape, extrudeSettings);
+        
+        // 创建图片材质
+        const textureLoader = new THREE.TextureLoader();
+        const materials = [];
+        for(let i=0; i<6; i++) {
+            materials.push(new THREE.MeshBasicMaterial({
+                map: textureLoader.load('img/a.jpg'),
+                side: THREE.DoubleSide
+            }));
+        }
+
+        // 创建爱心网格
+        const heart = new THREE.Mesh(geometry, materials);
+        scene.add(heart);
+
+        // 添加环境光
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        // 添加平行光
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(1, 1, 1);
+        scene.add(directionalLight);
+
+        // 动画循环
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            heart.rotation.x += 0.01;
+            heart.rotation.y += 0.01;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // 窗口大小调整
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

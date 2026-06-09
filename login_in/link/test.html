@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../images/favicon.jpg">
+    <title>等我</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 80%;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .progress-container {
+            width: 100%;
+            height: 20px;
+            background: #ecf0f1;
+            border-radius: 10px;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 65%;
+            background: linear-gradient(90deg, #3498db, #9b59b6);
+            border-radius: 10px;
+            animation: progress 2s ease-in-out infinite;
+        }
+        .tools {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+        }
+        .tool {
+            font-size: 30px;
+            animation: bounce 2s infinite;
+        }
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #3498db, #2ecc71);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 20px auto;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .avatar:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+        @keyframes progress {
+            0%, 100% { width: 65%; }
+            50% { width: 70%; }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .contact {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>页面正在建设中</h1>
+        <p >我们正在努力完善本页面内容，敬请期待！</p>
+        
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+        
+        <div class="tools">
+            <div class="tool" style="animation-delay: 0s;">🔨</div>
+            <div class="tool" style="animation-delay: 0.2s;">🛠️</div>
+            <div class="tool" style="animation-delay: 0.4s;">⚙️</div>
+            <div class="tool" style="animation-delay: 0.6s;">🔧</div>
+        </div>
+        
+        <div class="avatar" onclick="alert('我们欢迎你的加入，当然如果你有好的设计想法，也可以与我们分享')">
+            开发者
+        </div>
+        
+        <div class="contact">
+            有任何问题请联系我们: mo@momo21.online
+        </div>
+        <div class="nav-links" style="margin-top: 20px;">
+            
+        </div>
+    </div>
+    <audio id="bgMusic" src="./test.mp3" loop></audio>
+    <script>
+      // Unique page identifier
+      const PAGE_ID = 'test_page';
+      
+      // Music control function
+      function controlMusic() {
+        const music = document.getElementById('bgMusic');
+        const lastActivePage = localStorage.getItem('activeMusicPage');
+        
+        // If this page was not the last active music page, pause music
+        if (lastActivePage !== PAGE_ID) {
+          music.pause();
+        } else {
+          music.play().catch(e => console.log('Autoplay prevented:', e));
+        }
+        
+        // Store this page as active when it gains focus
+        window.addEventListener('focus', () => {
+          localStorage.setItem('activeMusicPage', PAGE_ID);
+          music.play().catch(e => console.log('Play prevented:', e));
+        });
+        
+        // Pause when page loses focus
+        window.addEventListener('blur', () => {
+          music.pause();
+        });
+        
+        // Handle visibility changes
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) {
+            music.pause();
+          } else {
+            localStorage.setItem('activeMusicPage', PAGE_ID);
+            music.play().catch(e => console.log('Play prevented:', e));
+          }
+        });
+      }
+      
+      // Initialize music control
+      window.addEventListener('load', () => {
+        localStorage.setItem('activeMusicPage', PAGE_ID);
+        controlMusic();
+      });
+    </script>
+</body>
+</html>

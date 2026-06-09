@@ -1,0 +1,776 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+	<title>登录 - Mo小窝</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script>
+		addEventListener("load", function () {
+			setTimeout(hideURLbar, 0);
+		}, false);
+		function hideURLbar() {
+			window.scrollTo(0, 1);
+		}
+	</script>
+	<link rel="stylesheet" href="css/style.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="css/font-awesome.css">
+	<link href="https://fonts.googleapis.com/css?family=Play:400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+	<link rel="icon" href="./images/favicon.jpg" type="image/x-icon">
+	<style>
+		/* 面板切换 */
+		.auth-panel { display: none; }
+		.auth-panel.active { display: block; }
+
+		/* Tab 切换 */
+		.auth-tabs {
+			display: flex;
+			justify-content: center;
+			margin-bottom: 20px;
+			gap: 8px;
+		}
+		.auth-tab {
+			padding: 10px 28px;
+			background: #e8e8e8;
+			border: 1px solid #ddd;
+			border-radius: 20px;
+			color: #666;
+			cursor: pointer;
+			font-size: 14px;
+			transition: all 0.3s;
+		}
+		.auth-tab:hover { background: #ddd; }
+		.auth-tab.active {
+			background: #f53e71;
+			border-color: #f53e71;
+			color: #fff;
+		}
+
+		/* 页面整体居中 */
+		body {
+			justify-content: center !important;
+			align-items: center !important;
+		}
+		.header-w3l {
+			position: absolute;
+			top: 20px;
+			left: 0;
+			right: 0;
+			z-index: 1;
+		}
+		.footer {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			z-index: 1;
+		}
+		.main-content-agile {
+			width: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		.sub-main-w3 {
+			width: 380px !important;
+			max-width: 90% !important;
+			flex-grow: 0 !important;
+			margin: 0 !important;
+		}
+
+		/* 登录/注册按钮 - 突出显示 */
+		.right-w3l input[type="submit"] {
+			font-size: 1.1em !important;
+			padding: 14px 0 !important;
+			font-weight: 600 !important;
+			letter-spacing: 2px !important;
+		}
+
+		/* 输入框样式 - 统一宽度 */
+		.pom-agile {
+			display: flex;
+			align-items: center;
+		}
+		.pom-agile .fa {
+			flex-shrink: 0;
+			margin-right: 8px;
+			color: #999;
+		}
+		.pom-agile input[type="text"],
+		.pom-agile input[type="password"],
+		.pom-agile input[type="email"] {
+			flex: 1;
+			min-width: 0;
+			color: #333 !important;
+			background: transparent !important;
+			border: none !important;
+			box-shadow: none !important;
+			outline: none !important;
+			font-size: 0.9em;
+		}
+		.pom-agile .pw-toggle {
+			flex-shrink: 0;
+			background: none;
+			border: none;
+			color: #999;
+			cursor: pointer;
+			font-size: 14px;
+			padding: 5px;
+		}
+
+		/* 登录模式切换 */
+		.login-mode-switch {
+			text-align: center;
+			margin: 15px 0 5px;
+			font-size: 13px;
+			color: #666;
+		}
+		.login-mode-switch a {
+			color: #f53e71;
+			cursor: pointer;
+			text-decoration: none;
+			margin: 0 6px;
+		}
+		.login-mode-switch a:hover { text-decoration: underline; }
+
+		/* Toast 提示 - 顶部弹出 */
+		.toast-container {
+			position: fixed;
+			top: 20px;
+			left: 50%;
+			transform: translateX(-50%);
+			z-index: 10000;
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+			pointer-events: none;
+		}
+		.toast {
+			padding: 12px 24px;
+			border-radius: 10px;
+			font-size: 14px;
+			color: #fff;
+			box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+			animation: toastIn 0.3s ease-out;
+			pointer-events: auto;
+			text-align: center;
+			white-space: nowrap;
+		}
+		.toast.success { background: linear-gradient(135deg, #51cf66, #40c057); }
+		.toast.error { background: linear-gradient(135deg, #ff6b6b, #fa5252); }
+		.toast.hiding { animation: toastOut 0.3s ease-in forwards; }
+		@keyframes toastIn {
+			from { opacity: 0; transform: translateY(-20px); }
+			to { opacity: 1; transform: translateY(0); }
+		}
+		@keyframes toastOut {
+			from { opacity: 1; transform: translateY(0); }
+			to { opacity: 0; transform: translateY(-20px); }
+		}
+
+		/* 验证码输入行 */
+		.code-row {
+			display: flex;
+			align-items: center;
+			gap: 6px;
+			padding: 12px 15px;
+			background: #f0f2f5;
+			margin-bottom: 20px;
+			border-radius: 26px;
+			border: 1px solid #e1e1e1;
+			box-sizing: border-box;
+		}
+		.code-row .fa {
+			flex-shrink: 0;
+			color: #999;
+		}
+		.code-row input {
+			flex: 1;
+			min-width: 0;
+			border: none;
+			background: transparent;
+			outline: none;
+			font-size: 0.9em;
+			color: #333;
+			padding: 0;
+		}
+		.code-row button {
+			flex-shrink: 0;
+			white-space: nowrap;
+			padding: 8px 12px;
+			background: #f53e71;
+			border: none;
+			border-radius: 15px;
+			color: #fff;
+			cursor: pointer;
+			font-size: 12px;
+			transition: background 0.3s;
+		}
+		.code-row button:hover { background: #e0356a; }
+		.code-row button:disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
+			background: #ccc;
+		}
+
+		/* 返回链接 */
+		.back-link {
+			text-align: center;
+			margin-top: 15px;
+			font-size: 13px;
+			color: #666;
+		}
+		.back-link a { color: #f53e71; cursor: pointer; }
+
+		/* 游客按钮 */
+		.guest-btn {
+			width: 60%;
+			padding: 10px 0;
+			background: linear-gradient(135deg, #f53e71, #ff6b8b);
+			border: none;
+			border-radius: 26px;
+			color: #fff;
+			font-size: 0.82em;
+			cursor: pointer;
+			transition: all 0.3s;
+			margin-top: 10px;
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+			opacity: 0;
+			animation: fadeIn 0.8s ease-out forwards;
+			animation-delay: 1.8s;
+		}
+		.guest-btn:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 4px 15px rgba(245, 62, 113, 0.4);
+		}
+		.guest-btn:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 4px 15px rgba(245, 62, 113, 0.4);
+		}
+
+		/* 验证码图片 */
+		.captcha-wrap { margin-bottom: 15px; }
+		.captcha-row {
+			display: flex;
+			align-items: center;
+			gap: 6px;
+		}
+		.captcha-img {
+			height: 40px;
+			border-radius: 8px;
+			cursor: pointer;
+			border: 1px solid #e1e1e1;
+		}
+		.captcha-input {
+			flex: 1;
+			min-width: 0;
+			padding: 0 12px;
+			height: 40px;
+			border: 1px solid #e1e1e1;
+			border-radius: 8px;
+			font-size: 14px;
+			background: #f0f2f5;
+			color: #333;
+			box-sizing: border-box;
+		}
+		.captcha-refresh {
+			flex-shrink: 0;
+			padding: 8px 10px;
+			background: #f53e71;
+			border: none;
+			border-radius: 8px;
+			color: #fff;
+			font-size: 12px;
+			cursor: pointer;
+		}
+		.captcha-hint {
+			font-size: 11px;
+			color: #999;
+			margin-top: 5px;
+			text-align: center;
+		}
+		.captcha-err {
+			color: #e74c3c;
+			font-size: 12px;
+			margin-top: 5px;
+		}
+
+		/* 响应式 */
+		@media (max-width: 480px) {
+			.sub-main-w3 {
+				width: 90% !important;
+				padding: 25px 18px !important;
+				margin: 20px auto !important;
+			}
+			.header-w3l h1 { font-size: 1.8em !important; letter-spacing: 3px !important; }
+			.auth-tab { padding: 8px 18px; font-size: 13px; }
+			.code-row { gap: 4px; padding: 10px 12px; }
+			.code-row button { padding: 7px 10px; font-size: 11px; }
+			.toast { font-size: 13px; padding: 10px 18px; }
+		}
+	</style>
+</head>
+
+<body>
+	<!-- Toast 容器 -->
+	<div class="toast-container" id="toastContainer"></div>
+
+	<!--header-->
+	<div class="header-w3l">
+		<h1 id="runtime-display">
+			网站已运行: <span id="runtime-days">0</span>天 <span id="runtime-hours">0</span>小时 <span id="runtime-minutes">0</span>分钟 <span id="runtime-seconds">0</span>秒
+		</h1>
+	</div>
+	<script>
+		function updateRuntime() {
+			const startDate = new Date('2025-06-30T12:00:00');
+			const now = new Date();
+			const diff = now - startDate;
+			const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+			const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+			const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+			const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+			document.getElementById('runtime-days').textContent = days;
+			document.getElementById('runtime-hours').textContent = hours;
+			document.getElementById('runtime-minutes').textContent = minutes;
+			document.getElementById('runtime-seconds').textContent = seconds;
+		}
+		updateRuntime();
+		setInterval(updateRuntime, 1000);
+	</script>
+	<!--//header-->
+
+	<div class="main-content-agile">
+		<div class="sub-main-w3">
+			<h2 id="loginTitle">你好呀</h2>
+
+			<!-- Tab 切换 -->
+			<div class="auth-tabs">
+				<button class="auth-tab active" data-tab="login" onclick="switchTab('login')">登录</button>
+				<button class="auth-tab" data-tab="register" onclick="switchTab('register')">注册</button>
+			</div>
+
+			<!-- ==================== 登录面板 ==================== -->
+			<div id="panelLogin" class="auth-panel active">
+				<!-- 密码登录 -->
+				<div id="loginPasswordMode">
+					<div class="pom-agile">
+						<span class="fa fa-user-o" aria-hidden="true"></span>
+						<input placeholder="邮箱或用户名" name="account" class="user" type="text" required="" id="loginAccount">
+					</div>
+					<div class="pom-agile">
+						<span class="fa fa-key" aria-hidden="true"></span>
+						<input placeholder="请输入密码" name="password" class="pass" type="password" required="" id="loginPassword">
+						<span class="fa fa-eye-slash pw-toggle" aria-hidden="true" id="toggleLoginPw" onclick="togglePassword('loginPassword', this)"></span>
+					</div>
+					<div id="captchaLogin"></div>
+				</div>
+
+				<!-- 验证码登录 -->
+				<div id="loginCodeMode" style="display:none">
+					<div class="pom-agile">
+						<span class="fa fa-envelope-o" aria-hidden="true"></span>
+						<input placeholder="请输入邮箱" name="email" class="user" type="email" required="" id="loginEmail">
+					</div>
+					<div class="code-row">
+						<span class="fa fa-shield" aria-hidden="true"></span>
+						<input placeholder="6位验证码" name="code" type="text" required="" id="loginCode" maxlength="6">
+						<button type="button" id="sendLoginCodeBtn" onclick="handleSendLoginCode()">获取验证码</button>
+					</div>
+				</div>
+
+				<!-- 按钮区域 -->
+				<div class="right-w3l">
+					<input type="submit" value="登录" id="loginBtn" onclick="handleLogin()">
+					<div class="loader" id="loginLoader" style="display:none;">
+						<div class="loader-circle"></div>
+						<div class="loader-circle"></div>
+						<div class="loader-circle"></div>
+					</div>
+				</div>
+				<button type="button" id="guestBtn" class="guest-btn" onclick="handleGuest()">游客访问</button>
+				<div class="login-mode-switch">
+					<a onclick="switchLoginMode('code')">验证码登录</a> |
+					<a onclick="showPanel('forgot')">忘记密码</a>
+				</div>
+			</div>
+
+			<!-- ==================== 注册面板 ==================== -->
+			<div id="panelRegister" class="auth-panel">
+				<div class="pom-agile">
+					<span class="fa fa-user-o" aria-hidden="true"></span>
+					<input placeholder="用户名（2-20个字符）" name="username" class="user" type="text" required="" id="regUsername" maxlength="20">
+				</div>
+				<div class="pom-agile">
+					<span class="fa fa-envelope-o" aria-hidden="true"></span>
+					<input placeholder="邮箱" name="email" class="user" type="email" required="" id="regEmail">
+				</div>
+				<div class="code-row">
+					<span class="fa fa-shield" aria-hidden="true"></span>
+					<input placeholder="验证码" name="code" type="text" required="" id="regCode" maxlength="6">
+					<button type="button" id="sendRegCodeBtn" onclick="handleSendRegCode()">获取验证码</button>
+				</div>
+				<div class="pom-agile">
+					<span class="fa fa-key" aria-hidden="true"></span>
+					<input placeholder="设置密码（至少8位）" name="password" class="pass" type="password" required="" id="regPassword">
+					<span class="fa fa-eye-slash pw-toggle" aria-hidden="true" id="toggleRegPw" onclick="togglePassword('regPassword', this)"></span>
+				</div>
+				<div class="pom-agile">
+					<span class="fa fa-key" aria-hidden="true"></span>
+					<input placeholder="确认密码" name="confirm" class="pass" type="password" required="" id="regConfirm">
+					<span class="fa fa-eye-slash pw-toggle" aria-hidden="true" id="toggleRegConfirmPw" onclick="togglePassword('regConfirm', this)"></span>
+				</div>
+				<div class="right-w3l">
+					<input type="submit" value="注册" id="regBtn" onclick="handleRegister()">
+					<div class="loader" id="regLoader" style="display:none;">
+						<div class="loader-circle"></div>
+						<div class="loader-circle"></div>
+						<div class="loader-circle"></div>
+					</div>
+				</div>
+				<div class="back-link">
+					已有账号？<a onclick="switchTab('login')">去登录</a>
+				</div>
+			</div>
+
+			<!-- ==================== 忘记密码面板 ==================== -->
+			<div id="panelForgot" class="auth-panel">
+				<!-- 步骤1 -->
+				<div id="forgotStep1">
+					<div class="pom-agile">
+						<span class="fa fa-envelope-o" aria-hidden="true"></span>
+						<input placeholder="请输入注册邮箱" name="email" class="user" type="email" required="" id="forgotEmail">
+					</div>
+					<div class="right-w3l">
+						<input type="submit" value="发送验证码" id="forgotSendBtn" onclick="handleForgotSend()">
+						<div class="loader" id="forgotSendLoader" style="display:none;">
+							<div class="loader-circle"></div>
+							<div class="loader-circle"></div>
+							<div class="loader-circle"></div>
+						</div>
+					</div>
+				</div>
+
+				<!-- 步骤2 -->
+				<div id="forgotStep2" style="display:none">
+					<p style="color:#999;font-size:12px;margin-bottom:10px">已发送至 <span id="forgotEmailDisplay" style="color:#666"></span></p>
+					<div class="code-row">
+						<span class="fa fa-shield" aria-hidden="true"></span>
+						<input placeholder="6位验证码" name="code" type="text" required="" id="forgotCode" maxlength="6">
+						<button type="button" id="forgotResendBtn" onclick="handleForgotSend()">重新发送</button>
+					</div>
+					<div class="pom-agile">
+						<span class="fa fa-key" aria-hidden="true"></span>
+						<input placeholder="新密码（至少8位）" name="password" class="pass" type="password" required="" id="forgotNewPassword">
+						<span class="fa fa-eye-slash pw-toggle" aria-hidden="true" id="toggleForgotPw" onclick="togglePassword('forgotNewPassword', this)"></span>
+					</div>
+					<div class="right-w3l">
+						<input type="submit" value="重置密码" id="forgotResetBtn" onclick="handleForgotReset()">
+						<div class="loader" id="forgotResetLoader" style="display:none;">
+							<div class="loader-circle"></div>
+							<div class="loader-circle"></div>
+							<div class="loader-circle"></div>
+						</div>
+					</div>
+				</div>
+
+				<div class="back-link">
+					<a onclick="showPanel('login')">返回登录</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--footer-->
+	<div class="footer">
+		<p>&copy; 2026 Mo小窝 版权所有 | <a target="_blank" href="https://github.com/Risker21" title="Momo同学">Momo同学</a></p>
+	</div>
+	<!--//footer-->
+
+	<script src="js/auth.js"></script>
+	<script src="js/captcha.js"></script>
+	<script>
+		// ---- 多语言标题 ----
+		const titleGreetings = ['你好呀', 'Hello', 'Здравствуйте', 'こんにちは', '안녕하세요', 'Bonjour', 'Guten Tag', 'السلام عليكم', 'Habari'];
+		let titleIndex = 0;
+		setInterval(() => {
+			titleIndex = (titleIndex + 1) % titleGreetings.length;
+			document.getElementById('loginTitle').textContent = titleGreetings[titleIndex];
+		}, 2000);
+
+		// ---- Toast 提示 ----
+		function showMsg(text, type = 'error') {
+			const container = document.getElementById('toastContainer');
+			const toast = document.createElement('div');
+			toast.className = 'toast ' + type;
+			toast.textContent = text;
+			container.appendChild(toast);
+
+			// 自动消失
+			setTimeout(() => {
+				toast.classList.add('hiding');
+				setTimeout(() => toast.remove(), 300);
+			}, 2500);
+		}
+
+		// ---- Tab 切换 ----
+		function switchTab(tab) {
+			document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+			document.querySelector(`.auth-tab[data-tab="${tab}"]`).classList.add('active');
+			document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
+			if (tab === 'login') document.getElementById('panelLogin').classList.add('active');
+			else document.getElementById('panelRegister').classList.add('active');
+		}
+
+		// ---- 面板切换 ----
+		function showPanel(panel) {
+			document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
+			document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+			if (panel === 'login') {
+				document.getElementById('panelLogin').classList.add('active');
+				document.querySelector('.auth-tab[data-tab="login"]').classList.add('active');
+			} else if (panel === 'register') {
+				document.getElementById('panelRegister').classList.add('active');
+				document.querySelector('.auth-tab[data-tab="register"]').classList.add('active');
+			} else if (panel === 'forgot') {
+				document.getElementById('panelForgot').classList.add('active');
+				document.getElementById('forgotStep1').style.display = 'block';
+				document.getElementById('forgotStep2').style.display = 'none';
+			}
+		}
+
+		// ---- 登录模式切换 ----
+		function switchLoginMode(mode) {
+			const modeSwitch = document.querySelector('.login-mode-switch');
+			if (mode === 'password') {
+				document.getElementById('loginPasswordMode').style.display = 'block';
+				document.getElementById('loginCodeMode').style.display = 'none';
+				document.getElementById('loginBtn').value = '登录';
+				document.getElementById('loginBtn').onclick = function() { handleLogin(); };
+				modeSwitch.innerHTML = '<a onclick="switchLoginMode(\'code\')">验证码登录</a> | <a onclick="showPanel(\'forgot\')">忘记密码</a>';
+			} else {
+				document.getElementById('loginPasswordMode').style.display = 'none';
+				document.getElementById('loginCodeMode').style.display = 'block';
+				document.getElementById('loginBtn').value = '验证并登录';
+				document.getElementById('loginBtn').onclick = function() { handleLoginCode(); };
+				modeSwitch.innerHTML = '<a onclick="switchLoginMode(\'password\')">使用密码登录</a> | <a onclick="showPanel(\'forgot\')">忘记密码</a>';
+			}
+		}
+
+		// ---- 密码显隐 ----
+		function togglePassword(inputId, icon) {
+			const input = document.getElementById(inputId);
+			if (input.type === 'password') {
+				input.type = 'text';
+				icon.classList.remove('fa-eye-slash');
+				icon.classList.add('fa-eye');
+			} else {
+				input.type = 'password';
+				icon.classList.remove('fa-eye');
+				icon.classList.add('fa-eye-slash');
+			}
+		}
+
+		// ---- 加载状态 ----
+		function setLoading(btnId, loaderId, loading) {
+			const btn = document.getElementById(btnId);
+			const loader = document.getElementById(loaderId);
+			if (loading) {
+				btn.style.display = 'none';
+				loader.style.display = 'flex';
+			} else {
+				btn.style.display = 'block';
+				loader.style.display = 'none';
+			}
+		}
+
+		// ---- 倒计时 ----
+		let loginCodeTimer, regCodeTimer, forgotTimer;
+		function initCountdowns() {
+			loginCodeTimer = new CountdownTimer(document.getElementById('sendLoginCodeBtn'));
+			regCodeTimer = new CountdownTimer(document.getElementById('sendRegCodeBtn'));
+			forgotTimer = new CountdownTimer(document.getElementById('forgotResendBtn'));
+		}
+
+		// ==================== 登录 ====================
+		async function handleLogin() {
+			const account = document.getElementById('loginAccount').value.trim();
+			const password = document.getElementById('loginPassword').value;
+			if (!account) { showMsg('请输入邮箱或用户名'); return; }
+			if (!password) { showMsg('请输入密码'); return; }
+
+			if (captchaLogin) {
+				const captchaValid = await captchaLogin.verify();
+				if (!captchaValid) return;
+			}
+
+			setLoading('loginBtn', 'loginLoader', true);
+			const result = await loginWithPassword(account, password);
+			setLoading('loginBtn', 'loginLoader', false);
+
+			if (result.success) loginSuccess();
+			else {
+				showMsg(result.msg);
+				if (captchaLogin) captchaLogin.reset();
+			}
+		}
+
+		async function handleSendLoginCode() {
+			const email = document.getElementById('loginEmail').value.trim();
+			if (!email || !isValidEmail(email)) { showMsg('请输入正确的邮箱'); return; }
+
+			const btn = document.getElementById('sendLoginCodeBtn');
+			btn.disabled = true;
+
+			const result = await sendVerifyCode(email, 'login');
+			if (result.success) {
+				loginCodeTimer.start();
+				showMsg('验证码已发送', 'success');
+			} else {
+				btn.disabled = false;
+				showMsg(result.msg);
+			}
+		}
+
+		async function handleLoginCode() {
+			const email = document.getElementById('loginEmail').value.trim();
+			const code = document.getElementById('loginCode').value.trim();
+			if (!email || !isValidEmail(email)) { showMsg('请输入正确的邮箱'); return; }
+			if (!code || !isValidCode(code)) { showMsg('请输入6位验证码'); return; }
+
+			setLoading('loginCodeBtn', 'loginCodeLoader', true);
+			const result = await loginWithCode(email, code);
+			setLoading('loginCodeBtn', 'loginCodeLoader', false);
+
+			if (result.success) loginSuccess();
+			else showMsg(result.msg);
+		}
+
+		// ==================== 注册 ====================
+		async function handleSendRegCode() {
+			const email = document.getElementById('regEmail').value.trim();
+			if (!email || !isValidEmail(email)) { showMsg('请输入正确的邮箱'); return; }
+
+			const btn = document.getElementById('sendRegCodeBtn');
+			btn.disabled = true;
+
+			const result = await sendVerifyCode(email, 'register');
+			if (result.success) {
+				regCodeTimer.start();
+				showMsg('验证码已发送', 'success');
+			} else {
+				btn.disabled = false;
+				showMsg(result.msg);
+			}
+		}
+
+		async function handleRegister() {
+			const username = document.getElementById('regUsername').value.trim();
+			const email = document.getElementById('regEmail').value.trim();
+			const code = document.getElementById('regCode').value.trim();
+			const password = document.getElementById('regPassword').value;
+			const confirm = document.getElementById('regConfirm').value;
+
+			if (!username || !isValidUsername(username)) { showMsg('用户名需2-20个字符'); return; }
+			if (!email || !isValidEmail(email)) { showMsg('请输入正确的邮箱'); return; }
+			if (!code || !isValidCode(code)) { showMsg('请输入6位验证码'); return; }
+			if (!password || !isValidPassword(password)) { showMsg('密码需至少8位，包含字母和数字'); return; }
+			if (password !== confirm) { showMsg('两次密码不一致'); return; }
+
+			setLoading('regBtn', 'regLoader', true);
+			const result = await register(username, email, code, password);
+			setLoading('regBtn', 'regLoader', false);
+
+			if (result.success) loginSuccess();
+			else showMsg(result.msg);
+		}
+
+		// ==================== 忘记密码 ====================
+		async function handleForgotSend() {
+			const email = document.getElementById('forgotEmail').value.trim();
+			if (!email || !isValidEmail(email)) { showMsg('请输入正确的邮箱'); return; }
+
+			const btn = document.getElementById('forgotSendBtn');
+			btn.disabled = true;
+
+			setLoading('forgotSendBtn', 'forgotSendLoader', true);
+			const result = await sendResetCode(email);
+			setLoading('forgotSendBtn', 'forgotSendLoader', false);
+
+			if (result.success) {
+				document.getElementById('forgotStep1').style.display = 'none';
+				document.getElementById('forgotStep2').style.display = 'block';
+				document.getElementById('forgotEmailDisplay').textContent = email;
+				forgotTimer.start();
+				showMsg('验证码已发送', 'success');
+			} else {
+				btn.disabled = false;
+				showMsg(result.msg);
+			}
+		}
+
+		async function handleForgotReset() {
+			const email = document.getElementById('forgotEmail').value.trim();
+			const code = document.getElementById('forgotCode').value.trim();
+			const password = document.getElementById('forgotNewPassword').value;
+
+			if (!code || !isValidCode(code)) { showMsg('请输入6位验证码'); return; }
+			if (!password || !isValidPassword(password)) { showMsg('密码需至少8位，包含字母和数字'); return; }
+
+			setLoading('forgotResetBtn', 'forgotResetLoader', true);
+			const result = await resetPassword(email, code, password);
+			setLoading('forgotResetBtn', 'forgotResetLoader', false);
+
+			if (result.success) {
+				showMsg('密码已重置，请重新登录', 'success');
+				setTimeout(() => showPanel('login'), 1500);
+			} else {
+				showMsg(result.msg);
+			}
+		}
+
+		// ==================== 游客 ====================
+		function handleGuest() {
+			sessionStorage.setItem('isAuthenticated', 'guest');
+			const redirect = sessionStorage.getItem('redirectAfterLogin');
+			if (redirect) {
+				sessionStorage.removeItem('redirectAfterLogin');
+				window.location.href = redirect;
+			} else {
+				window.location.href = './index.html';
+			}
+		}
+
+		// ==================== 登录成功 ====================
+		function loginSuccess() {
+			sessionStorage.setItem('isAuthenticated', 'true');
+			const redirect = sessionStorage.getItem('redirectAfterLogin');
+			if (redirect) {
+				sessionStorage.removeItem('redirectAfterLogin');
+				window.location.href = redirect;
+			} else {
+				window.location.href = './index.html';
+			}
+		}
+
+		// ==================== 初始化 ====================
+		let captchaLogin = null;
+
+		function initCaptcha() {
+			captchaLogin = new CaptchaWidget('captchaLogin');
+			captchaLogin.render();
+		}
+
+		(async function init() {
+			const isLoggedIn = await checkAuth();
+			if (isLoggedIn) window.location.href = './index.html';
+			initCaptcha();
+			initCountdowns();
+		})();
+	</script>
+</body>
+
+</html>

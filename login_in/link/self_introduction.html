@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Momo同学的个人介绍页面 - 全栈工程师">
+  <link rel="icon" href="../images/favicon.jpg">
+  <title>Momo | 全栈工程师</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <!-- 加载动画 -->
+  <div class="loader">
+    <div class="loader-content">
+      <div class="loader-spinner"></div>
+      <span class="loader-text">加载中...</span>
+    </div>
+  </div>
+
+  <!-- 粒子背景 -->
+  <div id="particles-js"></div>
+
+  <!-- 导航栏 -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">
+        <span class="logo-text">Mo小窝</span>
+        <span class="logo-dot"></span>
+      </a>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="#about" class="nav-link">关于</a></li>
+        <li><a href="#education" class="nav-link">教育</a></li>
+        <li><a href="#skills" class="nav-link">技能</a></li>
+        <li><a href="#experience" class="nav-link">经历</a></li>
+        <li><a href="#projects" class="nav-link">项目</a></li>
+        <li><a href="#contact" class="nav-link">联系</a></li>
+      </ul>
+      <div class="nav-toggle" id="navToggle">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 主题切换按钮 -->
+  <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <!-- 返回顶部按钮 -->
+  <button class="back-to-top" id="backToTop" aria-label="返回顶部">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <div class="container">
+    <!-- 头部区域 -->
+    <header class="hero-section" id="home">
+      <div class="floating-elements">
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+        <div class="floating-shape shape-4"></div>
+      </div>
+
+      <div class="hero-content">
+        <div class="profile-image-wrapper">
+          <div class="profile-image">
+            <img src="./img/introduction.jpg" alt="Momo同学">
+            <div class="profile-status" title="在线">
+              <span class="status-dot"></span>
+            </div>
+          </div>
+          <div class="profile-ring"></div>
+        </div>
+
+        <div class="profile-info">
+          <p class="greeting">👋 你好，我是</p>
+          <h1 class="name">
+            <span class="name-text">Momo</span>
+          </h1>
+          <div class="title-wrapper">
+            <span class="title">全栈工程师</span>
+            <span class="title-separator">|</span>
+            <span class="title">数据科学爱好者</span>
+          </div>
+          <p class="tagline">用代码构建梦想，用数据洞察未来</p>
+
+          <div class="social-links" style="justify-content: center;">
+            <a href="https://github.com/Risker21" class="social-link" target="_blank" rel="noopener" aria-label="GitHub">
+              <i class="fab fa-github"></i>
+            </a>
+            <a href="https://x.com/bobbob1571370" class="social-link" target="_blank" rel="noopener" aria-label="Twitter">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width: 20px; height: 20px;">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
+            <a href="./WeChat.html" class="social-link" aria-label="微信">
+              <i class="fab fa-weixin"></i>
+            </a>
+          </div>
+
+          <div class="hero-buttons">
+            <a href="#projects" class="btn btn-primary">
+              <span>查看作品</span>
+              <i class="fas fa-arrow-right"></i>
+            </a>
+            <a href="#contact" class="btn btn-secondary">
+              <span>联系我</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="scroll-indicator">
+        <div class="mouse">
+          <div class="wheel"></div>
+        </div>
+        <span>向下滚动</span>
+      </div>
+    </header>
+
+    <main>
+      <!-- 个人视频展示 -->
+      <section class="video-section" id="video">
+        <div class="section-header">
+          <span class="section-tag">Featured</span>
+          <h2 class="section-title">
+            <i class="fas fa-play-circle"></i>
+            星辰璀璨 银河浩瀚
+          </h2>
+          <p class="section-subtitle">探索自我的无限可能</p>
+        </div>
+
+        <div class="video-container">
+          <div class="video-poster" id="videoPoster">
+            <img src="./img/self封面.jpg" alt="个人介绍视频封面" class="video-cover" loading="lazy">
+            <div class="video-overlay">
+              <button class="play-button" aria-label="播放视频">
+                <i class="fas fa-play"></i>
+              </button>
+              <p class="video-hint">点击观看视频</p>
+            </div>
+          </div>
+          <div class="video-player" id="videoPlayer" style="display: none;">
+            <video controls id="localVideo" preload="metadata" poster="./img/self封面.jpg">
+              <source src="./img/introduction.mp4" type="video/mp4">
+              您的浏览器不支持视频播放。
+            </video>
+            <button class="close-video" id="closeVideo" aria-label="关闭视频">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 关于我 -->
+      <section class="about-section" id="about">
+        <div class="section-header">
+          <span class="section-tag">About Me</span>
+          <h2 class="section-title">
+            <i class="fas fa-user"></i>
+            关于我
+          </h2>
+        </div>
+
+        <div class="about-content">
+          <div class="about-grid">
+            <div class="about-card" data-aos="fade-up">
+              <div class="card-icon">
+                <i class="fas fa-id-card"></i>
+              </div>
+              <h3>基本信息</h3>
+              <ul class="info-list">
+                <li><span class="label">性别:</span> <span class="value">男</span></li>
+                <li><span class="label">地区:</span> <span class="value">中国 · 重庆</span></li>
+                <li><span class="label">职业:</span> <span class="value">学生 / 开发者</span></li>
+              </ul>
+            </div>
+
+            <div class="about-card" data-aos="fade-up" data-aos-delay="100">
+              <div class="card-icon">
+                <i class="fas fa-code"></i>
+              </div>
+              <h3>技术社区</h3>
+              <ul class="community-list">
+                <li><i class="fas fa-check"></i> CSDN博客作者</li>
+                <li><i class="fas fa-check"></i> 掘金活跃用户</li>
+                <li><i class="fas fa-check"></i> GitHub探索家</li>
+                <li><i class="fas fa-check"></i> 酷安数码爱好者</li>
+              </ul>
+            </div>
+
+            <div class="about-card" data-aos="fade-up" data-aos-delay="200">
+              <div class="card-icon">
+                <i class="fas fa-heart"></i>
+              </div>
+              <h3>兴趣爱好</h3>
+              <div class="hobby-tags">
+                <span class="hobby-tag">编程学习</span>
+                <span class="hobby-tag">阅读</span>
+                <span class="hobby-tag">摄影</span>
+                <span class="hobby-tag">球类运动</span>
+                <span class="hobby-tag">骑行</span>
+                <span class="hobby-tag">唱歌</span>
+                <span class="hobby-tag">旅游</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="about-quote" data-aos="fade-up">
+            <i class="fas fa-quote-left quote-icon"></i>
+            <p class="quote-text">
+              用别人的歌单当人生BGM，按社会给的剧本演自己，就连热爱也成了对"钱途"渺茫的热爱，那么我的生活已不再是生活
+            </p>
+            <i class="fas fa-quote-right quote-icon"></i>
+          </div>
+        </div>
+      </section>
+
+      <!-- 教育经历 -->
+      <section class="education-section" id="education">
+        <div class="section-header">
+          <span class="section-tag">Education</span>
+          <h2 class="section-title">
+            <i class="fas fa-graduation-cap"></i>
+            教育经历
+          </h2>
+        </div>
+
+        <div class="education-timeline">
+          <div class="timeline-item" data-aos="fade-right">
+            <div class="timeline-marker">
+              <i class="fas fa-university"></i>
+            </div>
+            <div class="timeline-content">
+              <div class="timeline-period">2023 - 2027</div>
+              <h3 class="timeline-title">数据科学与大数据技术</h3>
+              <p class="timeline-subtitle">本科在读</p>
+
+              <div class="courses-wrapper">
+                <div class="course-category">
+                  <h4><i class="fas fa-book"></i> 主修课程</h4>
+                  <div class="course-tags">
+                    <span class="course-tag">数据结构</span>
+                    <span class="course-tag">算法分析</span>
+                    <span class="course-tag">数据库原理</span>
+                    <span class="course-tag">计算机网络</span>
+                    <span class="course-tag">操作系统</span>
+                    <span class="course-tag">编译原理</span>
+                    <span class="course-tag">Python数据分析</span>
+                    <span class="course-tag">Hadoop生态</span>
+                    <span class="course-tag">React</span>
+                    <span class="course-tag">Vue.js</span>
+                  </div>
+                </div>
+
+                <div class="course-category">
+                  <h4><i class="fas fa-calculator"></i> 数学基础</h4>
+                  <div class="course-tags">
+                    <span class="course-tag">数学分析</span>
+                    <span class="course-tag">概率论</span>
+                    <span class="course-tag">线性代数</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 技能评估 -->
+      <section class="skills-section" id="skills">
+        <div class="section-header">
+          <span class="section-tag">Skills</span>
+          <h2 class="section-title">
+            <i class="fas fa-code"></i>
+            技术栈
+          </h2>
+          <p class="section-subtitle">我使用的技术工具</p>
+        </div>
+
+        <!-- 技术标签云 -->
+        <div class="tech-cloud" data-aos="fade-up">
+          <span class="tech-tag expert">JavaScript</span>
+          <span class="tech-tag expert">Python</span>
+          <span class="tech-tag proficient">React</span>
+          <span class="tech-tag proficient">Vue.js</span>
+          <span class="tech-tag proficient">Node.js</span>
+          <span class="tech-tag familiar">TypeScript</span>
+          <span class="tech-tag familiar">HTML5/CSS3</span>
+          <span class="tech-tag familiar">Git</span>
+          <span class="tech-tag learning">Docker</span>
+          <span class="tech-tag learning">MongoDB</span>
+          <span class="tech-tag learning">Linux</span>
+          <span class="tech-tag interested">Rust</span>
+          <span class="tech-tag interested">Go</span>
+        </div>
+
+        <div class="skills-grid">
+          <div class="skill-card" data-aos="fade-up">
+            <div class="skill-icon">
+              <i class="fab fa-js"></i>
+            </div>
+            <h3>前端开发</h3>
+            <p>React, Vue.js, HTML5, CSS3, 响应式设计</p>
+            <div class="skill-level">
+              <div class="skill-bar" data-level="85"></div>
+              <span class="skill-percent">85%</span>
+            </div>
+          </div>
+
+          <div class="skill-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="skill-icon">
+              <i class="fab fa-python"></i>
+            </div>
+            <h3>后端开发</h3>
+            <p>Python, Node.js, RESTful API, 数据库设计</p>
+            <div class="skill-level">
+              <div class="skill-bar" data-level="80"></div>
+              <span class="skill-percent">80%</span>
+            </div>
+          </div>
+
+          <div class="skill-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="skill-icon">
+              <i class="fas fa-database"></i>
+            </div>
+            <h3>数据科学</h3>
+            <p>数据分析, 可视化, Hadoop, 机器学习基础</p>
+            <div class="skill-level">
+              <div class="skill-bar" data-level="75"></div>
+              <span class="skill-percent">75%</span>
+            </div>
+          </div>
+
+          <div class="skill-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="skill-icon">
+              <i class="fas fa-tools"></i>
+            </div>
+            <h3>开发工具</h3>
+            <p>Git, Docker, Linux, VS Code, 敏捷开发</p>
+            <div class="skill-level">
+              <div class="skill-bar" data-level="82"></div>
+              <span class="skill-percent">82%</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 经历 -->
+      <section class="experience-section" id="experience">
+        <div class="section-header">
+          <span class="section-tag">Experience</span>
+          <h2 class="section-title">
+            <i class="fas fa-briefcase"></i>
+            经历
+          </h2>
+        </div>
+
+        <div class="experience-timeline">
+          <div class="timeline-item" data-aos="fade-up">
+            <div class="timeline-marker">
+              <span class="year">2023</span>
+            </div>
+            <div class="timeline-content">
+              <div class="timeline-header">
+                <h3>初级工程师</h3>
+                <span class="timeline-badge">学习阶段</span>
+              </div>
+              <p class="timeline-company">学校学生</p>
+              <ul class="timeline-list">
+                <li>学习面向对象的基本知识</li>
+                <li>学习Linux操作系统</li>
+                <li>制作学生登录系统</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="timeline-item" data-aos="fade-up">
+            <div class="timeline-marker">
+              <span class="year">2024</span>
+            </div>
+            <div class="timeline-content">
+              <div class="timeline-header">
+                <h3>中级工程师</h3>
+                <span class="timeline-badge">实践阶段</span>
+              </div>
+              <p class="timeline-company">学校学生</p>
+              <ul class="timeline-list">
+                <li>参与多个大型项目的前端开发</li>
+                <li>实现响应式设计和移动端适配</li>
+                <li>与后端团队协作完成接口对接</li>
+                <li>使用爬虫批量爬取数据</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="timeline-item future" data-aos="fade-up">
+            <div class="timeline-marker">
+              <span class="year">2025+</span>
+            </div>
+            <div class="timeline-content">
+              <div class="timeline-header">
+                <h3>未来...</h3>
+                <span class="timeline-badge badge-future">无限可能</span>
+              </div>
+              <p class="timeline-company">Be true to yourself</p>
+              <div class="future-quote">
+                <p>愿自己有直面未知的勇气，像无畏的行者，在生活的旷野里踏出属于自己的路</p>
+                <p>把挫折当基石，将迷茫化星光，在逐梦途中，留存热爱与纯粹</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 项目展示 -->
+      <section class="projects-section" id="projects">
+        <div class="section-header">
+          <span class="section-tag">Projects</span>
+          <h2 class="section-title">
+            <i class="fas fa-project-diagram"></i>
+            项目展示
+          </h2>
+        </div>
+
+        <div class="projects-grid">
+          <article class="project-card" data-aos="fade-up">
+            <div class="project-image">
+              <img src="./img/电商网站.png" alt="电商网站项目" loading="lazy">
+              <div class="project-overlay">
+                <div class="project-tech">
+                  <span>React</span>
+                  <span>Node.js</span>
+                  <span>MongoDB</span>
+                </div>
+              </div>
+            </div>
+            <div class="project-info">
+              <h3>电商网站</h3>
+              <p>使用React和Node.js构建的功能完善的电商平台，支持商品管理、购物车、支付等功能</p>
+              <div class="project-links">
+                <a href="./test.html" class="project-link">
+                  <span>查看详情</span>
+                  <i class="fas fa-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="project-image">
+              <img src="./img/数据分析仪表盘.png" alt="数据分析仪表盘项目" loading="lazy">
+              <div class="project-overlay">
+                <div class="project-tech">
+                  <span>Vue.js</span>
+                  <span>D3.js</span>
+                  <span>Python</span>
+                </div>
+              </div>
+            </div>
+            <div class="project-info">
+              <h3>数据分析仪表盘</h3>
+              <p>使用Vue.js和D3.js构建的数据可视化工具，支持实时数据展示和多维度分析</p>
+              <div class="project-links">
+                <a href="./test.html" class="project-link">
+                  <span>查看详情</span>
+                  <i class="fas fa-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 联系方式 -->
+      <section class="contact-section" id="contact">
+        <div class="section-header">
+          <span class="section-tag">Contact</span>
+          <h2 class="section-title">
+            <i class="fas fa-envelope"></i>
+            联系我
+          </h2>
+          <p class="section-subtitle">期待与你的交流</p>
+        </div>
+
+        <div class="contact-content">
+          <div class="contact-info">
+            <a href="mailto:riskermo@gmail.com" class="contact-card" data-aos="fade-up">
+              <div class="contact-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div class="contact-details">
+                <h3>电子邮箱</h3>
+                <p>riskermo@gmail.com</p>
+              </div>
+            </a>
+
+            <div class="contact-card" data-aos="fade-up" data-aos-delay="100">
+              <div class="contact-icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <div class="contact-details">
+                <h3>所在地区</h3>
+                <p>中国 · 重庆</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-social" data-aos="fade-up" data-aos-delay="200">
+            <p>或者通过社交媒体联系我</p>
+            <div class="social-links-large">
+              <a href="https://github.com/Risker21" class="social-btn github" target="_blank" rel="noopener">
+                <i class="fab fa-github"></i>
+                <span>GitHub</span>
+              </a>
+              <a href="https://x.com/bobbob1571370" class="social-btn twitter" target="_blank" rel="noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width: 20px; height: 20px;">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+                <span>Twitter</span>
+              </a>
+              <a href="./WeChat.html" class="social-btn wechat">
+                <i class="fab fa-weixin"></i>
+                <span>微信</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <p class="copyright">© 2026 Mo小窝. All rights reserved.</p>
+        <p class="made-with">
+          Made with <i class="fas fa-heart"></i> by Momo
+        </p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script src="./js/main.js"></script>
+</body>
+
+</html>

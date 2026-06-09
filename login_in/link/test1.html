@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>晨光手札 | Morning Notes</title>
+    <link rel="icon" href="../images/favicon.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Noto+Serif+SC:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fdfbf7;
+            --panel: rgba(255, 255, 255, 0.75);
+            --text-main: #34495e;
+            --text-sub: #7f8c8d;
+            --accent-warm: #ffb199;
+            --accent-cool: #a1c4fd;
+            --highlight: #fbc2eb;
+            --border: rgba(161, 196, 253, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            overflow: hidden;
+            font-family: 'Noto Serif SC', serif;
+            background:
+                radial-gradient(1200px 700px at 10% 10%, rgba(255, 177, 153, 0.15), transparent 60%),
+                radial-gradient(900px 580px at 90% 85%, rgba(161, 196, 253, 0.2), transparent 62%),
+                radial-gradient(1000px 600px at 50% 40%, rgba(251, 194, 235, 0.15), transparent 75%),
+                var(--bg);
+            color: var(--text-main);
+            position: relative;
+            display: grid;
+            place-items: center;
+        }
+
+        /* Ambient floating bubbles for morning dew effect */
+        #dewdrops {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .grain {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+        }
+
+        .stage {
+            position: relative;
+            z-index: 2;
+            width: min(92vw, 1000px);
+            min-height: 580px;
+            border-radius: 32px;
+            border: 1px solid var(--border);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), var(--panel));
+            box-shadow: 0 30px 60px rgba(161, 196, 253, 0.15), inset 0 0 40px rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            transition: transform 0.3s ease;
+        }
+
+        .stage:hover {
+            transform: translateY(-5px);
+        }
+
+        .stage::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, rgba(255, 177, 153, 0.05), transparent 45%, rgba(161, 196, 253, 0.05));
+            pointer-events: none;
+        }
+
+        .left {
+            padding: 56px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 20px;
+            border-right: 1px solid var(--border);
+        }
+
+        .tag {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.25em;
+            font-size: 13px;
+            color: #8fa0b5;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+        }
+
+        .tag::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: var(--accent-cool);
+            border-radius: 2px;
+        }
+
+        h1 {
+            margin-top: 24px;
+            line-height: 1.3;
+            font-size: clamp(32px, 4.5vw, 56px);
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            background: linear-gradient(90deg, #34495e, #7158e2, #34495e);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradientText 6s linear infinite;
+        }
+
+        .lead {
+            margin-top: 20px;
+            font-size: 17px;
+            color: var(--text-sub);
+            line-height: 2;
+            max-width: 500px;
+            font-weight: 300;
+        }
+
+        .typing {
+            margin-top: 16px;
+            color: #7158e2;
+            min-height: 28px;
+            letter-spacing: 0.08em;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .controls {
+            margin-top: 32px;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.6);
+            color: var(--text-main);
+            padding: 12px 24px;
+            border-radius: 999px;
+            letter-spacing: 0.1em;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            border-color: transparent;
+            background: linear-gradient(135deg, var(--accent-cool), var(--highlight));
+            color: #fff;
+            box-shadow: 0 8px 20px rgba(161, 196, 253, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(161, 196, 253, 0.5);
+        }
+        
+        .btn:not(.btn-primary):hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .quote {
+            margin-top: auto;
+            padding-top: 24px;
+            border-top: 1px dashed rgba(161, 196, 253, 0.4);
+            color: #8fa0b5;
+            font-size: 15px;
+            line-height: 1.8;
+            font-style: italic;
+        }
+
+        .right {
+            padding: 48px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .card {
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.4));
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateX(-5px);
+        }
+
+        .card h3 {
+            font-size: 16px;
+            letter-spacing: 0.1em;
+            color: #34495e;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .card h3::before {
+            content: '';
+            display: block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-warm);
+        }
+
+        .card p {
+            color: var(--text-sub);
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        .seal-area {
+            text-align: center;
+            padding: 20px 0 0;
+            position: relative;
+        }
+
+        .seal {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-family: 'Cinzel', serif;
+            font-size: 32px;
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            box-shadow: 0 10px 25px rgba(255, 154, 158, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            user-select: none;
+            position: relative;
+            z-index: 10;
+        }
+
+        .seal::after {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            border: 1px dashed rgba(255, 154, 158, 0.6);
+            animation: rotate 10s linear infinite;
+        }
+
+        .seal:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 15px 35px rgba(255, 154, 158, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.6);
+        }
+
+        .secret {
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(-20px);
+        }
+
+        .secret.show {
+            opacity: 1;
+            max-height: 200px;
+            margin-top: 16px;
+            transform: translateY(0);
+        }
+
+        .secret p {
+            color: #576574;
+            line-height: 1.9;
+            font-size: 15px;
+            letter-spacing: 0.02em;
+        }
+
+        @keyframes gradientText {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @media (max-width: 900px) {
+            .stage {
+                grid-template-columns: 1fr;
+                min-height: auto;
+                width: 95vw;
+                margin: 20px 0;
+            }
+
+            .left {
+                border-right: 0;
+                border-bottom: 1px solid var(--border);
+                padding: 40px 30px;
+            }
+
+            .right {
+                padding: 30px 30px 40px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            .lead {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="dewdrops"></canvas>
+    <div class="grain"></div>
+
+    <main class="stage">
+        <section class="left">
+            <div>
+                <div class="tag">morning notes</div>
+                <h1>晨光微露，<br>美好正在发生</h1>
+                <p class="lead">
+                    把第一缕阳光折进信封，连同清晨的微风一起寄给你。
+                    这里没有繁杂的喧嚣，只有刚刚苏醒的温柔与期盼。
+                </p>
+                <div class="typing" id="typing-line"></div>
+                <div class="controls">
+                    <button class="btn btn-primary" id="unlock-btn">拆开信笺</button>
+                    <button class="btn" id="switch-btn">换个心情</button>
+                </div>
+            </div>
+
+            <div class="quote" id="quote-box">
+                “每一个清晨，都是一次充满无限可能的重启。”
+            </div>
+        </section>
+
+        <section class="right">
+            <article class="card">
+                <h3>01 / 晨间收集</h3>
+                <p>收集叶片上的露水，捕捉云朵的边缘，把这些微小的确幸记录在崭新的一天里。</p>
+            </article>
+
+            <article class="card">
+                <h3>02 / 寄语微风</h3>
+                <p>有些话语如同晨风般轻柔，不需要声嘶力竭，也能在心底泛起涟漪。</p>
+            </article>
+
+            <div class="seal-area">
+                <div class="seal" id="seal">S</div>
+                <p style="margin-top:16px; color:#8fa0b5; letter-spacing:0.05em; font-size:13px;">轻触火漆印，阅读专属留言</p>
+                <div class="secret card" id="secret-box">
+                    <p>
+                        愿你的今天，<br>
+                        有恰到好处的阳光，和不期而遇的惊喜。<br>
+                        步履不停，心怀暖意。
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Ambient background dew drops effect
+        const canvas = document.getElementById('dewdrops');
+        const ctx = canvas.getContext('2d');
+        let dews = [];
+        let w = 0;
+        let h = 0;
+
+        function resize() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
+
+        function createDews() {
+            dews = Array.from({ length: window.innerWidth < 900 ? 30 : 60 }, () => ({
+                x: Math.random() * w,
+                y: Math.random() * h,
+                r: Math.random() * 4 + 1,
+                vx: (Math.random() - 0.5) * 0.3,
+                vy: (Math.random() - 0.5) * 0.3,
+                o: Math.random() * 0.5 + 0.1
+            }));
+        }
+
+        function drawDews() {
+            ctx.clearRect(0, 0, w, h);
+            for (const d of dews) {
+                d.x += d.vx;
+                d.y += d.vy;
+                
+                if (d.x < -10) d.x = w + 10;
+                if (d.x > w + 10) d.x = -10;
+                if (d.y < -10) d.y = h + 10;
+                if (d.y > h + 10) d.y = -10;
+
+                ctx.beginPath();
+                ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+                
+                // Add a little glow to the dews
+                const gradient = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, d.r);
+                gradient.addColorStop(0, `rgba(255, 255, 255, ${d.o + 0.3})`);
+                gradient.addColorStop(1, `rgba(255, 255, 255, 0)`);
+                
+                ctx.fillStyle = gradient;
+                ctx.fill();
+            }
+            requestAnimationFrame(drawDews);
+        }
+
+        resize();
+        createDews();
+        drawDews();
+        window.addEventListener('resize', () => {
+            resize();
+            createDews();
+        });
+
+        // Interactive elements
+        const typingLine = document.getElementById('typing-line');
+        const quoteBox = document.getElementById('quote-box');
+        const unlockBtn = document.getElementById('unlock-btn');
+        const switchBtn = document.getElementById('switch-btn');
+        const seal = document.getElementById('seal');
+        const secretBox = document.getElementById('secret-box');
+
+        const typingTexts = [
+            '今日宜：深呼吸，迎着光。',
+            '心事清零：新的一天开始了。',
+            '正在加载：百分百的好运。'
+        ];
+        let tIndex = 0;
+
+        const quoteTexts = [
+            '“光总是打在那些勇敢迎向它的人身上。”',
+            '“不必太纠结于当下，也不必太忧虑未来。”',
+            '“清晨的粥比深夜的酒好喝，晨光的温暖比夜色的深沉更迷人。”',
+            '“把烦恼留在昨天，把希望交给今天。”'
+        ];
+        let qIndex = 0;
+
+        function playTyping(text) {
+            typingLine.textContent = '';
+            let i = 0;
+            const timer = setInterval(() => {
+                typingLine.textContent += text[i];
+                i += 1;
+                if (i >= text.length) clearInterval(timer);
+            }, 60);
+        }
+
+        playTyping(typingTexts[tIndex]);
+        setInterval(() => {
+            tIndex = (tIndex + 1) % typingTexts.length;
+            playTyping(typingTexts[tIndex]);
+        }, 5000);
+
+        unlockBtn.addEventListener('click', () => {
+            secretBox.classList.add('show');
+            quoteBox.textContent = '“信件已拆开：今天也会是美好的一天。”';
+        });
+
+        switchBtn.addEventListener('click', () => {
+            qIndex = (qIndex + 1) % quoteTexts.length;
+            quoteBox.textContent = quoteTexts[qIndex];
+        });
+
+        seal.addEventListener('click', () => {
+            secretBox.classList.toggle('show');
+        });
+    </script>
+</body>
+</html>

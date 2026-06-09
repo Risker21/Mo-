@@ -1,0 +1,787 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no"
+    />
+    <link rel="icon" href="../images/favicon.jpg" type="image/x-icon" />
+    <title>穿越时空的浪漫之旅</title>
+    <link rel="stylesheet" type="text/css" href="./css/lovecd.css" />
+    <link rel="stylesheet" href="./css/swiper.css" />
+    <link rel="stylesheet" type="text/css" href="./css/FiraCode.css" />
+  </head>
+
+  <body>
+    <!-- 导航栏 -->
+    <nav class="main-nav">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <span>✈️ 时空旅行</span>
+        </div>
+        <div class="nav-menu">
+          <a href="#home" class="nav-link active">首页</a>
+          <a href="#journey" class="nav-link">旅程</a>
+          <a href="#message" class="nav-link">我想对你说</a>
+          <a href="#memories" class="nav-link">回忆</a>
+          <a href="#gallery" class="nav-link">相册</a>
+        </div>
+        <div class="nav-time">
+          <span id="current-time"></span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- 航班信息栏 -->
+    <div class="flight-info-bar">
+      <div class="flight-status">
+        <div class="status-item">
+          <span class="status-label">航班号</span>
+          <strong class="status-value">LOVE-520</strong>
+        </div>
+        <div class="status-item">
+          <span class="status-label">目的地</span>
+          <strong class="status-value">幸福终点站</strong>
+        </div>
+        <div class="status-item">
+          <span class="status-label">登机时间</span>
+          <strong class="status-value" id="boarding-time">--:--</strong>
+        </div>
+        <div class="status-item status-takeoff" id="status-takeoff">
+          <span class="status-label">起飞倒计时</span>
+          <strong class="status-value" id="takeoff-time">--:--</strong>
+          <div class="takeoff-progress" aria-hidden="true">
+            <div class="takeoff-progress-bar" id="takeoff-progress-bar"></div>
+          </div>
+        </div>
+        <div class="status-item" id="status-waiting">
+          <span class="status-label" id="waiting-label">候机时间</span>
+          <strong class="status-value" id="waiting-time">--:--</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- 主内容区域 -->
+    <main class="main-content">
+      <!-- 首页 - 欢迎页面 -->
+      <section id="home" class="page-section active">
+        <div class="hero-section">
+          <div class="hero-background">
+            <video autoplay loop muted playsinline>
+              <source src="./images/bg1.mp4" type="video/mp4" />
+            </video>
+            <div class="hero-overlay"></div>
+          </div>
+          <div class="hero-content">
+            <h1 class="hero-title" id="tqyxhj">欢迎登上LOVE-520航班</h1>
+            <p class="hero-subtitle">起飞倒计时结束再往下滑吧</p>
+            <div class="hero-stats">
+              <div class="stat-item">
+                <span class="stat-number" id="love-days">0</span>
+                <span class="stat-label">相伴时光</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number" id="journey-count">10</span>
+                <span class="stat-label">旅程站点</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number" id="memory-count">-1</span>
+                <span class="stat-label">珍贵回忆</span>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <button class="cta-button" onclick="scrollToSection('journey')">
+                开始旅程
+                <span class="button-arrow">→</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 旅程页面 -->
+      <section id="journey" class="page-section">
+        <div class="journey-container">
+          <h2 class="section-title">我们的浪漫旅程</h2>
+          <p class="section-subtitle">从心动到永恒，每一站都是爱的印记</p>
+
+          <div class="journey-timeline">
+            <!-- 旅程卡片1 -->
+            <div class="journey-card">
+              <div class="card-image">
+                <img src="./images/man.jpg" alt="初遇时刻" />
+                <div class="card-overlay">
+                  <span class="card-date">初见</span>
+                </div>
+              </div>
+              <div class="card-content">
+                <h3>第一次相遇</h3>
+                <p>你安静地坐在那里，像一幅画，让人忍不住多看几眼</p>
+                <div class="card-tags">
+                  <span class="tag">心动</span>
+                  <span class="tag">美好</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 旅程卡片2 -->
+            <div class="journey-card">
+              <div class="card-image">
+                <img src="./images/cat.gif" alt="温暖时光" />
+                <div class="card-overlay">
+                  <span class="card-date">温暖</span>
+                </div>
+              </div>
+              <div class="card-content">
+                <h3>温暖的陪伴</h3>
+                <p>你说话时眼睛会亮起来，讲到喜欢的事情时语速会变快</p>
+                <div class="card-tags">
+                  <span class="tag">陪伴</span>
+                  <span class="tag">温暖</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 旅程卡片3 -->
+            <div class="journey-card">
+              <div class="card-image">
+                <img src="./images/woman.png" alt="珍贵细节" />
+                <div class="card-overlay">
+                  <span class="card-date">细节</span>
+                </div>
+              </div>
+              <div class="card-content">
+                <h3>珍贵的细节</h3>
+                <p>你总是能注意到别人忽略的细节，会为小事开心很久</p>
+                <div class="card-tags">
+                  <span class="tag">细心</span>
+                  <span class="tag">纯粹</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 我想要说的话 -->
+      <section id="message" class="page-section">
+        <div class="message-container">
+          <h2 class="section-title">我想对你说</h2>
+          <p class="section-subtitle">
+            这些话藏在心里很久了，今天终于有机会告诉你
+          </p>
+
+          <div class="love-letter">
+            <div class="letter-content">
+              <div class="letter-paragraph">
+                <p>亲爱的你:</p>
+              </div>
+              <div class="letter-paragraph">
+                <p>
+                  遇见你是我生命中最美好的意外。还记得第一次见到你时，你安静地坐在那里，像一幅画，让人忍不住多看几眼。
+                </p>
+              </div>
+              <div class="letter-paragraph">
+                <p>
+                  后来发现你说话时眼睛会亮起来，讲到喜欢的事情时语速会变快，那种专注的样子很特别。你总是能注意到别人忽略的细节，会为小事开心很久，这种简单纯粹很难得。
+                </p>
+              </div>
+              <div class="letter-paragraph">
+                <p>
+                  和你在一起的每一刻都让我感到温暖和安心。你的笑容像阳光一样，能驱散我所有的阴霾。你的善良和真诚，让我看到了这个世界最美好的一面。
+                </p>
+              </div>
+              <div class="letter-paragraph">
+                <p>
+                  我也很喜欢你认真生活的样子：你会把一件小事做到更好，会在不经意的地方替别人考虑，会把温柔藏在行动里。很多时候你不说，可我都看得到，也一直记在心里。
+                </p>
+              </div>
+              <div class="letter-paragraph">
+                <p>
+                  你或许不知道，你给我的影响有多大。因为你，我开始更愿意去表达、去倾听、去把日子过得踏实一点；也因为你，我学会在忙碌里停一下，看看眼前的风景，珍惜身边的人。
+                </p>
+              </div>
+              <div class="letter-paragraph">
+                <p>
+                  我想告诉你，你值得所有的美好和幸福。希望你能一直保持这样的状态，做自己喜欢的事，过自己想要的生活。
+                </p>
+              </div>
+              <div class="letter-paragraph">
+                <p>
+                  如果你有一天觉得累了、烦了、想逃避了，也没关系。你可以把情绪交给我一点点，我愿意陪你慢慢走，陪你把复杂的事情理清楚，把难过的时刻熬过去。
+                </p>
+              </div>
+              <div class="letter-paragraph">
+                <p>
+                  我不会说太多漂亮的话，但我想做的很简单：在你开心的时候一起分享，在你低落的时候给你依靠；在你需要空间的时候尊重你，在你需要拥抱的时候第一时间出现。
+                </p>
+              </div>
+              <div class="letter-paragraph">
+                <p>
+                  无论未来如何，我都会一直在这里，默默地支持你，祝福你。因为你是我见过最特别的人，值得被温柔以待。
+                </p>
+              </div>
+              <div class="letter-paragraph">
+                <p>
+                  愿你每天都能睡个好觉，吃到喜欢的东西，遇到值得期待的小惊喜；愿你被理解、被珍惜，也永远有勇气做自己。谢谢你出现在我的生命里。
+                </p>
+              </div>
+              <div class="letter-signature">
+                <p>—— 一个胡说八道的人</p>
+                <p class="signature-date">2025年</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 回忆页面 -->
+      <section id="memories" class="page-section">
+        <div class="memories-container">
+          <h2 class="section-title">时光记忆</h2>
+          <p class="section-subtitle">那些不经意间的美好瞬间</p>
+
+          <div class="memories-grid">
+            <div class="memory-item">
+              <div class="memory-content">
+                <h3>第一次见面</h3>
+                <p>你安静地坐在那里，像一幅画，让人忍不住多看几眼。</p>
+              </div>
+              <div class="memory-decoration">✨</div>
+            </div>
+
+            <div class="memory-item">
+              <div class="memory-content">
+                <h3>专注的时刻</h3>
+                <p>
+                  后来发现你说话时眼睛会亮起来，讲到喜欢的事情时语速会变快，那种专注的样子很特别。
+                </p>
+              </div>
+              <div class="memory-decoration">💫</div>
+            </div>
+
+            <div class="memory-item">
+              <div class="memory-content">
+                <h3>简单的快乐</h3>
+                <p>
+                  你总是能注意到别人忽略的细节，会为小事开心很久，这种简单纯粹很难得。
+                </p>
+              </div>
+              <div class="memory-decoration">🌟</div>
+            </div>
+
+            <div class="memory-item">
+              <div class="memory-content">
+                <h3>温暖的微笑</h3>
+                <p>
+                  你的笑容总是那么温暖，能让人忘记所有的烦恼，感受到生活的美好。
+                </p>
+              </div>
+              <div class="memory-decoration">😊</div>
+            </div>
+
+            <div class="memory-item">
+              <div class="memory-content">
+                <h3>真诚的关心</h3>
+                <p>你总是能察觉到别人的情绪变化，给予恰到好处的关心和支持。</p>
+              </div>
+              <div class="memory-decoration">💝</div>
+            </div>
+
+            <div class="memory-item">
+              <div class="memory-content">
+                <h3>美好的祝愿</h3>
+                <p>
+                  希望你能一直保持这样的状态，做自己喜欢的事，过自己想要的生活。
+                </p>
+              </div>
+              <div class="memory-decoration">💖</div>
+            </div>
+          </div>
+
+          <div class="memory-footer">
+            <p class="memory-signature">From: 一个胡说八道的人</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 相册页面 -->
+      <section id="gallery" class="page-section">
+        <div class="gallery-container">
+          <h2 class="section-title">时光相册</h2>
+          <p class="section-subtitle">
+            用影像记录生活的温度，每一帧都是时光的印记
+          </p>
+
+          <div class="gallery-grid">
+            <div class="gallery-item">
+              <img src="./images/page-4-1.jpg" alt="美好瞬间1" />
+              <div class="gallery-overlay">
+                <span class="gallery-caption">美好时光</span>
+              </div>
+            </div>
+            <div class="gallery-item">
+              <img src="./images/page-4-2.jpg" alt="美好瞬间2" />
+              <div class="gallery-overlay">
+                <span class="gallery-caption">温暖记忆</span>
+              </div>
+            </div>
+            <div class="gallery-item">
+              <img src="./images/page-4-3.jpg" alt="美好瞬间3" />
+              <div class="gallery-overlay">
+                <span class="gallery-caption">幸福时刻</span>
+              </div>
+            </div>
+            <div class="gallery-item">
+              <img src="./images/page-4-4.jpg" alt="美好瞬间4" />
+              <div class="gallery-overlay">
+                <span class="gallery-caption">甜蜜回忆</span>
+              </div>
+            </div>
+            <div class="gallery-item">
+              <img src="./images/page-4-5.jpg" alt="美好瞬间5" />
+              <div class="gallery-overlay">
+                <span class="gallery-caption">珍贵瞬间</span>
+              </div>
+            </div>
+            <div class="gallery-item">
+              <img src="./images/page-4-6.jpg" alt="美好瞬间6" />
+              <div class="gallery-overlay">
+                <span class="gallery-caption">美好时光</span>
+              </div>
+            </div>
+            <div class="gallery-item">
+              <img src="./images/page-4-7.jpg" alt="美好瞬间7" />
+              <div class="gallery-overlay">
+                <span class="gallery-caption">温馨时刻</span>
+              </div>
+            </div>
+            <div class="gallery-item">
+              <img src="./images/page-4-8.jpg" alt="美好瞬间8" />
+              <div class="gallery-overlay">
+                <span class="gallery-caption">快乐时光</span>
+              </div>
+            </div>
+            <div class="gallery-item">
+              <img src="./images/page-4-9.jpg" alt="美好瞬间9" />
+              <div class="gallery-overlay">
+                <span class="gallery-caption">浪漫瞬间</span>
+              </div>
+            </div>
+            <div class="gallery-item">
+              <img src="./images/page-4-10.jpg" alt="美好瞬间10" />
+              <div class="gallery-overlay">
+                <span class="gallery-caption">心动时刻</span>
+              </div>
+            </div>
+            <div class="gallery-item">
+              <img src="./images/page-4-11.jpg" alt="美好瞬间11" />
+              <div class="gallery-overlay">
+                <span class="gallery-caption">温柔时光</span>
+              </div>
+            </div>
+            <div class="gallery-item">
+              <img src="./images/page-4-12.jpg" alt="美好瞬间12" />
+              <div class="gallery-overlay">
+                <span class="gallery-caption">美好回忆</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-message">
+            <p>
+              在这个快节奏的社会里，愿每个人都能找到一些小幸运，活出最真实的自己
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 底部装饰 -->
+    <div class="decorative-elements">
+      <img src="./images/pig1.gif" alt="小猪1" class="decor-pig pig-left" />
+      <img src="./images/pig2.gif" alt="小猪2" class="decor-pig pig-right" />
+      <div class="floating-hearts">
+        <!-- 漂浮的心形将通过CSS生成 -->
+      </div>
+    </div>
+
+    <!-- 浪漫元素容器 -->
+    <div class="romantic-elements" id="romanticElements">
+      <!-- 浪漫元素将通过JavaScript动态生成 -->
+    </div>
+
+    <!-- 漂浮的浪漫元素 -->
+    <div class="floating-romantic">💖</div>
+    <div class="floating-romantic">⭐</div>
+    <div class="floating-romantic">🎵</div>
+    <div class="floating-romantic">🌸</div>
+    <div class="floating-romantic">💫</div>
+    <div class="floating-romantic">✨</div>
+    <div class="floating-romantic">💕</div>
+    <div class="floating-romantic">🌟</div>
+
+    <!-- 页脚 -->
+    <footer class="main-footer">
+      <div class="footer-content">
+        <p>愿我们的旅程永远充满爱与惊喜</p>
+        <p>&copy; 2026 时空旅行·爱在每一刻 | Momo同学</p>
+      </div>
+    </footer>
+
+    <!-- JavaScript 文件 -->
+    <script src="../js/jquery.min.js"></script>
+    <script src="./js/typeit.min.js"></script>
+    <script src="./js/swiper-3.4.2.min.js"></script>
+    <script src="./js/lovetime.js"></script>
+    <script src="./js/talk.js"></script>
+    <script src="./js/music.js"></script>
+    <script src="./js/swiper.js"></script>
+    <script src="./js/su.js"></script>
+
+    <!-- 新布局的JavaScript -->
+    <script>
+      // 页面导航功能
+      function scrollToSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+          section.scrollIntoView({ behavior: "smooth" });
+
+          // 更新导航激活状态
+          document.querySelectorAll(".nav-link").forEach((link) => {
+            link.classList.remove("active");
+          });
+          document
+            .querySelector(`.nav-link[href="#${sectionId}"]`)
+            .classList.add("active");
+        }
+      }
+
+      // 导航链接点击事件
+      document.querySelectorAll(".nav-link").forEach((link) => {
+        link.addEventListener("click", function (e) {
+          e.preventDefault();
+          const targetId = this.getAttribute("href").substring(1);
+          scrollToSection(targetId);
+        });
+      });
+
+      // 实时时间更新
+      function updateCurrentTime() {
+        const now = new Date();
+        const timeString = now.toLocaleString("zh-CN", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+        });
+        document.getElementById("current-time").textContent = timeString;
+      }
+
+      // 初始化
+      document.addEventListener("DOMContentLoaded", function () {
+        updateCurrentTime();
+        setInterval(updateCurrentTime, 1000);
+
+        // 初始化统计数据
+        const loveStartDate = new Date("2025-01-01T00:00:00");
+        const diffDays = Math.floor(
+          (Date.now() - loveStartDate.getTime()) / (1000 * 60 * 60 * 24),
+        );
+        document.getElementById("love-days").textContent = String(
+          Math.max(0, diffDays),
+        );
+        document.getElementById("journey-count").textContent = String(
+          document.querySelectorAll(".journey-card").length,
+        );
+        document.getElementById("memory-count").textContent = String(
+          document.querySelectorAll(".memory-item").length,
+        );
+      });
+
+      // 滚动监听
+      window.addEventListener("scroll", function () {
+        const sections = document.querySelectorAll(".page-section");
+        const navLinks = document.querySelectorAll(".nav-link");
+
+        let currentSection = "";
+        sections.forEach((section) => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.clientHeight;
+          if (window.scrollY >= sectionTop - 100) {
+            currentSection = section.getAttribute("id");
+          }
+        });
+
+        navLinks.forEach((link) => {
+          link.classList.remove("active");
+          if (link.getAttribute("href") === `#${currentSection}`) {
+            link.classList.add("active");
+          }
+        });
+
+        // 滚动动画效果 - 我想要说的话模块
+        const messageSection = document.getElementById("message");
+        if (messageSection) {
+          const messageTop = messageSection.offsetTop;
+          const messageHeight = messageSection.clientHeight;
+          const scrollPosition = window.scrollY + window.innerHeight;
+
+          // 当滚动到消息区域时触发动画
+          if (scrollPosition > messageTop + 200) {
+            const paragraphs = document.querySelectorAll(
+              ".letter-paragraph, .letter-signature",
+            );
+            paragraphs.forEach((paragraph, index) => {
+              paragraph.classList.add("fade-in");
+            });
+          }
+        }
+      });
+
+      // 打字机效果函数
+      function typeWriter(element, text, speed, callback) {
+        let i = 0;
+        element.innerHTML = "";
+
+        function type() {
+          if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(type, speed);
+          } else if (callback) {
+            callback();
+          }
+        }
+        type();
+      }
+
+      function normalizeTypeText(text) {
+        return String(text || "")
+          .replace(/\s*\n\s*/g, "")
+          .replace(/[\t ]{2,}/g, " ")
+          .trim();
+      }
+
+      // 初始化滚动动画和打字机效果
+      document.addEventListener("DOMContentLoaded", function () {
+        // 检查消息区域是否在视口中
+        const messageSection = document.getElementById("message");
+        if (messageSection) {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  const paragraphs =
+                    document.querySelectorAll(".letter-paragraph");
+                  const signature = document.querySelector(".letter-signature");
+
+                  // 重置所有段落内容
+                  paragraphs.forEach((p) => {
+                    const originalText = normalizeTypeText(
+                      p.querySelector("p").textContent,
+                    );
+                    p.querySelector("p").setAttribute(
+                      "data-original",
+                      originalText,
+                    );
+                    p.querySelector("p").textContent = "";
+                  });
+                  if (signature) {
+                    const originalText = normalizeTypeText(
+                      signature.querySelector("p").textContent,
+                    );
+                    signature
+                      .querySelector("p")
+                      .setAttribute("data-original", originalText);
+                    signature.querySelector("p").textContent = "";
+                  }
+
+                  // 逐段打字效果
+                  let currentIndex = 0;
+
+                  function typeNextParagraph() {
+                    if (currentIndex < paragraphs.length) {
+                      const paragraph = paragraphs[currentIndex];
+                      const pElement = paragraph.querySelector("p");
+                      const originalText = normalizeTypeText(
+                        pElement.getAttribute("data-original"),
+                      );
+
+                      typeWriter(pElement, originalText, 85, () => {
+                        paragraph.classList.add("fade-in");
+                        currentIndex++;
+                    setTimeout(typeNextParagraph, 300); // 段落间延迟
+                      });
+                    } else if (signature) {
+                      const pElement = signature.querySelector("p");
+                      const originalText = normalizeTypeText(
+                        pElement.getAttribute("data-original"),
+                      );
+
+                      typeWriter(pElement, originalText, 85, () => {
+                        signature.classList.add("fade-in");
+                      });
+                    }
+                  }
+
+                  typeNextParagraph();
+                  observer.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.3 },
+          );
+
+          observer.observe(messageSection);
+        }
+      });
+
+      // 背景图片跟随滚轮切换效果
+      let currentBackground = 0;
+      const backgrounds = ["bg1.png", "bg2.jpg", "bg3.jpg", "bg4.jpg"];
+
+      function updateBackground(sectionIndex) {
+        const sections = document.querySelectorAll(".page-section");
+        if (sections[sectionIndex] && sectionIndex > 0) {
+          // 跳过首页
+          const section = sections[sectionIndex];
+          const bgImage = backgrounds[(sectionIndex - 1) % backgrounds.length];
+          section.style.backgroundImage = `url('./images/${bgImage}')`;
+          section.style.backgroundSize = "cover";
+          section.style.backgroundPosition = "center";
+          section.style.backgroundAttachment = "fixed";
+        }
+      }
+
+      // 监听滚动事件，更新背景
+      window.addEventListener("scroll", function () {
+        const sections = document.querySelectorAll(".page-section");
+        const scrollPosition = window.scrollY + window.innerHeight / 2;
+
+        sections.forEach((section, index) => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.clientHeight;
+
+          if (
+            scrollPosition >= sectionTop &&
+            scrollPosition < sectionTop + sectionHeight
+          ) {
+            if (currentBackground !== index && index > 0) {
+              // 跳过首页
+              currentBackground = index;
+              updateBackground(index);
+            }
+          }
+        });
+      });
+
+      // 初始化背景
+      document.addEventListener("DOMContentLoaded", function () {
+        const sections = document.querySelectorAll(".page-section");
+        sections.forEach((section, index) => {
+          if (index > 0) {
+            // 跳过首页
+            const bgImage = backgrounds[(index - 1) % backgrounds.length];
+            section.style.backgroundImage = `url('./images/${bgImage}')`;
+            section.style.backgroundSize = "cover";
+            section.style.backgroundPosition = "center";
+            section.style.backgroundAttachment = "fixed";
+          }
+        });
+      });
+
+      // 浪漫元素下雨效果
+      (function () {
+        let didStartRomanticRain = false;
+        let romanticIntervalId = null;
+
+        function createRomanticElements() {
+          const romanticElements = document.getElementById("romanticElements");
+          if (!romanticElements) {
+            return;
+          }
+
+          const romanticSymbols = [
+            "💖",
+            "💕",
+            "💝",
+            "💗",
+            "💓",
+            "💞",
+            "🌸",
+            "🌺",
+            "🌷",
+            "🌹",
+            "💐",
+            "✨",
+            "💫",
+          ];
+
+          function createFallingElement() {
+            const element = document.createElement("div");
+            const symbol =
+              romanticSymbols[
+                Math.floor(Math.random() * romanticSymbols.length)
+              ];
+            element.textContent = symbol;
+            element.classList.add("romantic-element");
+
+            const types = ["heart", "flower", "star"];
+            const type = types[Math.floor(Math.random() * types.length)];
+            element.classList.add(type);
+
+            const left = Math.random() * 100;
+            element.style.left = `${left}%`;
+
+            const size = 18 + Math.random() * 26;
+            element.style.fontSize = `${size}px`;
+
+            const duration = 3 + Math.random() * 7;
+            const delay = Math.random() * 2;
+            element.style.animationDuration = `${duration}s`;
+            element.style.animationDelay = `${delay}s`;
+
+            romanticElements.appendChild(element);
+
+            setTimeout(
+              () => {
+                if (element.parentNode) {
+                  element.parentNode.removeChild(element);
+                }
+              },
+              (duration + delay) * 1000,
+            );
+          }
+
+          romanticIntervalId = window.setInterval(createFallingElement, 120);
+          for (let i = 0; i < 28; i++) {
+            setTimeout(createFallingElement, i * 60);
+          }
+        }
+
+        function startRomanticRain() {
+          if (didStartRomanticRain) {
+            return;
+          }
+          didStartRomanticRain = true;
+          document.body.classList.add("romantic-rain");
+          createRomanticElements();
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+          window.addEventListener("flight:takeoff", startRomanticRain, {
+            once: true,
+          });
+          if (document.body.classList.contains("flight-takeoff")) {
+            startRomanticRain();
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

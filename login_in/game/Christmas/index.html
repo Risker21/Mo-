@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../../images/favicon.jpg" type="image/x-icon">
+    <title>手势圣诞</title>
+    <!-- 引入多种字体：Great Vibes(英手写), Ma Shan Zheng(中毛笔), Long Cang(中草书) -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Ma+Shan+Zheng&family=Long+Cang&family=Noto+Sans+SC:wght@700&family=ZCOOL+KuaiLe&family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #000; font-family: 'Segoe UI', sans-serif; transition: background 1s ease; }
+        
+        /* 背景样式 */
+        body.bg-black { background: #000; }
+        body.bg-deep { background: radial-gradient(circle at center, #1a1a2e 0%, #000000 100%); }
+        body.bg-warm { background: radial-gradient(circle at center, #2e1a1a 0%, #0f0505 100%); }
+        body.bg-aurora { background: radial-gradient(circle at top, #0f2027 0%, #203a43 50%, #2c5364 100%); }
+        body.bg-china { background: radial-gradient(circle at center, #4a0000 0%, #1a0000 100%); }
+        body.bg-dream { background: radial-gradient(circle at center, #3b1f3b 0%, #120016 45%, #050008 100%); }
+        body.bg-forest { background: radial-gradient(circle at center, #021b10 0%, #001008 45%, #000000 100%); }
+
+        #main-title {
+            position: absolute; top: 20px; left: 0; width: 100%;
+            text-align: center; z-index: 50; pointer-events: none; opacity: 0; transition: all 0.5s ease, transform 0.5s ease;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(255,215,0,0.3);
+            /* 默认字体大小，会被JS覆盖 */
+            font-size: 5rem; 
+            white-space: nowrap;
+        }
+
+        .style-xmas {
+            background: linear-gradient(120deg, #ffd700, #ffec8b, #ffffff);
+            background-size: 200% 200%;
+            animation: xmasGlow 6s ease-in-out infinite alternate;
+        }
+        .style-cny {
+            background: linear-gradient(120deg, #ff3333, #ffd700, #ffffff);
+            background-size: 200% 200%;
+            animation: cnyGlow 5s ease-in-out infinite alternate;
+            text-shadow: 0 0 30px rgba(255, 0, 0, 0.6);
+        }
+        .style-sakura {
+            background: linear-gradient(120deg, #ffb7c5, #ffe4f1, #ffffff);
+            background-size: 220% 220%;
+            animation: xmasGlow 7s ease-in-out infinite alternate;
+        }
+        .style-galaxy {
+            background: linear-gradient(120deg, #8a2be2, #4b0082, #00bfff);
+            background-size: 220% 220%;
+            animation: xmasGlow 7s ease-in-out infinite alternate;
+        }
+        .style-sunset {
+            background: linear-gradient(120deg, #ff9a3c, #ff6a88, #ffd1ff);
+            background-size: 220% 220%;
+            animation: xmasGlow 7s ease-in-out infinite alternate;
+        }
+
+        @keyframes xmasGlow {
+            0% { background-position: 0% 50%; transform: translateY(0); text-shadow: 0 0 20px rgba(255,215,0,0.4); }
+            50% { background-position: 50% 50%; transform: translateY(-4px); text-shadow: 0 0 35px rgba(255,255,255,0.6); }
+            100% { background-position: 100% 50%; transform: translateY(0); text-shadow: 0 0 25px rgba(255,140,0,0.6); }
+        }
+
+        @keyframes cnyGlow {
+            0% { background-position: 0% 50%; transform: translateY(0); text-shadow: 0 0 25px rgba(255,0,0,0.6); }
+            50% { background-position: 50% 50%; transform: translateY(-4px); text-shadow: 0 0 40px rgba(255,215,0,0.9); }
+            100% { background-position: 100% 50%; transform: translateY(0); text-shadow: 0 0 30px rgba(255,69,0,0.8); }
+        }
+
+        #start-screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at top, #1a1a2e 0%, #000 55%, #000 100%);
+            z-index: 200; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; color: #fff;
+            animation: fadeInScreen 1.2s ease forwards;
+        }
+        #btn-start {
+            padding: 15px 50px; font-size: 20px; background: linear-gradient(90deg, #ffd700, #ffaa00);
+            border: none; border-radius: 30px; color: #000; font-weight: bold; cursor: pointer;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3); margin-top: 30px; transition: transform 0.2s;
+        }
+        #btn-start:hover { transform: scale(1.05); }
+
+        @keyframes fadeInScreen {
+            from { opacity: 0; transform: scale(1.05); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        #photo-modal {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.5);
+            max-width: 80%; max-height: 80%;
+            padding: 16px 18px 46px 18px;
+            background: radial-gradient(circle at top, rgba(255,255,255,0.96) 0%, rgba(245,245,255,0.96) 45%, rgba(230,230,255,0.94) 100%);
+            box-shadow: 0 35px 70px rgba(0,0,0,0.9);
+            z-index: 150;
+            opacity: 0; pointer-events: none;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 22px;
+            border: 1px solid rgba(255,255,255,0.9);
+            overflow: hidden;
+        }
+        .frame-style-1 {
+            border-radius: 18px;
+            border: 3px solid rgba(255,255,255,0.95);
+            box-shadow: 0 32px 60px rgba(0,0,0,0.9);
+            background: radial-gradient(circle at top, #ffffff 0%, #f3f6ff 55%, #dde7ff 100%);
+        }
+        .frame-style-2 {
+            border-radius: 26px;
+            border: 2px dashed rgba(255,215,0,0.95);
+            box-shadow: 0 26px 55px rgba(0,0,0,0.85);
+            background: radial-gradient(circle at top, #fff8e1 0%, #ffffff 40%, #ffe4e1 100%);
+        }
+        .frame-style-3 {
+            border-radius: 0;
+            border: 5px double rgba(255,255,255,0.98);
+            box-shadow: 0 38px 70px rgba(0,0,0,0.9);
+            background: linear-gradient(135deg, #fdf6e3 0%, #ffe8d2 50%, #f9f0ff 100%);
+        }
+        .frame-style-4 {
+            border-radius: 999px;
+            border: 4px solid rgba(255,182,193,0.98);
+            box-shadow: 0 28px 58px rgba(0,0,0,0.9);
+            background: radial-gradient(circle at center, #fff0f6 0%, #ffffff 55%);
+        }
+        #photo-modal.active { opacity: 1; transform: translate(-50%, -50%) scale(1.02) rotate(-2deg); }
+        #photo-modal img {
+            max-width: 100%; max-height: 60vh; display: block;
+            border-radius: 18px;
+            box-shadow: 0 18px 40px rgba(0,0,0,0.6);
+            object-fit: contain;
+        }
+        #photo-caption {
+            text-align: center;
+            color: #ffffff;
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.1rem;
+            margin-top: 10px;
+            text-shadow: 0 0 18px rgba(0,0,0,0.8);
+        }
+        #modal-img.photo-anim-enter, #photo-caption.photo-anim-enter { animation: photoFadeIn 0.5s ease-out; }
+        #modal-img.photo-anim-next, #photo-caption.photo-anim-next { animation: photoSlideNext 0.45s ease-out; }
+        #modal-img.photo-anim-prev, #photo-caption.photo-anim-prev { animation: photoSlidePrev 0.45s ease-out; }
+
+        /* 摄像头小窗 */
+        #input_video {
+            position: absolute; bottom: 20px; left: 20px;
+            width: 200px; height: 150px; border-radius: 12px;
+            border: 2px solid rgba(255,255,255,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transform: scaleX(-1); z-index: 90; object-fit: cover;
+            transition: opacity 0.5s ease;
+        }
+        #input_video.hidden-cam { opacity: 0; pointer-events: none; }
+
+        /* 设置按钮 */
+        #toggle-btn {
+            position: absolute; top: 20px; right: 20px; width: 40px; height: 40px;
+            background: rgba(255,255,255,0.1); border-radius: 50%; color: #fff;
+            border: 1px solid rgba(255,255,255,0.2); cursor: pointer; z-index: 101;
+            display: flex; justify-content: center; align-items: center; font-size: 18px;
+        }
+        #toggle-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-1px);
+            box-shadow: 0 0 15px rgba(255,255,255,0.25);
+        }
+
+        /* === UI 面板优化 === */
+        #ui-panel {
+            position: absolute; top: 80px; right: 20px; width: 300px;
+            max-height: 85vh; overflow-y: auto;
+            background: rgba(15, 15, 20, 0.85); backdrop-filter: blur(15px);
+            padding: 20px; border-radius: 12px; color: #fff;
+            border: 1px solid rgba(255,255,255,0.15); z-index: 100;
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            box-shadow: -5px 0 20px rgba(0,0,0,0.5);
+        }
+        #ui-panel.hidden { transform: translateX(130%); }
+        /* 滚动条美化 */
+        #ui-panel::-webkit-scrollbar { width: 5px; }
+        #ui-panel::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
+
+        .control-section { border-bottom: 1px dashed rgba(255,255,255,0.15); padding-bottom: 15px; margin-bottom: 15px; }
+        .control-section:last-child { border-bottom: none; }
+        
+        .control-group { margin-bottom: 10px; }
+        .control-group label { display: flex; justify-content: space-between; font-size: 12px; color: #ccc; margin-bottom: 5px; }
+        
+        /* 输入控件样式 */
+        input[type=range] { width: 100%; accent-color: #ffd700; cursor: pointer; }
+        input[type=text] {
+            width: 100%; padding: 8px; background: rgba(0,0,0,0.3); border: 1px solid #444;
+            color: #ffd700; border-radius: 4px; font-size: 14px; box-sizing: border-box;
+        }
+        select { width: 100%; padding: 6px; background: #222; border: 1px solid #444; color: #fff; border-radius: 4px; }
+        
+        .btn { width: 100%; padding: 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; cursor: pointer; border-radius: 6px; font-size: 12px; transition: 0.2s; }
+        .btn:hover { background: rgba(255,255,255,0.2); }
+        .btn.active { background: linear-gradient(90deg, #ff7675, #d63031); border:none; font-weight:bold; }
+
+        h3 { margin: 0 0 10px 0; font-size: 14px; color: #ffd700; font-weight: bold; }
+
+        #romantic-heart {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.6);
+            font-size: 8rem;
+            color: #ff6fae;
+            text-shadow: 0 0 40px rgba(255,120,180,0.98);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 260;
+        }
+
+        #romantic-text {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Ma Shan Zheng', 'Great Vibes', cursive;
+            font-size: 3.6rem;
+            background: linear-gradient(120deg, #ffe9b3, #fff6e3, #ffe4e1);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 32px rgba(255,215,160,0.95), 0 0 42px rgba(255,120,150,0.85);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 270;
+            white-space: nowrap;
+        }
+
+        #romantic-heart.show {
+            animation: heartBeat 2.2s ease-out;
+        }
+
+        #romantic-text.show {
+            animation: romanticSpiral 3.2s ease-out;
+        }
+
+        #gesture-hints {
+            position: absolute;
+            left: 20px;
+            top: 90px;
+            background: rgba(0, 0, 0, 0.45);
+            padding: 10px 12px;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 12px;
+            z-index: 95;
+            max-width: 230px;
+            backdrop-filter: blur(10px);
+            pointer-events: none;
+        }
+        .hint-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
+            opacity: 0.6;
+            transform: translateX(0);
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+        .hint-item:last-child { margin-bottom: 0; }
+        .hint-icon {
+            margin-right: 6px;
+            font-size: 16px;
+        }
+        .hint-text {
+            white-space: nowrap;
+        }
+        .hint-item.active {
+            opacity: 1;
+            transform: translateX(4px);
+        }
+
+        @media (max-width: 768px) {
+            #main-title {
+                font-size: 3rem;
+                top: 10px;
+                white-space: normal;
+            }
+            #input_video {
+                width: 140px;
+                height: 105px;
+                bottom: 10px;
+                left: 10px;
+            }
+            #ui-panel {
+                width: 260px;
+                top: 70px;
+                right: 10px;
+                max-height: 80vh;
+            }
+            #photo-modal {
+                max-width: 90%;
+                max-height: 75%;
+            }
+            #gesture-hints {
+                left: 10px;
+                top: 75px;
+                max-width: 200px;
+                font-size: 11px;
+            }
+            #start-screen h1 {
+                font-size: 3rem;
+            }
+            #start-screen div {
+                font-size: 13px;
+            }
+        }
+
+        @keyframes romanticSpiral {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -60%) scale(0.9);
+                letter-spacing: 0.15rem;
+            }
+            25% {
+                opacity: 1;
+                transform: translate(-50%, -54%) scale(1.05);
+                letter-spacing: 0.32rem;
+            }
+            60% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.0);
+                letter-spacing: 0.22rem;
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -46%) scale(0.92);
+                letter-spacing: 0.12rem;
+            }
+        }
+
+        @keyframes heartBeat {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
+            20% { opacity: 1; transform: translate(-50%, -50%) scale(1.5); }
+            40% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+            60% { opacity: 1; transform: translate(-50%, -50%) scale(1.55); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(0.85); }
+        }
+        @keyframes photoFadeIn {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes photoSlideNext {
+            0% { opacity: 0; transform: translateX(25px) scale(0.96); }
+            100% { opacity: 1; transform: translateX(0) scale(1); }
+        }
+        @keyframes photoSlidePrev {
+            0% { opacity: 0; transform: translateX(-25px) scale(0.96); }
+            100% { opacity: 1; transform: translateX(0) scale(1); }
+        }
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+</head>
+<body class="bg-black">
+
+    <div id="main-title" class="style-xmas">Merry Christmas</div>
+
+    <!-- 启动页 -->
+    <div id="start-screen">
+        <h1 style="font-family: 'Great Vibes'; font-size: 4rem; color: #ffd700; margin: 0;">Winter Magic</h1>
+        <div style="margin-top:20px; text-align:center; color:#aaa; font-size:15px; line-height:1.8;">
+            🖐️ 左手：张开五指 → 暂停/恢复圣诞树旋转<br>
+            ✌️ 右手：捏合 → 树爆炸/聚合，同时打开/关闭照片<br>
+            🔁 左手单指：在照片弹窗打开时「点击」一次 → 切换到下一张照片<br>
+            ❤️ 任意一只手：拇指+食指+小指伸出（美国比心）→ 爱心烟花和浪漫文字<br>
+            ⚙️ 右上角齿轮按钮 → 打开/关闭右侧控制面板<br>
+            可在右侧控制面板自定义标题文字和场景
+        </div>
+        <button id="btn-start">开始体验 ✨</button>
+    </div>
+
+    <div id="photo-modal">
+        <img id="modal-img" src="" alt="Memory">
+        <div id="photo-caption">Sweet Memory</div>
+    </div>
+
+    <div id="romantic-heart"></div>
+    <div id="romantic-text"></div>
+
+    <button id="toggle-btn">⚙️</button>
+    <video id="input_video" class="hidden-cam"></video>
+    <audio id="bg-audio" src="../../link/music/四季予你.mp3" preload="auto" loop style="display:none;"></audio>
+
+    <div id="gesture-hints">
+        <div class="hint-item" id="hint-open">
+            <span class="hint-icon">🖐️</span>
+            <span class="hint-text">左手张开：暂停/恢复旋转</span>
+        </div>
+        <div class="hint-item" id="hint-pinch">
+            <span class="hint-icon">🤏</span>
+            <span class="hint-text">右手捏合：树爆炸/聚合与照片</span>
+        </div>
+        <div class="hint-item" id="hint-swipe">
+            <span class="hint-icon">☝️</span>
+            <span class="hint-text">左手单指点击：切换下一张照片</span>
+        </div>
+        <div class="hint-item" id="hint-heart">
+            <span class="hint-icon">❤️</span>
+            <span class="hint-text">美国比心：浪漫爱心烟花与文字（拇指+食指+小指伸出）</span>
+        </div>
+    </div>
+
+    <!-- 控制面板 -->
+    <div id="ui-panel">
+        <div class="control-group">
+            <button id="btn-fullscreen" class="btn">⛶ 全屏模式</button>
+        </div>
+
+        <!-- 1. 文字自定义模块 -->
+        <div class="control-section">
+            <h3>📝 文字自定义</h3>
+            <div class="control-group">
+                <label>标题内容</label>
+                <input type="text" id="custom-text" value="Merry Christmas">
+            </div>
+            <div class="control-group">
+                <label>字体大小 <span id="val-font-size">5.0</span>rem</label>
+                <input type="range" id="font-size" min="2.0" max="10.0" step="0.5" value="5.0">
+            </div>
+            <div class="control-group">
+                <label>选择字体</label>
+                <select id="font-family">
+                    <option value="'Great Vibes', cursive">Great Vibes (英/手写)</option>
+                    <option value="'Ma Shan Zheng', cursive">马善政 (中/毛笔)</option>
+                    <option value="'Long Cang', cursive">龙苍 (中/草书)</option>
+                    <option value="'Noto Sans SC', sans-serif">思源黑体 (中/粗体)</option>
+                    <option value="'ZCOOL KuaiLe', cursive">站酷快乐体 (中/可爱)</option>
+                    <option value="'Pacifico', cursive">Pacifico (英/圆体)</option>
+                    <option value="'Segoe UI', sans-serif">系统默认 (简洁)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- 2. 风格切换 -->
+        <div class="control-section">
+            <h3>🎨 风格与场景</h3>
+            <div class="control-group">
+                <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                    <button id="theme-xmas" class="btn active" style="flex:1 1 30%;">🎄 圣诞</button>
+                    <button id="theme-cny" class="btn" style="flex:1 1 30%;">🧧 新春</button>
+                    <button id="theme-sakura" class="btn" style="flex:1 1 30%;">🌸 樱花</button>
+                    <button id="theme-galaxy" class="btn" style="flex:1 1 30%;">🌌 星河</button>
+                    <button id="theme-sunset" class="btn" style="flex:1 1 30%;">🌅 日落海</button>
+                </div>
+            </div>
+            <div class="control-group">
+                <label>背景颜色</label>
+                <select id="bg-select">
+                    <option value="black">🌌 纯黑 (Black)</option>
+                    <option value="deep">🌃 深邃 (Deep Blue)</option>
+                    <option value="warm">🔥 暖冬 (Warm)</option>
+                    <option value="aurora">❄️ 极光 (Aurora)</option>
+                    <option value="china">🧧 中国红 (China Red)</option>
+                    <option value="dream">💜 梦幻紫 (Dream)</option>
+                    <option value="forest">🌲 森林夜 (Forest)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- 3. 音乐与媒体 -->
+        <div class="control-section">
+            <h3>🎵 媒体控制</h3>
+            <div class="control-group">
+                <label>背景音乐</label>
+                <button class="btn" onclick="document.getElementById('music-input').click()">📁 上传 MP3</button>
+                <input type="file" id="music-input" accept="audio/*" style="display:none;">
+                <div style="display:flex; gap:10px; margin-top:5px;">
+                    <button id="btn-play-pause" class="btn" style="width:40px;">⏸</button>
+                    <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.6">
+                </div>
+            </div>
+            <div class="control-group">
+                <label>照片管理</label>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <button class="btn" style="flex:1 1 auto; background:linear-gradient(90deg, #00b894, #00cec9); color:black;" onclick="document.getElementById('folder-input').click()">📷 导入照片 (可多选)</button>
+                    <button id="btn-clear-photos" class="btn" style="flex:0 0 auto; background:rgba(255,255,255,0.12);">🗑 清空照片</button>
+                </div>
+                <input type="file" id="folder-input" multiple accept="image/*" style="display:none;">
+            </div>
+            <div class="control-group">
+                <label>辅助显示</label>
+                <button id="btn-toggle-cam" class="btn" style="background:rgba(255,255,255,0.15)">📹 显示/隐藏 摄像头</button>
+            </div>
+        </div>
+
+        <!-- 4. 参数调节 -->
+        <div class="control-section">
+            <h3>🎛️ 参数调节</h3>
+            <div class="control-group">
+                <label>旋转速度 <span id="val-rot">0.002</span></label>
+                <input type="range" id="rot-speed" min="0" max="0.02" step="0.001" value="0.002">
+            </div>
+            <div class="control-group">
+                <label>树的高度</label>
+                <input type="range" id="tree-height" min="40" max="100" step="5" value="70">
+            </div>
+            <div class="control-group">
+                <label>音乐律动</label>
+                <input type="range" id="beat-sense" min="0.1" max="3.0" step="0.1" value="1.0">
+            </div>
+        </div>
+    </div>
+
+    <!-- Shader -->
+    <script type="x-shader/x-vertex" id="vertexshader">
+        attribute float size; attribute vec3 customColor; attribute vec3 spherePos; attribute float type;     
+        varying vec3 vColor; varying float vType;
+        uniform float uTime; uniform float uExplosion; uniform float uBeat; uniform float uSpecial;     
+        void main() {
+            vColor = customColor; vType = type;
+            float t = uExplosion;
+            float ease = 1.0 - pow(1.0 - t, 3.0);
+            vec3 finalPos = mix(position, spherePos, ease);
+            float beatScale = 1.0;
+            if (t < 0.2) beatScale += uBeat * 0.15 * (1.0 - t*3.0); 
+            if (type > 0.5) beatScale += uBeat * 0.2; 
+            vec4 mvPosition = modelViewMatrix * vec4(finalPos * beatScale, 1.0);
+            float s = size;
+            if(type > 0.5) s *= (1.0 + uBeat * 0.5);
+            gl_PointSize = s * (300.0 / -mvPosition.z);
+            gl_Position = projectionMatrix * mvPosition;
+        }
+    </script>
+    <script type="x-shader/x-fragment" id="fragmentshader">
+        uniform float uTime; uniform float uBeat; uniform float uSpecial;
+        varying vec3 vColor; varying float vType;
+        void main() {
+            vec2 coord = gl_PointCoord - vec2(0.5);
+            if(length(coord) > 0.5) discard;
+            vec3 color = vColor; float alpha = 1.0;
+            if(vType > 0.5) {
+                float flash = 0.5 + 0.5 * sin(uTime * 5.0 + vType * 10.0);
+                color += vec3(0.5) * flash * uBeat * 2.0;
+            } else { alpha = 0.8; }
+            if(uSpecial > 0.0) {
+                float pulse = 0.5 + 0.5 * sin(uTime * 10.0);
+                color += vec3(1.0, 0.2, 0.6) * pulse * uSpecial;
+            }
+            gl_FragColor = vec4(color, alpha);
+        }
+    </script>
+
+    <script>
+        window.addEventListener('pageshow', function(e) { if (e.persisted) location.reload(); });
+        const state = { 
+            explosion: 0.0, targetExplosion: 0.0, photoActive: false, treeHeight: 70, rotationSpeed: 0.002,
+            style: 'xmas',
+            rotationPaused: false, heartEffect: 0
+        };
+
+        let scene, camera, renderer, clock;
+        let particleSystem, treeGroup, topDecoration, trunk;
+        let photoMeshes = [], loadedImages = [];
+        let audioCtx, analyser, dataArray, audioEl;
+        let lastHeartLeft = false;
+        let lastHeartRight = false;
+        let heartTimer = 0;
+        let lastLeftX = null;
+        let lastLeftSwipeTime = 0;
+        let lastSingleIndexLeft = false;
+        let lastLeftTapTime = 0;
+        let lastRightX = null;
+        let lastRightSwipeTime = 0;
+        let currentPhotoIndex = 0;
+        let lastLeftOpenPalm = false;
+        let lastPhotoToggleTime = 0;
+        let lastRotateToggleTime = 0;
+        let lastHeartTriggerTime = 0;
+        let wasPlayingBeforeHide = false;
+        const frameClasses = ['frame-style-1','frame-style-2','frame-style-3','frame-style-4'];
+        const romanticTexts = [
+            '你是我眼里的星光，也是我心底的暖光',
+            '在这寂静的冬夜里，所有的雪花都朝你飞去',
+            '如果世界有一万种光，我只想把最温柔的那一道留给你',
+            '这一树的灯光，这一地的霓虹，都是我写给你的情书',
+            '风从很远的地方吹来，却只把你的名字悄悄带到我耳边',
+            '如果拥抱有重量，那一定是这一整个冬天堆积起来的想念',
+            '宇宙山河浪漫，生活点滴温暖，都在朝你靠近',
+            '灯火通明的夜晚，我悄悄把所有心事都藏进看你的那一眼里'
+        ];
+        const themeConfigs = {
+            xmas: {
+                romantic: [
+                    '在这片银白的世界里，我只想牵着你的手取暖',
+                    '雪花落在肩上，却落不下我对你的喜欢',
+                    '灯光把夜染暖，是因为你在我心里住下',
+                    '围巾裹住的是风，而我想把整个冬天都裹在你怀里',
+                    '热可可会凉，篝火会灭，只有和你在一起的心跳不会降温'
+                ],
+                heartColor: '#ffd86f',
+                textGradient: 'linear-gradient(120deg, #ffd86f, #ff7b7b, #3fd47a)',
+                textFont: "'Ma Shan Zheng', 'Great Vibes', cursive",
+                beatScale: 1.0,
+                rotScale: 1.0,
+                heartDuration: 2.0,
+                heartExplosion: 1.0,
+                photoBorder: '#ffffff'
+            },
+            cny: {
+                romantic: [
+                    '新年的第一缕烟火，我想和你一起看',
+                    '人间烟火处，都是我偷偷藏起来想你的地方',
+                    '万家灯火，总有一盏是为你而亮',
+                    '愿新年的每一次钟声，都把我的喜欢一点点敲进你心里',
+                    '街上的红灯笼一盏盏亮起，我的心事也一行行写向你'
+                ],
+                heartColor: '#ff3b3b',
+                textGradient: 'linear-gradient(120deg, #ff4b2b, #ff416c, #ffd700)',
+                textFont: "'Ma Shan Zheng', cursive",
+                beatScale: 1.1,
+                rotScale: 1.05,
+                heartDuration: 2.2,
+                heartExplosion: 1.1,
+                photoBorder: '#ffd700'
+            },
+            sakura: {
+                romantic: [
+                    '一朵樱花落下来的时间，我刚好用来想你',
+                    '风吹起花瓣的样子，很像你轻轻笑着看我',
+                    '如果樱花会说话，它一定会替我说“喜欢你”',
+                    '春风一吹，花瓣起舞，而我只想牵着你慢慢走',
+                    '世界并不温柔，但因为你，我开始相信粉色的梦'
+                ],
+                heartColor: '#ff9acb',
+                textGradient: 'linear-gradient(120deg, #ffb7c5, #ffe4f1, #ffffff)',
+                textFont: "'Ma Shan Zheng', cursive",
+                beatScale: 0.85,
+                rotScale: 0.85,
+                heartDuration: 2.4,
+                heartExplosion: 0.85,
+                photoBorder: '#ffd6e8'
+            },
+            galaxy: {
+                romantic: [
+                    '宇宙很大，幸好我在这颗星球刚好遇见你',
+                    '如果星河有名字，我想用你的名字去命名它',
+                    '漫天星光不及你轻轻看我一眼',
+                    '银河翻涌，群星奔赴，而我只向你一人靠近',
+                    '如果可以，我想把所有星光捧在手心，然后递给你'
+                ],
+                heartColor: '#7fd2ff',
+                textGradient: 'linear-gradient(120deg, #8a2be2, #4b0082, #00bfff)',
+                textFont: "'Great Vibes', cursive",
+                beatScale: 1.25,
+                rotScale: 1.15,
+                heartDuration: 2.6,
+                heartExplosion: 1.2,
+                photoBorder: '#7f7fff'
+            },
+            sunset: {
+                romantic: [
+                    '日落跌进海里，而我眼里只有你',
+                    '如果黄昏有温度，那一定是你靠近时的心跳',
+                    '想把所有晚霞揉进一封情书寄给你',
+                    '晚风轻轻吹过海面，也顺带把我的心事吹向你',
+                    '天边那一点橘，是暮色给你的温柔专属签名'
+                ],
+                heartColor: '#ff8f6b',
+                textGradient: 'linear-gradient(120deg, #ff9a3c, #ff6a88, #ffd1ff)',
+                textFont: "'Pacifico', cursive",
+                beatScale: 1.1,
+                rotScale: 1.05,
+                heartDuration: 2.3,
+                heartExplosion: 1.05,
+                photoBorder: '#ffb38a'
+            },
+            default: {
+                romantic: romanticTexts,
+                heartColor: '#ff6fae',
+                textGradient: 'linear-gradient(120deg, #ff9a9e, #fecfef, #f6d365)',
+                textFont: "'Ma Shan Zheng', 'Great Vibes', cursive",
+                beatScale: 1.0,
+                rotScale: 1.0,
+                heartDuration: 2.0,
+                heartExplosion: 1.0,
+                photoBorder: '#ffffff'
+            }
+        };
+        
+        document.getElementById('btn-start').addEventListener('click', () => {
+            const screen = document.getElementById('start-screen');
+            screen.style.opacity = 0; setTimeout(() => screen.remove(), 1000);
+            document.getElementById('main-title').style.opacity = 1;
+            document.getElementById('input_video').classList.remove('hidden-cam');
+            initAudio(); initThree(); setupUI(); startHandTracking();
+        });
+
+        document.addEventListener('visibilitychange', () => {
+            if (!audioEl) return;
+            if (document.hidden) {
+                wasPlayingBeforeHide = !audioEl.paused;
+                if (wasPlayingBeforeHide) {
+                    audioEl.pause();
+                }
+            } else {
+                if (wasPlayingBeforeHide) {
+                    if (audioCtx && audioCtx.state === 'suspended') {
+                        audioCtx.resume().then(() => {
+                            audioEl.play().catch(() => {});
+                        });
+                    } else {
+                        audioEl.play().catch(() => {});
+                    }
+                }
+            }
+        });
+
+        function initAudio() {
+            const el = document.getElementById('bg-audio');
+            if (!el) return;
+            audioEl = el;
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContext();
+            analyser = audioCtx.createAnalyser();
+            analyser.fftSize = 256;
+            dataArray = new Uint8Array(analyser.frequencyBinCount);
+            const source = audioCtx.createMediaElementSource(audioEl);
+            source.connect(analyser);
+            analyser.connect(audioCtx.destination);
+            const volSlider = document.getElementById('volume-slider');
+            if (volSlider) audioEl.volume = parseFloat(volSlider.value || 0.6);
+            const startPlay = () => {
+                audioEl.play().catch(e => {
+                    console.log('Audio play error', e);
+                });
+            };
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume().then(startPlay);
+            } else {
+                startPlay();
+            }
+        }
+
+        function initThree() {
+            clock = new THREE.Clock(); scene = new THREE.Scene(); scene.fog = new THREE.FogExp2(0x000000, 0.004);
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 30, 90); camera.lookAt(0, 30, 0);
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight); renderer.setPixelRatio(window.devicePixelRatio);
+            document.body.appendChild(renderer.domElement);
+            treeGroup = new THREE.Group(); scene.add(treeGroup);
+            
+            createParticles(); createTopObject(); createTrunk(); createSnow(); animate();
+        }
+
+        function setHintActive(id, active) {
+            const el = document.getElementById(id);
+            if(!el) return;
+            if(active) el.classList.add('active');
+            else el.classList.remove('active');
+        }
+
+        function flashHint(id, duration) {
+            const t = duration || 800;
+            setHintActive(id, true);
+            setTimeout(() => setHintActive(id, false), t);
+        }
+
+        function createParticles() {
+            if(particleSystem) { treeGroup.remove(particleSystem); particleSystem.geometry.dispose(); }
+            const count = 18000;
+            const geo = new THREE.BufferGeometry();
+            const positions = [], spherePos = [], colors = [], sizes = [], types = [];
+            const h = state.treeHeight;
+            const colorHelper = new THREE.Color();
+
+            for(let i=0; i<count; i++) {
+                const t = i / count;
+                const y = t * h;
+                const rBase = (1 - t) * (h*0.42);
+                const angle = i * 0.2;
+                const layerJitter = (Math.random() - 0.5) * (h * 0.01);
+                const r = rBase * (0.75 + Math.random() * 0.25);
+                positions.push(Math.cos(angle)*r, y - 10 + layerJitter, Math.sin(angle)*r);
+
+                const v = new THREE.Vector3(Math.random()-0.5, Math.random()-0.5, Math.random()-0.5).normalize();
+                v.multiplyScalar(40 + Math.random()*50);
+                spherePos.push(v.x, v.y + 20, v.z);
+
+                const rnd = Math.random();
+                let type = 0;
+                if (state.style === 'cny') {
+                    if(rnd > 0.95) { type = 2; sizes.push(4); colorHelper.setHex(0xffd700); }
+                    else if(rnd > 0.85) { type = 1; sizes.push(5); colorHelper.setHex(0xff0000); }
+                    else { type = 0; sizes.push(1.5); if(Math.random()>0.5) colorHelper.setHex(0xffcc00); else colorHelper.setHex(0xffaa00); }
+                } else if (state.style === 'sakura') {
+                    if(rnd > 0.95) { type = 2; sizes.push(4); colorHelper.setHex(0xffc1e3); }
+                    else if(rnd > 0.85) { type = 1; sizes.push(3.5); colorHelper.setHex(0xff8fb3); }
+                    else { type = 0; sizes.push(1.5); if(Math.random()>0.5) colorHelper.setHex(0xffffff); else colorHelper.setHex(0xffd6e8); }
+                } else if (state.style === 'galaxy') {
+                    if(rnd > 0.95) { type = 2; sizes.push(4); colorHelper.setHex(0x8a2be2); }
+                    else if(rnd > 0.85) { type = 1; sizes.push(3.5); colorHelper.setHex(Math.random()>0.5?0x00bfff:0xadff2f); }
+                    else { type = 0; sizes.push(1.5); colorHelper.setHex(0x191970); }
+                } else if (state.style === 'sunset') {
+                    if(rnd > 0.95) { type = 2; sizes.push(4); colorHelper.setHex(0xffc857); }
+                    else if(rnd > 0.85) { type = 1; sizes.push(3.5); colorHelper.setHex(0xff6a88); }
+                    else { type = 0; sizes.push(1.5); if(Math.random()>0.5) colorHelper.setHex(0xff9a3c); else colorHelper.setHex(0xffd1ff); }
+                } else {
+                    if(rnd > 0.975) {
+                        type = 2;
+                        sizes.push(5);
+                        if(Math.random() > 0.5) colorHelper.setHex(0xfff6c9);
+                        else colorHelper.setHex(0xffd47a);
+                    } else if(rnd > 0.94) {
+                        type = 1;
+                        sizes.push(3.5);
+                        const pick = Math.random();
+                        if(pick > 0.66) colorHelper.setHex(0xff3b3b);
+                        else if(pick > 0.33) colorHelper.setHex(0xfffbf0);
+                        else colorHelper.setHex(0x58c1ff);
+                    } else {
+                        type = 0;
+                        sizes.push(1.5);
+                        if(Math.random() > 0.3) colorHelper.setHex(0x0f3d19);
+                        else colorHelper.setHex(0x176329);
+                    }
+                }
+                types.push(type); colors.push(colorHelper.r, colorHelper.g, colorHelper.b);
+            }
+
+            geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+            geo.setAttribute('spherePos', new THREE.Float32BufferAttribute(spherePos, 3));
+            geo.setAttribute('customColor', new THREE.Float32BufferAttribute(colors, 3));
+            geo.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1));
+            geo.setAttribute('type', new THREE.Float32BufferAttribute(types, 1));
+
+            state.uniforms = { uTime: { value: 0 }, uExplosion: { value: 0 }, uBeat: { value: 0 }, uSpecial: { value: 0 } };
+            const mat = new THREE.ShaderMaterial({
+                uniforms: state.uniforms, vertexShader: document.getElementById('vertexshader').textContent,
+                fragmentShader: document.getElementById('fragmentshader').textContent,
+                blending: THREE.AdditiveBlending, depthTest: false, transparent: true
+            });
+            particleSystem = new THREE.Points(geo, mat);
+            treeGroup.add(particleSystem);
+        }
+
+        function createTopObject() {
+            if(topDecoration) { treeGroup.remove(topDecoration); }
+            if(state.style === 'xmas') {
+                const s=new THREE.Shape(); const p=5; for(let i=0;i<p*2;i++){ const r=(i%2===0)?4:2; const a=i/p*Math.PI; s.lineTo(Math.cos(a)*r,Math.sin(a)*r); }
+                const g=new THREE.ExtrudeGeometry(s,{depth:1,bevelEnabled:true,bevelThickness:0.5,bevelSize:0.2});
+                topDecoration=new THREE.Mesh(g,new THREE.MeshBasicMaterial({color:0xffdd00}));
+            } else if(state.style === 'sakura') {
+                const g = new THREE.TorusKnotGeometry(4, 0.6, 80, 16);
+                topDecoration = new THREE.Mesh(g, new THREE.MeshBasicMaterial({color: 0xff9acb}));
+            } else if(state.style === 'galaxy') {
+                const g = new THREE.TetrahedronGeometry(4, 1);
+                topDecoration = new THREE.Mesh(g, new THREE.MeshBasicMaterial({color: 0x87cefa, wireframe: false}));
+            } else if(state.style === 'sunset') {
+                const g = new THREE.SphereGeometry(4, 32, 32);
+                topDecoration = new THREE.Mesh(g, new THREE.MeshBasicMaterial({color: 0xffa64d}));
+            } else if(state.style === 'cny') {
+                topDecoration = new THREE.Group();
+                const sphere = new THREE.Mesh(new THREE.SphereGeometry(3.5, 32, 32), new THREE.MeshBasicMaterial({color: 0xff0000})); sphere.scale.set(1, 0.8, 1);
+                const cap1 = new THREE.Mesh(new THREE.CylinderGeometry(2, 2, 0.5, 32), new THREE.MeshBasicMaterial({color: 0xffd700})); cap1.position.y = 2.6;
+                const cap2 = cap1.clone(); cap2.position.y = -2.6;
+                const t1 = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 8, 8), new THREE.MeshBasicMaterial({color: 0xff3300})); t1.position.set(0, -6, 0);
+                const t2 = t1.clone(); t2.position.set(1, -6, 0); t2.rotation.z=0.2;
+                const t3 = t1.clone(); t3.position.set(-1, -6, 0); t3.rotation.z=-0.2;
+                topDecoration.add(sphere, cap1, cap2, t1, t2, t3);
+            } else {
+                const g = new THREE.OctahedronGeometry(3.5, 0);
+                topDecoration = new THREE.Mesh(g, new THREE.MeshBasicMaterial({color: 0xffdd00}));
+            }
+            topDecoration.position.y = state.treeHeight;
+            treeGroup.add(topDecoration);
+        }
+
+        function createTrunk() {
+            if(trunk) {
+                treeGroup.remove(trunk);
+            }
+            const trunkHeight = state.treeHeight * 0.35;
+            const segments = 14;
+            const segmentHeight = trunkHeight / segments;
+            const radiusBottom = state.treeHeight * 0.09;
+            const radiusTop = state.treeHeight * 0.06;
+            const material = new THREE.MeshBasicMaterial({color: 0x5b3a1a});
+            trunk = new THREE.Group();
+            for(let i=0; i<segments; i++) {
+                const t = i / (segments - 1);
+                const rTop = THREE.MathUtils.lerp(radiusTop, radiusBottom, t);
+                const rBottom = THREE.MathUtils.lerp(radiusTop * 1.02, radiusBottom * 1.05, t);
+                const g = new THREE.CylinderGeometry(rTop, rBottom, segmentHeight * 1.05, 10);
+                const mesh = new THREE.Mesh(g, material);
+                const yCenter = -10 + segmentHeight * 0.5 + i * segmentHeight;
+                const origin = new THREE.Vector3(0, yCenter, 0);
+                const explodeDir = new THREE.Vector3(
+                    (Math.random() - 0.5) * 18,
+                    yCenter + 8 + Math.random() * 18,
+                    (Math.random() - 0.5) * 18
+                );
+                mesh.position.copy(origin);
+                mesh.userData = { origin: origin, explodePos: explodeDir };
+                trunk.add(mesh);
+            }
+            treeGroup.add(trunk);
+        }
+
+        function createSnow() {
+            const g=new THREE.BufferGeometry(); const pos=[]; for(let i=0;i<1200;i++) pos.push((Math.random()-0.5)*220,Math.random()*160-10,(Math.random()-0.5)*220);
+            g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
+            window.snowSystem=new THREE.Points(g,new THREE.PointsMaterial({color:0xffffff,size:0.7,transparent:true,opacity:0.7}));
+            scene.add(window.snowSystem);
+        }
+
+        function updatePhotos() {
+            photoMeshes.forEach(m => treeGroup.remove(m)); photoMeshes = [];
+            if(loadedImages.length === 0) return;
+            loadedImages.forEach(img => {
+                const cvs = document.createElement('canvas'); cvs.width=256; cvs.height=256; const ctx = cvs.getContext('2d');
+                ctx.beginPath(); ctx.arc(128,128,120,0,Math.PI*2); ctx.clip();
+                const asp = img.width/img.height;
+                if(asp>1) ctx.drawImage(img, (img.width-img.height)/2, 0, img.height, img.height, 0,0,256,256); else ctx.drawImage(img, 0, (img.height-img.width)/2, img.width, img.width, 0,0,256,256);
+                ctx.lineWidth=10;
+                const cfg = themeConfigs[state.style] || themeConfigs.default;
+                ctx.strokeStyle = cfg.photoBorder || (state.style === 'cny' ? '#ffd700' : '#ffffff');
+                ctx.stroke();
+                const baseSize = 6;
+                const randomScale = 0.7 + Math.random() * 0.8;
+                const size = baseSize * randomScale;
+                const mesh = new THREE.Mesh(new THREE.PlaneGeometry(size,size), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(cvs), side: THREE.DoubleSide, transparent:true }));
+                const y = Math.random() * (state.treeHeight * 0.8);
+                const r = (1 - y/state.treeHeight) * (state.treeHeight*0.4) + 2; 
+                const a = Math.random() * Math.PI * 2;
+                const origin = new THREE.Vector3(Math.cos(a)*r, y-10, Math.sin(a)*r);
+                const explodeDir = origin.clone().normalize().multiplyScalar(40 + Math.random()*30); explodeDir.y += 20;
+                mesh.position.copy(origin);
+                mesh.userData = { origin: origin, explodePos: explodeDir, imgSrc: img.src };
+                treeGroup.add(mesh); photoMeshes.push(mesh);
+            });
+            currentPhotoIndex = 0;
+            alert(`已挂载 ${loadedImages.length} 张照片`);
+        }
+
+        function clearPhotos() {
+            photoMeshes.forEach(m => treeGroup.remove(m));
+            photoMeshes = [];
+            loadedImages = [];
+            currentPhotoIndex = 0;
+            state.photoActive = false;
+            const modal = document.getElementById('photo-modal');
+            if(modal) {
+                modal.classList.remove('active');
+                const imgEl = document.getElementById('modal-img');
+                const captionEl = document.getElementById('photo-caption');
+                if(imgEl) imgEl.src = '';
+                if(captionEl) captionEl.innerText = '';
+            }
+            const input = document.getElementById('folder-input');
+            if(input) input.value = '';
+            alert('已清空所有照片');
+        }
+
+        function showPhotoByIndex(idx, dir) {
+            if(loadedImages.length === 0) return;
+            const len = loadedImages.length;
+            currentPhotoIndex = ((idx % len) + len) % len;
+            const img = loadedImages[currentPhotoIndex];
+            const modal = document.getElementById('photo-modal');
+            const imgEl = document.getElementById('modal-img');
+            const captionEl = document.getElementById('photo-caption');
+            imgEl.src = img.src;
+            frameClasses.forEach(c => modal.classList.remove(c));
+            const frameClass = frameClasses[Math.floor(Math.random() * frameClasses.length)];
+            modal.classList.add(frameClass);
+            modal.classList.add('active');
+            imgEl.classList.remove('photo-anim-enter','photo-anim-next','photo-anim-prev');
+            captionEl.classList.remove('photo-anim-enter','photo-anim-next','photo-anim-prev');
+            void imgEl.offsetWidth;
+            void captionEl.offsetWidth;
+            if(dir === 'next') {
+                imgEl.classList.add('photo-anim-next');
+                captionEl.classList.add('photo-anim-next');
+            } else if(dir === 'prev') {
+                imgEl.classList.add('photo-anim-prev');
+                captionEl.classList.add('photo-anim-prev');
+            } else {
+                imgEl.classList.add('photo-anim-enter');
+                captionEl.classList.add('photo-anim-enter');
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate); const t = clock.getElapsedTime();
+            if(heartTimer > 0) {
+                heartTimer -= 0.03;
+                if(heartTimer < 0) heartTimer = 0;
+            }
+            let beat = 0; if(analyser) { analyser.getByteFrequencyData(dataArray); let sum = 0; for(let i=0; i<15; i++) sum+=dataArray[i]; beat = (sum/15/255) * parseFloat(document.getElementById('beat-sense').value); }
+            const cfg = themeConfigs[state.style] || themeConfigs.default;
+            const themedBeat = beat * (cfg.beatScale || 1);
+            if(state.uniforms) { state.uniforms.uTime.value = t; state.uniforms.uBeat.value = themedBeat; state.explosion += (state.targetExplosion - state.explosion) * 0.05; state.uniforms.uExplosion.value = state.explosion; state.uniforms.uSpecial.value = heartTimer; }
+            
+            const ease = 1.0 - Math.pow(1.0 - state.explosion, 3.0);
+            photoMeshes.forEach(p => { p.position.lerpVectors(p.userData.origin, p.userData.explodePos, ease); p.lookAt(camera.position); p.rotation.z += 0.005 * (1 + state.explosion * 5); });
+            if(trunk && trunk.children && trunk.children.length > 0) {
+                trunk.children.forEach(seg => {
+                    if(seg.userData && seg.userData.origin && seg.userData.explodePos) {
+                        seg.position.lerpVectors(seg.userData.origin, seg.userData.explodePos, ease);
+                    }
+                });
+            }
+            
+            const baseRot = state.rotationPaused ? 0 : state.rotationSpeed * (cfg.rotScale || 1);
+            treeGroup.rotation.y += baseRot + state.explosion * 0.01;
+            
+            if(topDecoration) {
+                if(state.style === 'xmas') topDecoration.rotation.y -= 0.02;
+                else topDecoration.rotation.z = Math.sin(t * 2) * 0.1;
+                const s = 1 + themedBeat * 0.3; topDecoration.scale.set(s,s,s);
+            }
+            if(window.snowSystem) {
+                const pos = window.snowSystem.geometry.attributes.position.array;
+                for(let i=1; i<pos.length; i+=3) { pos[i] -= 0.3; if(pos[i]<-20) pos[i]=100; }
+                window.snowSystem.geometry.attributes.position.needsUpdate = true;
+            }
+            renderer.render(scene, camera);
+        }
+
+        function startHandTracking() {
+            const video = document.getElementById('input_video');
+            const hands = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
+            hands.setOptions({ maxNumHands: 2, modelComplexity: 1, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
+            hands.onResults(results => {
+                let leftFound = false;
+                let rightFound = false;
+                let leftLm = null;
+                let rightLm = null;
+                if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+                    for (let i = 0; i < results.multiHandedness.length; i++) {
+                        const label = results.multiHandedness[i].label; const lm = results.multiHandLandmarks[i];
+                        if (label === 'Left') {
+                            rightLm = lm;
+                            rightFound = true;
+                            const pinchDist = Math.hypot(lm[4].x - lm[8].x, lm[4].y - lm[8].y);
+                            const explosionLevel = Math.min(Math.max((0.18 - pinchDist) * 4, 0), 1);
+                            state.targetExplosion = explosionLevel;
+                            const nowToggle = performance.now();
+                            if (pinchDist < 0.05) {
+                                if (!state.photoActive && loadedImages.length > 0 && nowToggle - lastPhotoToggleTime > 600) {
+                                    showPhotoByIndex(currentPhotoIndex, 'enter');
+                                    state.photoActive = true;
+                                    lastPhotoToggleTime = nowToggle;
+                                }
+                            } else if (pinchDist > 0.08) {
+                                if (state.photoActive && nowToggle - lastPhotoToggleTime > 600) {
+                                    document.getElementById('photo-modal').classList.remove('active');
+                                    state.photoActive = false;
+                                    lastPhotoToggleTime = nowToggle;
+                                }
+                            }
+
+                            const thumbTip = lm[4];
+                            const indexTip = lm[8];
+                            const middleTip = lm[12];
+                            const ringTip = lm[16];
+                            const pinkyTip = lm[20];
+                            const wrist = lm[0];
+                            const distIndex = Math.hypot(indexTip.x - wrist.x, indexTip.y - wrist.y);
+                            const distMiddle = Math.hypot(middleTip.x - wrist.x, middleTip.y - wrist.y);
+                            const distRing = Math.hypot(ringTip.x - wrist.x, ringTip.y - wrist.y);
+                            const distPinky = Math.hypot(pinkyTip.x - wrist.x, pinkyTip.y - wrist.y);
+                            const distThumb = Math.hypot(thumbTip.x - wrist.x, thumbTip.y - wrist.y);
+                            const dIndexR = distIndex;
+                            const dMiddleR = distMiddle;
+                            const dRingR = distRing;
+                            const dPinkyR = distPinky;
+                            const dThumbR = distThumb;
+                            const rIndexExt = dIndexR > 0.18;
+                            const rPinkyExt = dPinkyR > 0.18;
+                            const rThumbExt = dThumbR > 0.12;
+                            const rMiddleExt = dMiddleR > 0.16;
+                            const rRingExt = dRingR > 0.16;
+                            const isHeartRight = rThumbExt && rIndexExt && rPinkyExt && !rMiddleExt && !rRingExt;
+                            if(isHeartRight && !lastHeartRight) {
+                                triggerHeartEffect();
+                                flashHint('hint-heart', 700);
+                            }
+                            setHintActive('hint-pinch', explosionLevel > 0.1);
+                            lastHeartRight = isHeartRight;
+                        }
+                        if (label === 'Right') {
+                            leftLm = lm;
+                            leftFound = true;
+                            const wristL = lm[0];
+                            const lThumb = lm[4];
+                            const lIndex = lm[8];
+                            const lMiddle = lm[12];
+                            const lRing = lm[16];
+                            const lPinky = lm[20];
+                            const dlIndex = Math.hypot(lIndex.x - wristL.x, lIndex.y - wristL.y);
+                            const dlMiddle = Math.hypot(lMiddle.x - wristL.x, lMiddle.y - wristL.y);
+                            const dlRing = Math.hypot(lRing.x - wristL.x, lRing.y - wristL.y);
+                            const dlPinky = Math.hypot(lPinky.x - wristL.x, lPinky.y - wristL.y);
+                            const dlThumb = Math.hypot(lThumb.x - wristL.x, lThumb.y - wristL.y);
+                            const lIndexExt = dlIndex > 0.18;
+                            const lPinkyExt = dlPinky > 0.18;
+                            const lThumbExt = dlThumb > 0.12;
+                            const lMiddleExt = dlMiddle > 0.16;
+                            const lRingExt = dlRing > 0.16;
+                            const isHeartLeft = lThumbExt && lIndexExt && lPinkyExt && !lMiddleExt && !lRingExt;
+                            const isOpenPalmLeft = lThumbExt && lIndexExt && lMiddleExt && lRingExt && lPinkyExt;
+                            const nowL = performance.now();
+                            const isSingleIndexLeft = lIndexExt && !lMiddleExt && !lRingExt && !lPinkyExt;
+                            if(isHeartLeft && !lastHeartLeft) {
+                                triggerHeartEffect();
+                                flashHint('hint-heart', 700);
+                            }
+                            if(isOpenPalmLeft && !lastLeftOpenPalm && nowL - lastRotateToggleTime > 800) {
+                                state.rotationPaused = !state.rotationPaused;
+                                lastRotateToggleTime = nowL;
+                            }
+                            if(state.photoActive && loadedImages.length > 0 && isSingleIndexLeft && !lastSingleIndexLeft && nowL - lastLeftTapTime > 500) {
+                                currentPhotoIndex = currentPhotoIndex + 1;
+                                showPhotoByIndex(currentPhotoIndex, 'next');
+                                lastLeftTapTime = nowL;
+                                flashHint('hint-swipe', 600);
+                            }
+                            setHintActive('hint-open', isOpenPalmLeft);
+                            lastHeartLeft = isHeartLeft;
+                            lastLeftOpenPalm = isOpenPalmLeft;
+                            lastSingleIndexLeft = isSingleIndexLeft;
+                        }
+                    }
+                }
+                if (!rightFound) {
+                    state.targetExplosion = 0;
+                    setHintActive('hint-pinch', false);
+                }
+                if (!leftFound) {
+                    setHintActive('hint-open', false);
+                }
+            });
+            const cameraUtils = new Camera(video, { onFrame: async () => { await hands.send({image: video}); }, width: 320, height: 240 });
+            cameraUtils.start();
+        }
+        function showRandomPhoto() { if(loadedImages.length === 0) return; currentPhotoIndex = Math.floor(Math.random() * loadedImages.length); showPhotoByIndex(currentPhotoIndex, 'enter'); }
+
+        function triggerHeartEffect() {
+            const now = performance.now();
+            if(now - lastHeartTriggerTime < 1200) return;
+            lastHeartTriggerTime = now;
+            const cfg = themeConfigs[state.style] || themeConfigs.default;
+            heartTimer = cfg.heartDuration || 2.0;
+            state.targetExplosion = cfg.heartExplosion || 1.0;
+            const textEl = document.getElementById('romantic-text');
+            const heartEl = document.getElementById('romantic-heart');
+            if(!textEl || !heartEl) return;
+            const textList = cfg.romantic && cfg.romantic.length ? cfg.romantic : romanticTexts;
+            const msg = textList[Math.floor(Math.random() * textList.length)];
+            textEl.textContent = msg;
+            textEl.style.backgroundImage = cfg.textGradient || 'linear-gradient(120deg, #ff9a9e, #fecfef, #f6d365)';
+            textEl.style.fontFamily = cfg.textFont || "'Ma Shan Zheng', 'Great Vibes', cursive";
+            heartEl.style.color = cfg.heartColor || '#ff6fae';
+            textEl.classList.remove('show');
+            heartEl.textContent = '❤';
+            heartEl.classList.remove('show');
+            void textEl.offsetWidth;
+            void heartEl.offsetWidth;
+            textEl.classList.add('show');
+            heartEl.classList.add('show');
+        }
+
+        function switchTheme(type) {
+            const titleEl = document.getElementById('main-title');
+            const textInput = document.getElementById('custom-text');
+            const fontSelect = document.getElementById('font-family');
+            state.style = type;
+            ['theme-xmas','theme-cny','theme-sakura','theme-galaxy','theme-sunset'].forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.classList.remove('active');
+            });
+            if(type === 'xmas') {
+                titleEl.innerText = 'Merry Christmas'; titleEl.className = 'style-xmas'; titleEl.style.fontFamily = "'Great Vibes', cursive";
+                textInput.value = 'Merry Christmas'; fontSelect.value = "'Great Vibes', cursive";
+                document.body.className = 'bg-black'; document.getElementById('bg-select').value = 'black';
+                document.getElementById('theme-xmas').classList.add('active');
+            } else if(type === 'cny') {
+                titleEl.innerText = '新春快乐 万事如意'; titleEl.className = 'style-cny'; titleEl.style.fontFamily = "'Ma Shan Zheng', cursive";
+                textInput.value = '新春快乐 万事如意'; fontSelect.value = "'Ma Shan Zheng', cursive";
+                document.body.className = 'bg-china'; document.getElementById('bg-select').value = 'china';
+                document.getElementById('theme-cny').classList.add('active');
+            } else if(type === 'sakura') {
+                titleEl.innerText = '樱花为你而落'; titleEl.className = 'style-sakura'; titleEl.style.fontFamily = "'Ma Shan Zheng', cursive";
+                textInput.value = '樱花为你而落'; fontSelect.value = "'Ma Shan Zheng', cursive";
+                document.body.className = 'bg-dream'; document.getElementById('bg-select').value = 'dream';
+                document.getElementById('theme-sakura').classList.add('active');
+            } else if(type === 'galaxy') {
+                titleEl.innerText = '与你相遇在星河之上'; titleEl.className = 'style-galaxy'; titleEl.style.fontFamily = "'Great Vibes', cursive";
+                textInput.value = '与你相遇在星河之上'; fontSelect.value = "'Great Vibes', cursive";
+                document.body.className = 'bg-aurora'; document.getElementById('bg-select').value = 'aurora';
+                document.getElementById('theme-galaxy').classList.add('active');
+            } else if(type === 'sunset') {
+                titleEl.innerText = '海边日落时我在想你'; titleEl.className = 'style-sunset'; titleEl.style.fontFamily = "'Pacifico', cursive";
+                textInput.value = '海边日落时我在想你'; fontSelect.value = "'Pacifico', cursive";
+                document.body.className = 'bg-warm'; document.getElementById('bg-select').value = 'warm';
+                document.getElementById('theme-sunset').classList.add('active');
+            }
+            createParticles(); createTopObject(); createTrunk(); if(loadedImages.length > 0) updatePhotos();
+        }
+
+        function setupUI() {
+            const fsBtn = document.getElementById('btn-fullscreen');
+            fsBtn.addEventListener('click', () => { if(!document.fullscreenElement) { document.documentElement.requestFullscreen(); fsBtn.innerText="❌ 退出全屏模式"; } else { document.exitFullscreen(); fsBtn.innerText="⛶ 全屏模式"; } });
+            document.getElementById('btn-toggle-cam').addEventListener('click', () => { document.getElementById('input_video').classList.toggle('hidden-cam'); });
+            document.getElementById('bg-select').addEventListener('change', (e) => document.body.className = 'bg-'+e.target.value);
+            document.getElementById('toggle-btn').addEventListener('click', () => document.getElementById('ui-panel').classList.toggle('hidden'));
+            
+            document.getElementById('rot-speed').addEventListener('input', (e) => { state.rotationSpeed = parseFloat(e.target.value); document.getElementById('val-rot').innerText = state.rotationSpeed.toFixed(3); });
+            document.getElementById('music-input').addEventListener('change', (e) => { if(e.target.files[0]) { audioEl.src = URL.createObjectURL(e.target.files[0]); audioEl.play(); } });
+            document.getElementById('btn-play-pause').addEventListener('click', () => { if(audioEl.paused) { audioEl.play(); document.getElementById('btn-play-pause').innerText="⏸"; } else { audioEl.pause(); document.getElementById('btn-play-pause').innerText="▶"; } });
+            document.getElementById('volume-slider').addEventListener('input', (e) => audioEl.volume = e.target.value);
+            document.getElementById('folder-input').addEventListener('change', (e) => { const files = Array.from(e.target.files); loadedImages = []; files.forEach(f => { const r = new FileReader(); r.onload=ev=>{ const i=new Image(); i.onload=()=>loadedImages.push(i)===Math.min(files.length,30)&&updatePhotos(); i.src=ev.target.result; }; r.readAsDataURL(f); }); });
+            document.getElementById('btn-clear-photos').addEventListener('click', () => clearPhotos());
+            document.getElementById('tree-height').addEventListener('input', (e) => { state.treeHeight = parseInt(e.target.value); createParticles(); createTopObject(); createTrunk(); });
+            document.getElementById('beat-sense').addEventListener('input', (e) => document.getElementById('beat-sense').value = e.target.value );
+
+            const titleEl = document.getElementById('main-title');
+            const textInput = document.getElementById('custom-text');
+            const sizeInput = document.getElementById('font-size');
+            const fontSelect = document.getElementById('font-family');
+            
+            textInput.addEventListener('input', (e) => titleEl.innerText = e.target.value);
+            sizeInput.addEventListener('input', (e) => { titleEl.style.fontSize = e.target.value + 'rem'; document.getElementById('val-font-size').innerText = e.target.value; });
+            fontSelect.addEventListener('change', (e) => titleEl.style.fontFamily = e.target.value);
+
+            document.getElementById('theme-xmas').addEventListener('click', () => switchTheme('xmas'));
+            document.getElementById('theme-cny').addEventListener('click', () => switchTheme('cny'));
+            const sakuraBtn = document.getElementById('theme-sakura');
+            const galaxyBtn = document.getElementById('theme-galaxy');
+            const sunsetBtn = document.getElementById('theme-sunset');
+            if(sakuraBtn) sakuraBtn.addEventListener('click', () => switchTheme('sakura'));
+            if(galaxyBtn) galaxyBtn.addEventListener('click', () => switchTheme('galaxy'));
+            if(sunsetBtn) sunsetBtn.addEventListener('click', () => switchTheme('sunset'));
+        }
+    </script>
+</body>
+</html>

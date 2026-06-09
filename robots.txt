@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /forms/
+
+Sitemap: https://momo21.online/sitemap.xml
