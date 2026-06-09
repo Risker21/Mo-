@@ -515,70 +515,51 @@
 
     sendBtn.addEventListener('click', sendChat);
 
+    // ---- 点击事件 ----
+    btn.addEventListener('click', function (e) {
+        console.log('[AI] 点击事件');
+        toggleChat();
+    });
+
     // ---- 拖拽功能 ----
     let isDragging = false;
-    let hasDragged = false;
-    let startX, startY, startBtnX, startBtnY;
+    let startX, startY, startLeft, startTop;
 
-    btn.addEventListener('mousedown', startDrag);
-    btn.addEventListener('touchstart', startDrag, { passive: false });
-
-    function startDrag(e) {
-        if (e.type === 'touchstart') e.preventDefault();
-        isDragging = true;
-        hasDragged = false;
-        const touch = e.touches ? e.touches[0] : e;
-        startX = touch.clientX;
-        startY = touch.clientY;
-        // 获取按钮当前位置
-        const rect = btn.getBoundingClientRect();
-        startBtnX = rect.left;
-        startBtnY = rect.top;
-        document.addEventListener('mousemove', onDrag);
-        document.addEventListener('touchmove', onDrag, { passive: false });
-        document.addEventListener('mouseup', endDrag);
-        document.addEventListener('touchend', endDrag);
-    }
-
-    function onDrag(e) {
-        if (!isDragging) return;
-        if (e.type === 'touchmove') e.preventDefault();
-        const touch = e.touches ? e.touches[0] : e;
-        const dx = touch.clientX - startX;
-        const dy = touch.clientY - startY;
-        if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
-            hasDragged = true;
-            // 计算新位置
-            let newX = startBtnX + dx;
-            let newY = startBtnY + dy;
-            // 限制在窗口范围内
-            const btnSize = 130;
-            newX = Math.max(0, Math.min(window.innerWidth - btnSize, newX));
-            newY = Math.max(0, Math.min(window.innerHeight - btnSize, newY));
-            // 使用 left 和 top 定位
-            btn.style.left = newX + 'px';
-            btn.style.top = newY + 'px';
-            btn.style.right = 'auto';
-            btn.style.bottom = 'auto';
-        }
-    }
-
-    function endDrag() {
+    btn.addEventListener('mousedown', function(e) {
         isDragging = false;
-        document.removeEventListener('mousemove', onDrag);
-        document.removeEventListener('touchmove', onDrag);
-        document.removeEventListener('mouseup', endDrag);
-        document.removeEventListener('touchend', endDrag);
-    }
+        startX = e.clientX;
+        startY = e.clientY;
+        const rect = btn.getBoundingClientRect();
+        startLeft = rect.left;
+        startTop = rect.top;
 
-    // 点击事件 - 区分拖拽和点击
-    btn.addEventListener('click', function (e) {
-        console.log('[AI] 点击事件, hasDragged:', hasDragged);
-        if (hasDragged) {
-            hasDragged = false;
-            return;
+        function onMouseMove(e) {
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+            if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+                isDragging = true;
+                let newX = startLeft + dx;
+                let newY = startTop + dy;
+                newX = Math.max(0, Math.min(window.innerWidth - 130, newX));
+                newY = Math.max(0, Math.min(window.innerHeight - 130, newY));
+                btn.style.left = newX + 'px';
+                btn.style.top = newY + 'px';
+                btn.style.right = 'auto';
+                btn.style.bottom = 'auto';
+            }
         }
-        toggleChat();
+
+        function onMouseUp() {
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+            if (isDragging) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        }
+
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
     });
 
     console.log('[AI] 脚本执行完成');
