@@ -47,13 +47,18 @@ const CAPTCHA_KEY = process.env.API_KEY;
 
 // 获取验证码
 app.get('/api/captcha/get', async (req, res) => {
+  if (!CAPTCHA_ID || !CAPTCHA_KEY) {
+    return res.status(500).json({ code: 400, msg: '验证码服务未配置（缺少 API_ID 或 API_KEY）' });
+  }
   try {
-    const response = await fetch(`http://101.35.2.25/api/xingkong/xk6get.php?id=${CAPTCHA_ID}&key=${CAPTCHA_KEY}`);
+    const response = await fetch(`http://101.35.2.25/api/xingkong/xk6get.php?id=${CAPTCHA_ID}&key=${CAPTCHA_KEY}`, {
+      signal: AbortSignal.timeout(8000),
+    });
     const data = await response.json();
     res.json(data);
   } catch (e) {
     console.error('[CAPTCHA获取] 错误:', e.message);
-    res.status(502).json({ code: 400, msg: '验证码获取失败' });
+    res.status(502).json({ code: 400, msg: '验证码获取失败，请检查 API_ID/API_KEY 是否正确配置' });
   }
 });
 
@@ -64,9 +69,15 @@ app.get('/api/captcha/image', async (req, res) => {
     if (!imageUrl) {
       return res.status(400).send('Missing url parameter');
     }
-    const response = await fetch(imageUrl);
+    const response = await fetch(imageUrl, {
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!response.ok) {
+      return res.status(502).send('Image fetch failed');
+    }
     const contentType = response.headers.get('content-type');
     res.setHeader('Content-Type', contentType || 'image/jpeg');
+    res.setHeader('Cache-Control', 'public, max-age=300');
     const buffer = await response.arrayBuffer();
     res.send(Buffer.from(buffer));
   } catch (e) {
